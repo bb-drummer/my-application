@@ -28,3 +28,6 @@ rm -rf build/public/themes/adminlte
 rm -rf build/public/themes/lcars 
 rm -rf build/public/themes/remark 
 rm -rf build/public/themes/taurus
+
+# other clean up
+rm -rf build/module/UIComponents/test
