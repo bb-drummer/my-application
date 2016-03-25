@@ -5,7 +5,9 @@ CDIR=`pwd`
 cd ../my-application
 
 cp -rp ../application-base/build/* ./
-cp -p ../application-base/build/.gitignore ../application-base/build/.gitlab-ci.yml ./
+cp -p ../application-base/build/.gitignore ./
+cp -p ../application-base/build/.gitlab-ci.yml ./
+cp -p ../application-base/build/.scrutinizer.yml ./
 
 git add .
 git commit -m "new release build"

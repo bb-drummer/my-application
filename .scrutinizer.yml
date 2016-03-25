@@ -1,0 +1,32 @@
+checks:
+    php: true
+    javascript: true
+filter:
+    paths:
+        - module/Application/src/*
+        - module/Admin/src/*
+        - module/UIComponents/src/*
+    excluded_paths:
+        - test/*
+        - vendor/*
+        - public/*
+        - puphpet/*
+coding_style:
+    php: {  }
+build:
+    environment:
+        php: '7.0'
+        mysql: true
+        memcached: true
+        timezone: 'Europe/Berlin'
+    tests:
+        before:
+            - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
+            - 'mysql -u root dp_mydemo < sql/install.sql'
+            - 'mysql -u root dp_mydemo < sql/demo.sql'
+            - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
+            - 'replace "_MYSQL_HOST_" "127.0.0.1" -- config/autoload/database.local.php'
+            - 'replace "_MYSQL_DATABASE_" "dp_mydemo" -- config/autoload/database.local.php'
+            - 'replace "_MYSQL_USER_" "root" -- config/autoload/database.local.php'
+            - 'replace "_MYSQL_PASSWORD_" "" -- config/autoload/database.local.php'
+

@@ -8,6 +8,7 @@ cp -rp LICENSE.txt README.md init_autoloader.php build/
 cp -p composer.build.json build/composer.json
 cp -p .gitignore.build build/.gitignore
 cp -p .gitlab-ci.yml build/
+cp -p .scrutinizer.yml build/
 
 # remove (local) configs
 rm -rf build/config/**/*local.php
