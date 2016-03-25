@@ -30,4 +30,4 @@ rm -rf build/public/themes/remark
 rm -rf build/public/themes/taurus
 
 # other clean up
-rm -rf build/module/UIComponents/test
+rm -rf build/module/UIComponents/tests
