@@ -15,10 +15,12 @@ rm -rf build/config/**/*local.php
 
 # remove git files
 rm -rf build/module/**/.git 
+rm -rf build/public/**/.git
 rm -rf build/public/**/*/.git
 
 # remove obsolete composer files
 rm -rf build/module/**/composer* 
+rm -rf build/public/**/composer*
 rm -rf build/public/**/*/composer*
 
 # remove test themes
