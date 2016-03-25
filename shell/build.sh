@@ -1,6 +1,6 @@
 # prepare build dir
+rm -rf build
 mkdir -p build
-rm -rf build/*
 
 # copy files
 cp -rp config module public shell sql build/
