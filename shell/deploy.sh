@@ -10,7 +10,7 @@ cp -p ../application-base/build/.gitignore ../application-base/build/.gitlab-ci.
 git add .
 git commit -m "new release build"
 git pull
-git push
+git push --set-upstream origin master
 
 cd $CDIR
 
