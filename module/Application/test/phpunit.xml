@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/5.2/phpunit.xsd"
+		 backupGlobals="false"
+		 backupStaticAttributes="false"
+		 cacheTokens="false"
+		 colors="true"
+		 convertErrorsToExceptions="true"
+		 convertNoticesToExceptions="true"
+		 convertWarningsToExceptions="true"
+		 forceCoversAnnotation="false"
+		 mapTestClassNameToCoveredClassName="true"
+		 printerClass="PHPUnit_TextUI_ResultPrinter"
+		 processIsolation="false"
+		 stopOnError="false"
+		 stopOnFailure="false"
+		 stopOnIncomplete="false"
+		 stopOnSkipped="false"
+		 stopOnRisky="false"
+		 testSuiteLoaderClass="PHPUnit_Runner_StandardTestSuiteLoader"
+		 timeoutForSmallTests="1"
+		 timeoutForMediumTests="10"
+		 timeoutForLargeTests="60"
+		 verbose="true" 
+		 bootstrap="./bootstrap.php">
+	<!--testSuiteLoaderFile="/path/to/StandardTestSuiteLoader.php"-->
+	<testsuites>
+		<testsuite name="[MyApplication] application base - Test Suite">
+			<directory suffix=".php">./</directory>
+		</testsuite>
+		<testsuite name="[MyApplication] admin base - Test Suite">
+			<directory suffix=".php">../../Admin/test/</directory>
+		</testsuite>
+	</testsuites>
+
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">../src/</directory>
+			<directory suffix=".php">../../Admin/src/</directory>
+			<exclude>
+				<directory suffix=".php">../src/Examples/</directory>
+				<directory suffix=".php">./ApplicationTest/Framework/</directory>
+				<directory suffix=".php">../../Admin/test/AdminTest/Framework/</directory>
+				<directory suffix=".php">../../Admin/src/Examples/</directory>
+			</exclude>
+		</whitelist>
+	</filter>
+	
+	<logging>
+		<log
+			type="coverage-html" 
+			live-target="/Volumes/Development/resources/php/test-coverage/zf2-application-base/phpunit/" 
+			target="../../../public/.reports/phpunit/" 
+			showUncoveredFiles="true"
+		/>
+	</logging>
+	<listeners>
+		<listener class="MyListener" file="./MyListener.php">
+		</listener>
+	</listeners>
+</phpunit>

@@ -1,0 +1,1138 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: my-application/application-base\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-25 14:36+0100\n"
+"PO-Revision-Date: 2016-02-25 15:21+0100\n"
+"Last-Translator: Björn Bartels, [dargon-projects.net] <bartels@dragon-"
+"projets.net>\n"
+"Language-Team: Björn Bartels, [dragon-projects.net] <bartels@dragon-projets."
+"net>\n"
+"Language: de_DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+"X-Poedit-SearchPathExcluded-1: *.css\n"
+
+#: language/msgIds.php:8 src/Application/Controller/IndexController.php:30
+msgid "home"
+msgstr "Startseite"
+
+#: language/msgIds.php:9
+msgid "add"
+msgstr "hinzufügen"
+
+#: language/msgIds.php:10
+msgid "edit"
+msgstr "ändern"
+
+#: language/msgIds.php:11
+msgid "delete"
+msgstr "entfernen"
+
+#: language/msgIds.php:12
+msgid "details"
+msgstr "Details"
+
+#: language/msgIds.php:13
+msgid "overview"
+msgstr "Übersicht"
+
+#: language/msgIds.php:14
+msgid "show"
+msgstr "anzeigen"
+
+#: language/msgIds.php:15
+msgid "account"
+msgstr "Profil"
+
+#: language/msgIds.php:16
+msgid "change email"
+msgstr "E-Mail-Adresse ändern"
+
+#: language/msgIds.php:17
+msgid "change password"
+msgstr "Passwort ändern"
+
+#: language/msgIds.php:18
+msgid "register"
+msgstr "registrieren"
+
+#: language/msgIds.php:19
+msgid "login"
+msgstr "anmelden"
+
+#: language/msgIds.php:20
+msgid "logout"
+msgstr "abmelden"
+
+#: language/msgIds.php:21
+msgid "user confirmation"
+msgstr "Bestätigung"
+
+#: language/msgIds.php:22
+msgid "user activation"
+msgstr "Aktivierung"
+
+#: language/msgIds.php:23
+msgid "admin"
+msgstr "Administration"
+
+#: language/msgIds.php:24
+msgid "users"
+msgstr "Benutzer"
+
+#: language/msgIds.php:25
+msgid "clients"
+msgstr "Mandanten"
+
+#: language/msgIds.php:26
+msgid "applications"
+msgstr "Anwendungen"
+
+#: language/msgIds.php:27
+msgid "permissions"
+msgstr "Berechtigungen"
+
+#: language/msgIds.php:28
+msgid "ACL"
+msgstr "ACL"
+
+#: language/msgIds.php:29
+msgid "roles"
+msgstr "Rollen"
+
+#: language/msgIds.php:30
+msgid "resources"
+msgstr "Ressourcen"
+
+#: language/msgIds.php:31
+msgid "settings"
+msgstr "Einstellungen"
+
+#: language/msgIds.php:32 src/Application/Controller/SystemController.php:28
+msgid "system"
+msgstr "System"
+
+#: language/msgIds.php:33 src/Application/Controller/SystemController.php:29
+msgid "info"
+msgstr "Info"
+
+#: language/msgIds.php:34 src/Application/Controller/SystemController.php:30
+msgid "backup"
+msgstr "Backup"
+
+#: language/msgIds.php:35 src/Application/Controller/SetupController.php:30
+msgid "setup"
+msgstr "Einrichtung"
+
+#: language/msgIds.php:36 src/Application/Controller/SetupController.php:31
+msgid "install"
+msgstr "Installation"
+
+#: language/msgIds.php:37 src/Application/Controller/SetupController.php:32
+msgid "update"
+msgstr "Update"
+
+#: language/msgIds.php:38 src/Application/Controller/IndexController.php:31
+msgid "help"
+msgstr "Hilfe"
+
+#: language/msgIds.php:39 src/Application/Controller/IndexController.php:32
+msgid "support"
+msgstr "Support"
+
+#: language/msgIds.php:40 src/Application/Controller/IndexController.php:33
+msgid "about"
+msgstr "Über…"
+
+#: language/msgIds.php:43
+msgid "administrator"
+msgstr "Administrator"
+
+#: language/msgIds.php:44
+msgid "user"
+msgstr "Benutzer"
+
+#: language/msgIds.php:45
+msgid "public"
+msgstr "Jeder"
+
+#: language/msgIds.php:48
+msgid "submit"
+msgstr "senden"
+
+#: language/msgIds.php:51
+msgid "Authentication failed. Please try again."
+msgstr "Authentifizierung fehlgeschlagen. Bitte versuchen Sie es erneut."
+
+#: language/msgIds.php:52
+msgid "Value is required and can't be empty"
+msgstr "Eingabe wird benötigt."
+
+#: language/msgIds.php:53
+msgid "Captcha value is wrong"
+msgstr "Captcha-Antwort ist falsch."
+
+#: language/msgIds.php:54
+#, php-format
+msgid "The input is less than %s characters long"
+msgstr "Die Eingabe ist kürzer als %s Zeichen."
+
+#: language/msgIds.php:55
+msgid "The two given tokens do not match"
+msgstr "Passwort und Bestätigung müssen übereinstimmen."
+
+#: language/msgIds.php:56
+#, php-format
+msgid "The input is not between '%s' and '%s', inclusively"
+msgstr "Die Eingabe muss zwischen ‚%s’ und ‚%s’ Zeichen lang sein."
+
+#: language/msgIds.php:57
+msgid "request password reset"
+msgstr "Passwort zurücksetzen"
+
+#: language/msgIds.php:58
+msgid "set new password"
+msgstr "Passwort neu setzen"
+
+#: language/msgIds.php:59
+msgid "Email or Username"
+msgstr "E-Mail oder Benutzername"
+
+#: language/msgIds.php:60
+msgid "mobile"
+msgstr "Mobil"
+
+#: src/Application/Controller/IndexController.php:34
+msgid "test page"
+msgstr "Testseite\t"
+
+#: src/Application/Controller/IndexController.php:35
+msgid "xhr test action"
+msgstr "AJAX Test"
+
+#: src/Application/Controller/SetupController.php:33
+msgid "update database structure"
+msgstr "Aktualisieren der Datenbankstruktur"
+
+#: view/application/index/about.phtml:3
+#, php-format
+msgid "About %s[MyApplication]%s"
+msgstr "Über %s[MyApplication]%s"
+
+#: view/application/index/about.phtml:5
+#, php-format
+msgid ""
+"This should serve as a fully functional basic ZendFramework2 application "
+"construct. Just do a checkout %sfrom our GitLab%s and adjust it to your "
+"needs."
+msgstr ""
+"Dies dient als ein voll funktionsfähiges grundlegendes ZendFramework2-"
+"Anwendung-Konstrukt. Einfach %svon unserem GitLab%s clonen und an Ihre "
+"Bedürfnisse anpassen."
+
+#: view/application/index/about.phtml:7
+#, php-format
+msgid ""
+"Please, take a look into %sMyApplication User Help section%s to get some "
+"guidance around this application."
+msgstr ""
+"Bitte schauen Sie in den %sMyApplication Hilfe-Bereich%s um einige Hinweise "
+"rund um diese Anwendung zu erhalten."
+
+#: view/application/index/about.phtml:9
+#, php-format
+msgid ""
+"If you need further assistance, please do not hesitate to contact "
+"%sMyApplication support%s."
+msgstr ""
+"Wenn Sie weitere Hilfe benötigen, zögern Sie nicht, an den %sMyApplication "
+"Support%s zu wenden."
+
+#: view/application/index/about.phtml:14 view/application/system/index.phtml:15
+#: view/application/system/info.phtml:6
+msgid "This application currently runs upon..."
+msgstr "Diese Anwendung läuft derzeit auf…"
+
+#: view/application/index/about.phtml:15 view/application/setup/index.phtml:17
+#: view/application/setup/install.phtml:12
+#: view/application/setup/update.phtml:12
+#: view/application/system/index.phtml:16 view/application/system/info.phtml:7
+#, php-format
+msgid "server: %s, %s"
+msgstr "Server: %s, %s"
+
+#: view/application/index/about.phtml:16 view/application/setup/index.phtml:18
+#: view/application/setup/install.phtml:13
+#: view/application/setup/update.phtml:13
+#: view/application/system/index.phtml:17 view/application/system/info.phtml:8
+#, php-format
+msgid "system: %s, %s"
+msgstr "System: %s, %s"
+
+#: view/application/index/about.phtml:17 view/application/setup/index.phtml:19
+#: view/application/setup/install.phtml:14
+#: view/application/setup/update.phtml:14
+#: view/application/system/index.phtml:18 view/application/system/info.phtml:9
+#, php-format
+msgid "php: v%s"
+msgstr "PHP: V%s"
+
+#: view/application/index/about.phtml:18 view/application/setup/index.phtml:20
+#: view/application/setup/install.phtml:15
+#: view/application/setup/update.phtml:15
+#: view/application/system/index.phtml:19 view/application/system/info.phtml:10
+#, php-format
+msgid "ZendFramework2: v%s"
+msgstr "ZendFramework2: v%s"
+
+#: view/application/index/about.phtml:24
+msgid "Powered by..."
+msgstr "Powered by…"
+
+#: view/application/index/about.phtml:31 view/application/system/info.phtml:23
+msgid "If you are interested, please follow development on our GitLab..."
+msgstr ""
+"Wenn Sie interessiert sind, folgen Sie bitte der Entwicklung in unserem "
+"GitLab…"
+
+#: view/application/index/about.phtml:35 view/application/system/info.phtml:27
+#: view/layout/layout.phtml:107
+msgid "All rights reserved."
+msgstr "Alle Rechte vorbehalten."
+
+#: view/application/index/development_info.phtml:6
+msgid "Follow Development"
+msgstr "Folge der Entwicklung"
+
+#: view/application/index/development_info.phtml:9
+#, php-format
+msgid ""
+"%s[MyApplication]%s is under active development. If you are interested in "
+"following the development of %s[MyApplication]%s, there is a special portal "
+"on the official website which provides links to the %s[MyApplication]%s "
+"%swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great "
+"resource for staying up to date with the latest developments!"
+msgstr ""
+"%s[MyApplication]%s wird z.Z. aktiv weiterentwickelt.  Sollten Sie daran "
+"interessiert sein, die Entwicklung von %s[MyApplication]%s zu verfolgen, so "
+"bietet Ihnen die offizielle Webseite einen eigens für das Zend Framework 2 "
+"eingerichteten Bereich, auf der Sie Verlinkungen zum %s[MyApplication]%s "
+"%sWiki%s, %sEntwickler Blog%s, einem %sFehlerverfolgungssystem%s und noch "
+"vieles mehr finden. Dieser Bereich ist eine hervorragende Quelle um stets "
+"auf dem Laufenden zu bleiben."
+
+#: view/application/index/development_info.phtml:10
+#, php-format
+msgid "%s[MyApplication]%s Development Portal"
+msgstr "%s[MyApplication]%s Entwickler Portal"
+
+#: view/application/index/development_info.phtml:19
+msgid "Discover Modules"
+msgstr "Entdecken Sie Module"
+
+#: view/application/index/development_info.phtml:22
+#, php-format
+msgid ""
+"We are working on developing a community site to serve as a repository and "
+"gallery for %s[MyApplication]%s modules. These projects are available %son "
+"our GitLab%s. The site is currently under development and will soon contain "
+"a list of some of the modules already available for this application."
+msgstr ""
+"Die Community arbeitet momentan an einer Community Seite, welche als Galerie "
+"für %s[MyApplication]%s Module dient. Dieses Projekt ist %sin unserem GitLab"
+"%s verfügbar. Die Webseite ist bereits Online und enthält eine Liste mit "
+"schon veröffentlichten Modulen."
+
+#: view/application/index/development_info.phtml:23
+#, php-format
+msgid "Explore %s[MyApplication]%s Modules"
+msgstr "%s[MyApplication]%s Module erkunden"
+
+#: view/application/index/development_info.phtml:32
+msgid "Help &amp; Support"
+msgstr "Hilfe &amp; Support"
+
+#: view/application/index/development_info.phtml:35
+#, php-format
+msgid ""
+"If you need any help or support while using and/or developing with "
+"%s[MyApplication]%s, you can take a look into %shelp section%s or you may "
+"reach us via our %ssupport channel%s. We'd love to hear any questions or "
+"feedback you may have regarding the beta releases. Alternatively, you may "
+"subscribe and post questions via the %scontact form%s."
+msgstr ""
+"Benötigen Sie Hilfe oder Unterstützung während der Nutzung und/oder "
+"Entwicklung mit %s[MyApplication]%s, Sie können einen Blick in %sHilfe-"
+"Bereich%s werfen oder erreichen uns über unser %sSupport-Kanal%s. Wir freuen "
+"uns über Ihre Fragen oder Feedback auch gerne zu den Beta-Versionen. "
+"Alternativ können Sie Fragen auch über das %sKontakt-Formular%s stellen."
+
+#: view/application/index/development_info.phtml:36
+msgid "Contact us"
+msgstr "Schreiben Sie uns"
+
+#: view/application/index/help.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s User Help section"
+msgstr "Willkommen Sie bei %s[MyApplication]%s Benutzerhilfe Abschnitt"
+
+#: view/application/index/help.phtml:5
+msgid "here comes your user guidance content..."
+msgstr "Hier kommt Ihre Anleitung…"
+
+#: view/application/index/help.phtml:7
+#, php-format
+msgid ""
+"If you need further assistance, please do not hesitate to contact "
+"%sMyApplication support%s.<br />"
+msgstr ""
+"Wenn Sie weitere Hilfe benötigen, zögern Sie nicht, an den %sMyApplication "
+"Support%s zu wenden."
+
+#: view/application/index/index.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s"
+msgstr "Willkommen bei %s[MyApplication]%s"
+
+#: view/application/index/index.phtml:5
+#, php-format
+msgid ""
+"Congratulations! You have successfully installed the %sMyApplication "
+"application%s."
+msgstr ""
+"Herzlichen Glückwunsch! Anwendung %s[MyApplication]%s wurde erfolgreich "
+"installiert."
+
+#: view/application/index/index.phtml:6
+#, php-format
+msgid ""
+"You are currently running <b>Zend Framework version %s</b> with <b>php "
+"version %s</b>."
+msgstr ""
+"<b>Zend Framework Version %s</b> wird derzeit mit <b>PHP Version %s</b> "
+"ausgeführt."
+
+#: view/application/index/index.phtml:7
+msgid "This install is for demonstration purposes only."
+msgstr "Diese Installation dient nur zu Demonstrationszwecken."
+
+#: view/application/index/index.phtml:7
+msgid ""
+"You are able to login with username \"sysadmin\" and password \"sysadmin\"."
+msgstr ""
+"Sie können Sich mit Benutzername „sysadmin“ und dem Passwort „sysadmin“ "
+"einloggen."
+
+#: view/application/index/index.phtml:8
+msgid "Database and sessions will be flushed every ten minutes."
+msgstr "Datenbanken und Sitzungen werden alle zehn Minuten zurückgesetzt."
+
+#: view/application/index/index.phtml:10
+msgid "Follow on our GitLab"
+msgstr "Folgen Sie uns in unserem GitLab."
+
+#: view/application/index/support.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s Support section"
+msgstr "Willkommen im %s[MyApplication]%s Support Bereich"
+
+#: view/application/index/support.phtml:5
+#, php-format
+msgid ""
+"Please, take a look into %sMyApplication User Help section%s before you "
+"contact support.<br />"
+msgstr ""
+"Bitte, schauen Sie in %s[MyApplication] Hilfe-Bereich%s bevor Sie den "
+"Support kontaktieren.<br />"
+
+#: view/application/index/support.phtml:7
+msgid "here comes your online support content..."
+msgstr "Hier kommt Ihre Anleitung…"
+
+#: view/application/index/xhrtest.phtml:3
+#: view/application/index/xhrtest.phtml:6
+#: view/application/index/xhrtest.phtml:7
+#: view/application/index/xhrtest.phtml:8
+msgid "AJAX test"
+msgstr "AJAX test"
+
+#: view/application/setup/index.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup"
+msgstr "%s[MyApplication]%s einrichten"
+
+#: view/application/setup/index.phtml:5
+#, php-format
+msgid "Welcome to the %s[MyApplication]%s setup module..."
+msgstr "Willkommen im %s[MyApplication]%s Setup Modul"
+
+#: view/application/setup/index.phtml:6
+msgid ""
+"Please select the setup method your desire. Maybe, you should consider "
+"creating a backup of the database first."
+msgstr ""
+"Bitte wählen Sie die Installationsmethode. Bedenken Sie bitte, dass zunächst "
+"gegebenenfalls ein Backup anfertigen."
+
+#: view/application/setup/index.phtml:8
+#, php-format
+msgid "Backup &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Backup &nbsp; %s[==&gt;&gt;]%s"
+
+#: view/application/setup/index.phtml:10
+#, php-format
+msgid "Installation &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Installation &nbsp; %s[==&gt;&gt;]%s"
+
+#: view/application/setup/index.phtml:12
+#, php-format
+msgid "Update &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Update &nbsp; %s[==&gt;&gt;]%s"
+
+#: view/application/setup/install.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup - Installation"
+msgstr "%s[MyApplication]%s einrichten - Installation"
+
+#: view/application/setup/install.phtml:6
+msgid "here comes the installation module..."
+msgstr "Hier kommt das Modul Installation…"
+
+#: view/application/setup/update.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup - Update"
+msgstr "%s[MyApplication]%s einrichten - Update"
+
+#: view/application/setup/update.phtml:6
+msgid "here comes the update module..."
+msgstr "Hier kommt das Update-Modul…"
+
+#: view/application/system/backup.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system - backup"
+msgstr "%s[MyApplication]%s System - Backup"
+
+#: view/application/system/backup.phtml:6
+msgid "here comes the backup module..."
+msgstr "Hier kommt das Backup-Modul…"
+
+#: view/application/system/index.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system options"
+msgstr "%s[MyApplication]%s System - Optionen"
+
+#: view/application/system/index.phtml:5
+#, php-format
+msgid "System-Info &nbsp; %s==&gt;&gt;%s"
+msgstr "System-Info &nbsp; %s==&gt;&gt;%s"
+
+#: view/application/system/index.phtml:7
+#, php-format
+msgid "Backup &nbsp; %s==&gt;&gt;%s"
+msgstr "Backup &nbsp; %s==&gt;&gt;%s"
+
+#: view/application/system/index.phtml:10
+#, php-format
+msgid "Setup-Routines &nbsp; %s==&gt;&gt;%s"
+msgstr "Setup-Routines &nbsp; %s==&gt;&gt;%s"
+
+#: view/application/system/info.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system - info"
+msgstr "%s[MyApplication]%s System - Info"
+
+#: view/error/404.phtml:1
+msgid "A 404 error occurred"
+msgstr "Es trat ein 404 Fehler auf"
+
+#: view/error/404.phtml:10
+msgid "The requested controller was unable to dispatch the request."
+msgstr ""
+"Der angeforderte Controller war nicht in der Lage die Anfrage zu verarbeiten."
+
+#: view/error/404.phtml:13
+msgid ""
+"The requested controller could not be mapped to an existing controller class."
+msgstr ""
+"Der angeforderte Controller konnte keiner Controller Klasse zugeordnet "
+"werden."
+
+#: view/error/404.phtml:16
+msgid "The requested controller was not dispatchable."
+msgstr "Der angeforderte Controller ist nicht aufrufbar."
+
+#: view/error/404.phtml:19
+msgid "The requested URL could not be matched by routing."
+msgstr "Für die angeforderte URL konnte keine Übereinstimmung gefunden werden."
+
+#: view/error/404.phtml:22
+msgid "We cannot determine at this time why a 404 was generated."
+msgstr ""
+"Zu diesem Zeitpunkt ist es uns nicht möglich zu bestimmen, warum ein 404 "
+"Fehler aufgetreten ist."
+
+#: view/error/404.phtml:34
+msgid "Controller"
+msgstr "Controller"
+
+#: view/error/404.phtml:41
+#, php-format
+msgid "resolves to %s"
+msgstr "wird aufgelöst in %s"
+
+#: view/error/404.phtml:53 view/error/index.phtml:8
+msgid "Additional information"
+msgstr "Zusätzliche Information"
+
+#: view/error/404.phtml:56 view/error/404.phtml:80 view/error/index.phtml:11
+#: view/error/index.phtml:35
+msgid "File"
+msgstr "Datei"
+
+#: view/error/404.phtml:60 view/error/404.phtml:84 view/error/index.phtml:15
+#: view/error/index.phtml:39
+msgid "Message"
+msgstr "Meldung"
+
+#: view/error/404.phtml:64 view/error/404.phtml:88 view/error/index.phtml:19
+#: view/error/index.phtml:43
+msgid "Stack trace"
+msgstr "Stack-Trace"
+
+#: view/error/404.phtml:74 view/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "Vorherige Ausnahme"
+
+#: view/error/404.phtml:103 view/error/index.phtml:58
+msgid "No Exception available"
+msgstr "Es ist keine Ausnahme verfügbar!"
+
+#: view/error/index.phtml:1
+msgid "An error occurred"
+msgstr "Ein Fehler ist aufgetreten!"
+
+#: view/layout/layout.phtml:79
+msgid "you are here :"
+msgstr "Sie sind hier :"
+
+#: view/layout/layout.phtml:109
+msgid "Powered by"
+msgstr "Powered by"
+
+#: view/partial/breadcrumb.phtml:3
+msgid "Du bist hier :"
+msgstr "Sie sind hier :"
+
+#~ msgid "manage permissions"
+#~ msgstr "Berechtigungen verwalten"
+
+#~ msgid "manage roles"
+#~ msgstr "Benutzerrollen verwalten"
+
+#~ msgid "manage resources"
+#~ msgstr "Ressourcen verwalten "
+
+#~ msgid "add permission"
+#~ msgstr "Neue Berechtigung hinzufügen"
+
+#~ msgid "add role"
+#~ msgstr "Neue Rolle hinzufügen"
+
+#~ msgid "add resource"
+#~ msgstr "Neue Ressource hinzufügen"
+
+#~ msgid "edit acl"
+#~ msgstr "Berechtigung bearbeiten"
+
+#~ msgid "edit role"
+#~ msgstr "Rolle bearbeiten"
+
+#~ msgid "edit resource"
+#~ msgstr "Ressource bearbeiten"
+
+#~ msgid "delete acl"
+#~ msgstr "Berechtigung entfernen"
+
+#~ msgid "delete role"
+#~ msgstr "Rolle entfernen"
+
+#~ msgid "delete resource"
+#~ msgstr "Ressource entfernen"
+
+#~ msgid "add acl"
+#~ msgstr "Neue Berechtigung hinzufügen"
+
+#~ msgid "permission has been saved"
+#~ msgstr "Die Berechtigung wurde gespeichert."
+
+#~ msgid "change permission"
+#~ msgstr "Berechtigung ändern"
+
+#~ msgid "missing parameters"
+#~ msgstr "fehlende Parameter"
+
+#~ msgid "delete permission"
+#~ msgstr "Berechtigung entfernen"
+
+#~ msgid "permission has been deleted"
+#~ msgstr "Die Berechtigung wurde gelöscht."
+
+#~ msgid "role has been saved"
+#~ msgstr "Die Rolle wurde gespeichert"
+
+#~ msgid "role has been deleted"
+#~ msgstr "Die Rolle wurde gelöscht."
+
+#~ msgid "resource has been saved"
+#~ msgstr "Die Ressource wurde gespeichert."
+
+#~ msgid "resource has been deleted"
+#~ msgstr "Die Ressource wurde gelöscht."
+
+#~ msgid "manage applications"
+#~ msgstr "Anwendungen verwalten"
+
+#~ msgid "add application"
+#~ msgstr "Anwendung hinzufügen"
+
+#~ msgid "edit application"
+#~ msgstr "Anwendung bearbeiten"
+
+#~ msgid "delete application"
+#~ msgstr "Anwendung entfernen"
+
+#~ msgid "application has been saved"
+#~ msgstr "Die Anwendung wurde gespeichert."
+
+#~ msgid "application has been deleted"
+#~ msgstr "Die Anwendung wurde gelöscht."
+
+#~ msgid "manage clients"
+#~ msgstr "Mandanten verwalten"
+
+#~ msgid "add client"
+#~ msgstr "Neuen Mandanten hinzufügen"
+
+#~ msgid "edit client"
+#~ msgstr "Mandant bearbeiten"
+
+#~ msgid "delete client"
+#~ msgstr "Mandant entfernen"
+
+#~ msgid "client has been saved"
+#~ msgstr "Dir Mandant wurde gespeichert"
+
+#~ msgid "client has been deleted"
+#~ msgstr "Dir Mandant wurde entfernt."
+
+#~ msgid "manage settings"
+#~ msgstr "Einstellungen verwalten"
+
+#~ msgid "add setting"
+#~ msgstr "Einstellung hinzufügen"
+
+#~ msgid "edit setting"
+#~ msgstr "Einstellung bearbeiten"
+
+#~ msgid "delete setting"
+#~ msgstr "Einstellung entfernen"
+
+#~ msgid "setting has been saved"
+#~ msgstr "Die Einstellung wurde gespeichert."
+
+#~ msgid "setting has been deleted"
+#~ msgstr "Die Einstellung wurde gelöscht."
+
+#~ msgid "manage users"
+#~ msgstr "Benutzer verwalten"
+
+#~ msgid "add user"
+#~ msgstr "Neuen Benutzer hinzufügen"
+
+#~ msgid "edit user"
+#~ msgstr "Benutzer bearbeiten"
+
+#~ msgid "delete user"
+#~ msgstr "Benutzerkonto entfernen"
+
+#~ msgid "user has been saved"
+#~ msgstr "Der Benutzer wurde gespeichert."
+
+#~ msgid "user has been deleted"
+#~ msgstr "Der Benutzer wurde gelöscht."
+
+#~ msgid "user could not be found"
+#~ msgstr "Benutzer konnte nicht gefunden werden."
+
+#~ msgid "confirmation token is invalid"
+#~ msgstr "Die Sitzung ist abgelaufen oder der Auth-Token ist ungültig."
+
+#~ msgid "user's registration has been confirmed"
+#~ msgstr "Die Benutzerregistrierung ist bestätigt worden."
+
+#~ msgid "admin has been notified for activation"
+#~ msgstr "Der Administrator wurde zur Aktivierung informiert."
+
+#~ msgid "user has been activated"
+#~ msgstr "Das Benutzerkonto wurde aktiviert."
+
+#~ msgid "activation token is invalid"
+#~ msgstr "Die Sitzung ist abgelaufen oder der Auth-Token ist ungültig."
+
+#~ msgid "register user"
+#~ msgstr "Benutzerregistrierung"
+
+#~ msgid "reset password"
+#~ msgstr "Passwort zurücksetzen"
+
+#~ msgid "userdata"
+#~ msgstr "Benutzerdaten"
+
+#~ msgid "edit userdata"
+#~ msgstr "Benutzerdaten bearbeiten"
+
+#~ msgid "user profile"
+#~ msgstr "Benutzerprofil"
+
+#~ msgid "edit profile"
+#~ msgstr "Profil bearbeiten"
+
+#~ msgid "login succeeded"
+#~ msgstr "Anmeldung erfolgreich"
+
+#~ msgid "registration succeeded"
+#~ msgstr "Registrierung erfolgreich"
+
+#~ msgid "you have been sent an email with further instructions to follow"
+#~ msgstr "Sie erhalten in Kürze eine e-Mail mit weiteren Anweisungen."
+
+#~ msgid "registration and activation succeeded"
+#~ msgstr "Registrierung und Aktivierung erfolgreich"
+
+#~ msgid "user '%s' not found"
+#~ msgstr "Benutzer ‚%s’ konnte nicht gefunden werden."
+
+#~ msgid "password reset email has been sent to user '%s'"
+#~ msgstr "Ein Link zum Zurücksetzen des Passworts wurde an ‚%s‘ gesendet."
+
+#~ msgid "invalid request"
+#~ msgstr "Ungültige Anfrage"
+
+#~ msgid "password has been set"
+#~ msgstr "Neues Passwort wurde festgelegt."
+
+#~ msgid "user data could not be changed"
+#~ msgstr "Benutzerdaten konnten nicht geändert werden."
+
+#~ msgid "user data has been changed"
+#~ msgstr "Benutzerdaten wurde geändert."
+
+#~ msgid "user profile data could not be changed"
+#~ msgstr "Benutzerprofildaten konnten nicht geändert werden."
+
+#~ msgid "user profile data has been changed"
+#~ msgstr "Benutzerprofildaten wurde geändert."
+
+#~ msgid "Username"
+#~ msgstr "Benutzername"
+
+#~ msgid "Email"
+#~ msgstr "E­‐Mail"
+
+#~ msgid "New Email"
+#~ msgstr "Neue E-Mail"
+
+#~ msgid "Verify New Email"
+#~ msgstr "E-Mail bestätigen"
+
+#~ msgid "Display Name"
+#~ msgstr "Anzeigenname"
+
+#~ msgid "Password"
+#~ msgstr "Passwort"
+
+#~ msgid "Password Verify"
+#~ msgstr "Passwort-Bestätigung"
+
+#~ msgid "Current Password"
+#~ msgstr "aktuelles Passwort"
+
+#~ msgid "Verify New Password"
+#~ msgstr "Neues Passwort bestätigen"
+
+#~ msgid "New Password"
+#~ msgstr "Neues Passwort"
+
+#~ msgid "Please type the following text"
+#~ msgstr "Bitte geben Sie den folgenden Text ein:"
+
+#~ msgid "Submit"
+#~ msgstr "Absenden"
+
+#~ msgid "Sign In"
+#~ msgstr "Anmelden"
+
+#~ msgid "Register"
+#~ msgstr "Registrieren"
+
+#~ msgid "No record matching the input was found"
+#~ msgstr "Es wurde kein passender Eintrag gefunden."
+
+#~ msgid "A record matching the input was found"
+#~ msgstr "Es wurde ein passender Eintrag gefunden."
+
+#~ msgid "cancel"
+#~ msgstr "abbrechen"
+
+#~ msgid "Do you really want to delete this resource?"
+#~ msgstr "Möchten Sie wirklich diese Ressource löschen?"
+
+#~ msgid "Do you really want to delete this role?"
+#~ msgstr "Möchten Sie wirklich diese Rolle löschen?"
+
+#~ msgid "list view"
+#~ msgstr "Listenansicht"
+
+#~ msgid "role"
+#~ msgstr "Rolle"
+
+#~ msgid "resource"
+#~ msgstr "Ressource"
+
+#~ msgid "status"
+#~ msgstr "Status"
+
+#~ msgid "matrix view"
+#~ msgstr "Matrix-Ansicht"
+
+#~ msgid "allow"
+#~ msgstr "erlauben"
+
+#~ msgid "deny"
+#~ msgstr "verbieten"
+
+#~ msgid "resource slug"
+#~ msgstr "Ressource-Slug"
+
+#~ msgid "resource name"
+#~ msgstr "Ressourcenname"
+
+#~ msgid "role slug"
+#~ msgstr "Rollen-Slug"
+
+#~ msgid "role name"
+#~ msgstr "Rollenname"
+
+#~ msgid "Do you really want to delete this application?"
+#~ msgstr "Möchten Sie wirklich diese Anwendung entfernen?"
+
+#~ msgid "name"
+#~ msgstr "Name"
+
+#~ msgid "url"
+#~ msgstr "URL"
+
+#~ msgid "client"
+#~ msgstr "Mandant"
+
+#~ msgid "Do you really want to delete this client?"
+#~ msgstr "Möchten Sie wirklich diesen Mandanten entfernen?"
+
+#~ msgid "email"
+#~ msgstr "E­‐Mail"
+
+#~ msgid "contact"
+#~ msgstr "Kontakt"
+
+#~ msgid "Do you really want to delete this setting?"
+#~ msgstr "Möchten Sie wirklich diese Einstellung löschen?"
+
+#~ msgid "scope"
+#~ msgstr "Bereich"
+
+#~ msgid "reference"
+#~ msgstr "Referenz"
+
+#~ msgid "type"
+#~ msgstr "Typ:"
+
+#~ msgid "value"
+#~ msgstr "Wert"
+
+#~ msgid "activate user"
+#~ msgstr "Benutzer aktivieren"
+
+#~ msgid "confirm registration"
+#~ msgstr "Registrierung bestätigen"
+
+#~ msgid "Do you really want to delete this user?"
+#~ msgstr "Möchten Sie wirklich diesen Benutzer löschen?"
+
+#~ msgid "user name"
+#~ msgstr "Benutzername"
+
+#~ msgid "email address changed successfully"
+#~ msgstr "Ihre Email-Adresse wurde erfolgreich geändert."
+
+#~ msgid "unable to update your email address, please try again"
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Ändern der E-Mail-Adresse auf. Bitte versuchen "
+#~ "Sie es noch einmal."
+
+#~ msgid "save"
+#~ msgstr "speichern"
+
+#~ msgid "reset"
+#~ msgstr "zurücksetzen"
+
+#~ msgid "change Password for %s"
+#~ msgstr "Passwort ändern für %s"
+
+#~ msgid "password changed successfully"
+#~ msgstr "Ihr Passwort wurde erfolgreich geändert."
+
+#~ msgid "unable to update your password, please try again"
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Ändern der Passwortes auf. Bitte versuchen Sie es "
+#~ "noch einmal."
+
+#~ msgid "user profile actions"
+#~ msgstr "Benutzerprofil-Aktionen"
+
+#~ msgid "Hallo"
+#~ msgstr "Hallo"
+
+#~ msgid "messengers"
+#~ msgstr "Messenger"
+
+#~ msgid "Twitter"
+#~ msgstr "Twitter"
+
+#~ msgid "Facebook"
+#~ msgstr "Facebook"
+
+#~ msgid "Skype"
+#~ msgstr "Skype"
+
+#~ msgid "ICQ"
+#~ msgstr "ICQ"
+
+#~ msgid "address"
+#~ msgstr "Adresse"
+
+#~ msgid "street"
+#~ msgstr "Straße"
+
+#~ msgid "city"
+#~ msgstr "Ort"
+
+#~ msgid "phone"
+#~ msgstr "Telefon"
+
+#~ msgid "do not have an account?"
+#~ msgstr "Sie haben noch keinen Zugang?"
+
+#~ msgid "register now!"
+#~ msgstr "Jetzt registrieren!"
+
+#~ msgid "forgot your credentials?"
+#~ msgstr "Passwort vergessen?"
+
+#~ msgid "reset your password"
+#~ msgstr "(Zurücksetzen Ihres Passwortes)"
+
+#~ msgid "registration is currently not available, please try again later"
+#~ msgstr ""
+#~ "Die Benutzerregistrierung ist im Moment leider nicht verfügbar. Bitte "
+#~ "probieren sie es später erneut."
+
+#~ msgid ""
+#~ "To set a new password enter your username or email used for registration. "
+#~ "You will recieve a mail with a link to set your new password."
+#~ msgstr ""
+#~ "Geben Sie Ihren Benutzernamen oder Ihre E-Mail-Adresse ein. Sie erhalten "
+#~ "einen Link per E-Mail, mit dem Sie ein neues Passwort festlegen können."
+
+#~ msgid "Enter your new password and verify."
+#~ msgstr "Geben Sie Ihr neues Passwort ein, und bestätigen Sie."
+
+#~ msgid "you are here"
+#~ msgstr "Sie sind hier :"
+
+#~ msgid "Change Email for %s"
+#~ msgstr "E-Mail-Adresse ändern für %s"
+
+#~ msgid "Email address changed successfully."
+#~ msgstr "Ihre Email-Adresse wurde erfolgreich geändert."
+
+#~ msgid "Unable to update your email address. Please try again."
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Ändern der E-Mail-Adresse auf. Bitte versuchen "
+#~ "Sie es noch einmal."
+
+#~ msgid "Change Password for %s"
+#~ msgstr "Passwort ändern für %s"
+
+#~ msgid "Password changed successfully."
+#~ msgstr "Ihr Passwort wurde erfolgreich geändert."
+
+#~ msgid "Unable to update your password. Please try again."
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Ändern der Passwortes auf. Bitte versuchen Sie es "
+#~ "noch einmal."
+
+#~ msgid "Hello"
+#~ msgstr "Hallo"
+
+#~ msgid "Sign Out"
+#~ msgstr "abmelden"
+
+#~ msgid "Not registered?"
+#~ msgstr "Sie haben noch keinen Zugang?"
+
+#~ msgid "Sign up!"
+#~ msgstr "Jetzt registrieren!"
+
+#~ msgid "change email for %s"
+#~ msgstr "Ändern Sie E-Mail für %s"
+
+#~ msgid "password set successfully"
+#~ msgstr "Ihr Passwort wurde erfolgreich festgelegt."
+
+#~ msgid "unable to set your password, please try again"
+#~ msgstr ""
+#~ "Es trat ein Fehler beim Ändern der Passwortes auf. Bitte versuchen Sie es "
+#~ "noch einmal."
+
+#~ msgid "Home"
+#~ msgstr "Startseite"
+
+#~ msgid ""
+#~ "Congratulations! You have successfully installed the %sZF2 Skeleton "
+#~ "Application%s. You are currently running Zend Framework version %s. This "
+#~ "skeleton can serve as a simple starting point for you to begin building "
+#~ "your application on ZF2."
+#~ msgstr ""
+#~ "Herzlichen Glückwunsch! Sie haben die %sZF2 Skeleton Application%s "
+#~ "erfolgreich installiert und benutzen gerade die Version %s des Zend "
+#~ "Frameworks. Dieses Gerüst kann Ihnen als Einstiegspunkt, für Ihre weitere "
+#~ "Entwicklung, basierend auf dem Zend Framework 2, dienen."
+
+#~ msgid "Fork Zend Framework 2 on GitHub"
+#~ msgstr "Fork Zend Framework 2 auf GitHub"
+
+#~ msgid "Explore ZF2 Modules"
+#~ msgstr "Erkunden Sie ZF2 Module"
+
+#~ msgid "Ping us on IRC"
+#~ msgstr "Schreiben Sie uns im IRC an"
+
+#~ msgid "Exception"
+#~ msgstr "Ausnahme"

@@ -1,0 +1,47 @@
+{
+  "name" : "my-application/application-base",
+  "description" : "My Web-Application (http://my-application.net)",
+  "version" : "0.0.1",
+  "disable-tls" : "false",
+  "secure-http" : "true",
+  "require" : {
+    "composer/installers": "~1.0",
+    "php" : "^5.5 || ^7.0",
+    "zendframework/zendframework" : "2.5.0",
+    "phpunit/phpunit" : ">=5.1.4",
+    "slm/locale" : "dev-master",
+    "zf-commons/zfc-user" : ">=1.2.2",
+    "neilime/zf2-assets-bundle" : ">=3.4.1",
+    "zendexperts/ze-theme" : "dev-master",
+    "dudapiotr/zftable" : ">=3.1",
+    "org_heigl/piwik" : ">=1.0",
+    "visualappeal/php-auto-update": "^0.9.2",
+    "robloach/component-installer" : ">=0.2.3"
+  },
+  "license" : "BSD-3-Clause",
+  "keywords" : [ "myapplication", "application", "framework", "zf2" ],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "master"
+    }
+  },
+  "type" : "project",
+  "scripts" : {
+    "post-install-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ],
+    "post-update-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ],
+  },
+  "homepage" : "http://my-application.net/",
+  "authors" : [ {
+    "name" : "Björn Bartels",
+    "email" : "development@bjoernbartels.earth",
+    "homepage" : "https://bjoernbartels.earth"
+  } ],
+  "autoload" : {
+    "psr-0" : {
+      "Application" : [ "./module/Application/src/" ],
+      "UIComponents" : [ "./module/UIComponents/src/" ],
+      "Admin" : [ "./module/Admin/src/" ]
+    },
+    "classmap" : [ "./module/" ]
+  }
+}

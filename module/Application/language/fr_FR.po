@@ -1,0 +1,672 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: my-application/application-base\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-02-25 15:22+0100\n"
+"PO-Revision-Date: 2016-02-25 16:46+0100\n"
+"Last-Translator: Björn Bartels, [dargon-projects.net] <bartels@dragon-"
+"projets.net>\n"
+"Language-Team: Björn Bartels, [dargon-projects.net] <bartels@dragon-projets."
+"net>\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: .\n"
+"X-Generator: Poedit 1.8.7\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../language/msgIds.php:8
+#: ../src/Application/Controller/IndexController.php:30
+msgid "home"
+msgstr "Home"
+
+#: ../language/msgIds.php:9
+msgid "add"
+msgstr "ajouter"
+
+#: ../language/msgIds.php:10
+msgid "edit"
+msgstr "éditer"
+
+#: ../language/msgIds.php:11
+msgid "delete"
+msgstr "supprimer"
+
+#: ../language/msgIds.php:12
+msgid "details"
+msgstr "détails"
+
+#: ../language/msgIds.php:13
+msgid "overview"
+msgstr "enquête"
+
+#: ../language/msgIds.php:14
+msgid "show"
+msgstr "afficher"
+
+#: ../language/msgIds.php:15
+msgid "account"
+msgstr "profil"
+
+#: ../language/msgIds.php:16
+msgid "change email"
+msgstr "modifier l’email"
+
+#: ../language/msgIds.php:17
+msgid "change password"
+msgstr "modifier le mot de passe"
+
+#: ../language/msgIds.php:18
+msgid "register"
+msgstr "inscris-toi"
+
+#: ../language/msgIds.php:19
+msgid "login"
+msgstr "log-in"
+
+#: ../language/msgIds.php:20
+msgid "logout"
+msgstr "log-out"
+
+#: ../language/msgIds.php:21
+msgid "user confirmation"
+msgstr "confirmation à l’utilisateur"
+
+#: ../language/msgIds.php:22
+msgid "user activation"
+msgstr "activation de l’utilisateur"
+
+#: ../language/msgIds.php:23
+msgid "admin"
+msgstr "Administrateur"
+
+#: ../language/msgIds.php:24
+msgid "users"
+msgstr "Utilisateurs"
+
+#: ../language/msgIds.php:25
+msgid "clients"
+msgstr "Clients"
+
+#: ../language/msgIds.php:26
+msgid "applications"
+msgstr "applications"
+
+#: ../language/msgIds.php:27
+msgid "permissions"
+msgstr "Autorisations"
+
+#: ../language/msgIds.php:28
+msgid "ACL"
+msgstr "ACL"
+
+#: ../language/msgIds.php:29
+msgid "roles"
+msgstr "Rôles d'utilisateur"
+
+#: ../language/msgIds.php:30
+msgid "resources"
+msgstr "Ressources"
+
+#: ../language/msgIds.php:31
+msgid "settings"
+msgstr "Réglages"
+
+#: ../language/msgIds.php:32
+#: ../src/Application/Controller/SystemController.php:28
+msgid "system"
+msgstr "Système"
+
+#: ../language/msgIds.php:33
+#: ../src/Application/Controller/SystemController.php:29
+msgid "info"
+msgstr "Information"
+
+#: ../language/msgIds.php:34
+#: ../src/Application/Controller/SystemController.php:30
+msgid "backup"
+msgstr "Backup"
+
+#: ../language/msgIds.php:35
+#: ../src/Application/Controller/SetupController.php:30
+msgid "setup"
+msgstr "Configuration"
+
+#: ../language/msgIds.php:36
+#: ../src/Application/Controller/SetupController.php:31
+msgid "install"
+msgstr "Installation"
+
+#: ../language/msgIds.php:37
+#: ../src/Application/Controller/SetupController.php:32
+msgid "update"
+msgstr "Update"
+
+#: ../language/msgIds.php:38
+#: ../src/Application/Controller/IndexController.php:31
+msgid "help"
+msgstr "Aider"
+
+#: ../language/msgIds.php:39
+#: ../src/Application/Controller/IndexController.php:32
+msgid "support"
+msgstr "Soutien"
+
+#: ../language/msgIds.php:40
+#: ../src/Application/Controller/IndexController.php:33
+msgid "about"
+msgstr "A propos"
+
+#: ../language/msgIds.php:43
+msgid "administrator"
+msgstr "Administrateur"
+
+#: ../language/msgIds.php:44
+msgid "user"
+msgstr "Utilisateur"
+
+#: ../language/msgIds.php:45
+msgid "public"
+msgstr "publiquement"
+
+#: ../language/msgIds.php:48
+msgid "submit"
+msgstr "envoyer"
+
+#: ../language/msgIds.php:51
+msgid "Authentication failed. Please try again."
+msgstr "L’authentification a échoué. Veuillez réessayer."
+
+#: ../language/msgIds.php:52
+msgid "Value is required and can't be empty"
+msgstr "La valeur est nécessaire et ne peut être vide."
+
+#: ../language/msgIds.php:53
+msgid "Captcha value is wrong"
+msgstr "Valeur de Captcha est incorrect."
+
+#: ../language/msgIds.php:54
+#, php-format
+msgid "The input is less than %s characters long"
+msgstr "La valeur saisie doit être supérieure à %s caractères."
+
+#: ../language/msgIds.php:55
+msgid "The two given tokens do not match"
+msgstr "Les deux jetons donnés ne correspondent pas"
+
+#: ../language/msgIds.php:56
+#, php-format
+msgid "The input is not between '%s' and '%s', inclusively"
+msgstr "L’entrée n’est pas entre «%s» et «%s», inclusivement"
+
+#: ../language/msgIds.php:57
+msgid "request password reset"
+msgstr "Demander la réinitialisation du mot de passe"
+
+#: ../language/msgIds.php:58
+msgid "set new password"
+msgstr "Définir un nouveau mot de passe"
+
+#: ../language/msgIds.php:59
+msgid "Email or Username"
+msgstr "Nom d’utilisateur ou adresse email"
+
+#: ../language/msgIds.php:60
+msgid "mobile"
+msgstr "cellulaire"
+
+#: ../src/Application/Controller/IndexController.php:34
+msgid "test page"
+msgstr ""
+
+#: ../src/Application/Controller/IndexController.php:35
+msgid "xhr test action"
+msgstr ""
+
+#: ../src/Application/Controller/SetupController.php:33
+msgid "update database structure"
+msgstr "Mettre à jour la structure de la base de données"
+
+#: ../view/application/index/about.phtml:3
+#, php-format
+msgid "About %s[MyApplication]%s"
+msgstr "A propos de %s[MyApplication]%s"
+
+#: ../view/application/index/about.phtml:5
+#, php-format
+msgid ""
+"This should serve as a fully functional basic ZendFramework2 application "
+"construct. Just do a checkout %sfrom our GitLab%s and adjust it to your "
+"needs."
+msgstr ""
+"Cela devrait servir d’une construction d’application ZendFramework2 base "
+"entièrement fonctionnelle. Il suffit de faire un checkout %sélèves nos GitLab"
+"%s et adapter à vos besoins."
+
+#: ../view/application/index/about.phtml:7
+#, php-format
+msgid ""
+"Please, take a look into %sMyApplication User Help section%s to get some "
+"guidance around this application."
+msgstr ""
+"S'il vous plaît se référer %sà la section d'aide%s pour obtenir un soutien à "
+"l'opération."
+
+#: ../view/application/index/about.phtml:9
+#, php-format
+msgid ""
+"If you need further assistance, please do not hesitate to contact "
+"%sMyApplication support%s."
+msgstr ""
+"Si vous avez besoin d’une quelconque assistance, n’hésitez pas contacter  "
+"%sMyApplication support%s."
+
+#: ../view/application/index/about.phtml:14
+#: ../view/application/system/index.phtml:15
+#: ../view/application/system/info.phtml:6
+msgid "This application currently runs upon..."
+msgstr "Cette application s’exécute sur…"
+
+#: ../view/application/index/about.phtml:15
+#: ../view/application/setup/index.phtml:17
+#: ../view/application/setup/install.phtml:12
+#: ../view/application/setup/update.phtml:12
+#: ../view/application/system/index.phtml:16
+#: ../view/application/system/info.phtml:7
+#, php-format
+msgid "server: %s, %s"
+msgstr "serveur: %s, %s"
+
+#: ../view/application/index/about.phtml:16
+#: ../view/application/setup/index.phtml:18
+#: ../view/application/setup/install.phtml:13
+#: ../view/application/setup/update.phtml:13
+#: ../view/application/system/index.phtml:17
+#: ../view/application/system/info.phtml:8
+#, php-format
+msgid "system: %s, %s"
+msgstr "système: %s, %s"
+
+#: ../view/application/index/about.phtml:17
+#: ../view/application/setup/index.phtml:19
+#: ../view/application/setup/install.phtml:14
+#: ../view/application/setup/update.phtml:14
+#: ../view/application/system/index.phtml:18
+#: ../view/application/system/info.phtml:9
+#, php-format
+msgid "php: v%s"
+msgstr "php: v %s"
+
+#: ../view/application/index/about.phtml:18
+#: ../view/application/setup/index.phtml:20
+#: ../view/application/setup/install.phtml:15
+#: ../view/application/setup/update.phtml:15
+#: ../view/application/system/index.phtml:19
+#: ../view/application/system/info.phtml:10
+#, php-format
+msgid "ZendFramework2: v%s"
+msgstr "ZendFramework2: v%s"
+
+#: ../view/application/index/about.phtml:24
+msgid "Powered by..."
+msgstr ""
+
+#: ../view/application/index/about.phtml:31
+#: ../view/application/system/info.phtml:23
+msgid "If you are interested, please follow development on our GitLab..."
+msgstr ""
+"Si vous êtes intéressé, s'il vous plaît regarder le développement sur notre "
+"GitLab..."
+
+#: ../view/application/index/about.phtml:35
+#: ../view/application/system/info.phtml:27 ../view/layout/layout.phtml:107
+msgid "All rights reserved."
+msgstr "Tous droits réservés."
+
+#: ../view/application/index/development_info.phtml:6
+msgid "Follow Development"
+msgstr "Suivre le développement"
+
+#: ../view/application/index/development_info.phtml:9
+#, php-format
+msgid ""
+"%s[MyApplication]%s is under active development. If you are interested in "
+"following the development of %s[MyApplication]%s, there is a special portal "
+"on the official website which provides links to the %s[MyApplication]%s "
+"%swiki%s, %sdev blog%s, %sissue tracker%s, and much more. This is a great "
+"resource for staying up to date with the latest developments!"
+msgstr ""
+"%s[MyApplication]%s est en cours de développement actif. Si vous êtes "
+"intéressés par suite du développement de %s[MyApplication]%s, il y a un "
+"portail spécial sur le site officiel qui fournit des liens vers le "
+"%s[MyApplication]%s %swiki%s, %sdev blog%s, %straqueur de issue%s et bien "
+"plus encore. Il s’agit d’une grande ressource pour rester à jour avec les "
+"derniers développements !"
+
+#: ../view/application/index/development_info.phtml:10
+#, php-format
+msgid "%s[MyApplication]%s Development Portal"
+msgstr "Portail sur le développement de %s[MyApplication]%s"
+
+#: ../view/application/index/development_info.phtml:19
+msgid "Discover Modules"
+msgstr "Découvrez les modules"
+
+#: ../view/application/index/development_info.phtml:22
+#, php-format
+msgid ""
+"We are working on developing a community site to serve as a repository and "
+"gallery for %s[MyApplication]%s modules. These projects are available %son "
+"our GitLab%s. The site is currently under development and will soon contain "
+"a list of some of the modules already available for this application."
+msgstr ""
+"La communauté travaille sur le développement d'un site communautaire avec "
+"l'objectif de servir de dépôt et de galerie  pour les modules "
+"%s[MyApplication]%s. Le projet est disponible %ssur nous GitLab%s. Le site "
+"est déjà en ligne, et contient une liste non exhaustive des modules déjà "
+"disponibles pour cette application."
+
+#: ../view/application/index/development_info.phtml:23
+#, php-format
+msgid "Explore %s[MyApplication]%s Modules"
+msgstr "Explorer les Modules %s[MyApplication]%s"
+
+#: ../view/application/index/development_info.phtml:32
+msgid "Help &amp; Support"
+msgstr "Aide &amp; support"
+
+#: ../view/application/index/development_info.phtml:35
+#, php-format
+msgid ""
+"If you need any help or support while using and/or developing with "
+"%s[MyApplication]%s, you can take a look into %shelp section%s or you may "
+"reach us via our %ssupport channel%s. We'd love to hear any questions or "
+"feedback you may have regarding the beta releases. Alternatively, you may "
+"subscribe and post questions via the %scontact form%s."
+msgstr ""
+"Si vous avez besoin d’aide ou de soutien, tout en utilisant et/ou développer "
+"avec %s[MyApplication]%s, vous pouvez jeter un oeil dans %ssection d’aide "
+"utilisateur%s ou vous pouvez communiquer avec nous par l’intermédiaire de "
+"%sla section de support%s. Nous serions ravis d’entendre des questions ou "
+"des commentaires que concernant les versions bêta. Alternativement, vous "
+"pouvez vous abonner et poser des questions via %sle formulaire de contact%s."
+
+#: ../view/application/index/development_info.phtml:36
+msgid "Contact us"
+msgstr "Contacter nous"
+
+#: ../view/application/index/help.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s User Help section"
+msgstr "Bienvenue sur la section d’aide utilisateur %s[MyApplication]%s"
+
+#: ../view/application/index/help.phtml:5
+msgid "here comes your user guidance content..."
+msgstr "Voici votre contenu de guidage utilisateur…"
+
+#: ../view/application/index/help.phtml:7
+#, php-format
+msgid ""
+"If you need further assistance, please do not hesitate to contact "
+"%sMyApplication support%s.<br />"
+msgstr ""
+"Si vous besoin d’aide, n’hésitez pas à contacter le %ssupport de "
+"MyApplication%s.<br />"
+
+#: ../view/application/index/index.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s"
+msgstr "Bienvenue sur %s[MyApplication]%s"
+
+#: ../view/application/index/index.phtml:5
+#, php-format
+msgid ""
+"Congratulations! You have successfully installed the %sMyApplication "
+"application%s."
+msgstr ""
+"Félicitations ! Vous avez correctement installé %sl’application de "
+"MyApplication%s."
+
+#: ../view/application/index/index.phtml:6
+#, php-format
+msgid ""
+"You are currently running <b>Zend Framework version %s</b> with <b>php "
+"version %s</b>."
+msgstr ""
+"Vous êtes en cours d’exécution <b>Zend Framework %s</b> avec <b>php %s</b>."
+
+#: ../view/application/index/index.phtml:7
+msgid "This install is for demonstration purposes only."
+msgstr "Cette présentation est à titre informatif seulement."
+
+#: ../view/application/index/index.phtml:7
+msgid ""
+"You are able to login with username \"sysadmin\" and password \"sysadmin\"."
+msgstr ""
+"Vous êtes capable de vous connecter avec le nom d’utilisateur «sysadmin» et "
+"mot de passe «sysadmin»."
+
+#: ../view/application/index/index.phtml:8
+msgid "Database and sessions will be flushed every ten minutes."
+msgstr "Base de données et des sessions seront vidées toutes les dix minutes."
+
+#: ../view/application/index/index.phtml:10
+msgid "Follow on our GitLab"
+msgstr "Regarder sur notre GitLab…"
+
+#: ../view/application/index/support.phtml:3
+#, php-format
+msgid "Welcome to %s[MyApplication]%s Support section"
+msgstr "Bienvenue sur la section %s[MyApplication] Support%s"
+
+#: ../view/application/index/support.phtml:5
+#, php-format
+msgid ""
+"Please, take a look into %sMyApplication User Help section%s before you "
+"contact support.<br />"
+msgstr ""
+"S’il vous plaît se référer sur la %ssection aide utilisateur de  "
+"MyApplication%s avant de contacter le support.<br />"
+
+#: ../view/application/index/support.phtml:7
+msgid "here comes your online support content..."
+msgstr ""
+
+#: ../view/application/index/xhrtest.phtml:3
+#: ../view/application/index/xhrtest.phtml:6
+#: ../view/application/index/xhrtest.phtml:7
+#: ../view/application/index/xhrtest.phtml:8
+msgid "AJAX test"
+msgstr ""
+
+#: ../view/application/setup/index.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup"
+msgstr "Configuration de %s[MyApplication]%s"
+
+#: ../view/application/setup/index.phtml:5
+#, php-format
+msgid "Welcome to the %s[MyApplication]%s setup module..."
+msgstr "Bienvenue sur le module de configuration de %s[MyApplication]%s…"
+
+#: ../view/application/setup/index.phtml:6
+msgid ""
+"Please select the setup method your desire. Maybe, you should consider "
+"creating a backup of the database first."
+msgstr ""
+"S'il vous plaît se sélectionner la méthode d'installation. Peut-être, vous "
+"devriez considérer créant d’abord une sauvegarde de la base de données."
+
+#: ../view/application/setup/index.phtml:8
+#, php-format
+msgid "Backup &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Sauvegarde &nbsp; %s[==&gt;&gt;]%s"
+
+#: ../view/application/setup/index.phtml:10
+#, php-format
+msgid "Installation &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Installation &nbsp; %s[==&gt;&gt;]%s"
+
+#: ../view/application/setup/index.phtml:12
+#, php-format
+msgid "Update &nbsp; %s[==&gt;&gt;]%s"
+msgstr "Mettre à jour &nbsp; %s[==&gt;&gt;]%s"
+
+#: ../view/application/setup/install.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup - Installation"
+msgstr "Configuration de %s[MyApplication]%s - Installation"
+
+#: ../view/application/setup/install.phtml:6
+msgid "here comes the installation module..."
+msgstr ""
+
+#: ../view/application/setup/update.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s setup - Update"
+msgstr "Configuration de %s[MyApplication]%s - Mettre à jour"
+
+#: ../view/application/setup/update.phtml:6
+msgid "here comes the update module..."
+msgstr ""
+
+#: ../view/application/system/backup.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system - backup"
+msgstr "Configuration de %s[MyApplication]%s - Sauvegarde"
+
+#: ../view/application/system/backup.phtml:6
+msgid "here comes the backup module..."
+msgstr ""
+
+#: ../view/application/system/index.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system options"
+msgstr "Options de système de %s[MyApplication]%s"
+
+#: ../view/application/system/index.phtml:5
+#, php-format
+msgid "System-Info &nbsp; %s==&gt;&gt;%s"
+msgstr "Système &nbsp; %s==&gt;&gt;%s"
+
+#: ../view/application/system/index.phtml:7
+#, php-format
+msgid "Backup &nbsp; %s==&gt;&gt;%s"
+msgstr "Sauvegarde &nbsp; %s==&gt;&gt;%s"
+
+#: ../view/application/system/index.phtml:10
+#, php-format
+msgid "Setup-Routines &nbsp; %s==&gt;&gt;%s"
+msgstr "Des Routines d’installation &nbsp; %s==&gt;&gt;%s"
+
+#: ../view/application/system/info.phtml:3
+#, php-format
+msgid "%s[MyApplication]%s system - info"
+msgstr "Configuration de %s[MyApplication]%s - Information"
+
+#: ../view/error/404.phtml:1
+msgid "A 404 error occurred"
+msgstr "Une erreur 404 est survenue"
+
+#: ../view/error/404.phtml:10
+msgid "The requested controller was unable to dispatch the request."
+msgstr "Le contrôleur demandé n'a pas pu dispatcher la requête."
+
+#: ../view/error/404.phtml:13
+msgid ""
+"The requested controller could not be mapped to an existing controller class."
+msgstr ""
+"Le contrôleur demandé ne correspond pas à une classe existante de contrôleur."
+
+#: ../view/error/404.phtml:16
+msgid "The requested controller was not dispatchable."
+msgstr "Le contrôleur demandé n'est pas dispatchable."
+
+#: ../view/error/404.phtml:19
+msgid "The requested URL could not be matched by routing."
+msgstr "L'URL demandée n'a pas pu trouver de route correspondante."
+
+#: ../view/error/404.phtml:22
+msgid "We cannot determine at this time why a 404 was generated."
+msgstr ""
+"Nous ne pouvons pas déterminer pour le moment pourquoi une 404 a été générée."
+
+#: ../view/error/404.phtml:34
+msgid "Controller"
+msgstr "Contrôleur"
+
+#: ../view/error/404.phtml:41
+#, php-format
+msgid "resolves to %s"
+msgstr "résout en %s"
+
+#: ../view/error/404.phtml:53 ../view/error/index.phtml:8
+msgid "Additional information"
+msgstr "Informations complémentaires"
+
+#: ../view/error/404.phtml:56 ../view/error/404.phtml:80
+#: ../view/error/index.phtml:11 ../view/error/index.phtml:35
+msgid "File"
+msgstr "Fichier"
+
+#: ../view/error/404.phtml:60 ../view/error/404.phtml:84
+#: ../view/error/index.phtml:15 ../view/error/index.phtml:39
+msgid "Message"
+msgstr "Message"
+
+#: ../view/error/404.phtml:64 ../view/error/404.phtml:88
+#: ../view/error/index.phtml:19 ../view/error/index.phtml:43
+msgid "Stack trace"
+msgstr "Pile d'exécution"
+
+#: ../view/error/404.phtml:74 ../view/error/index.phtml:29
+msgid "Previous exceptions"
+msgstr "Exceptions précédentes"
+
+#: ../view/error/404.phtml:103 ../view/error/index.phtml:58
+msgid "No Exception available"
+msgstr "Aucune exception disponible"
+
+#: ../view/error/index.phtml:1
+msgid "An error occurred"
+msgstr "Une erreur est survenue"
+
+#: ../view/layout/layout.phtml:79
+msgid "you are here :"
+msgstr "Vous êtes ici :"
+
+#: ../view/layout/layout.phtml:109
+msgid "Powered by"
+msgstr ""
+
+#: ../view/partial/breadcrumb.phtml:3
+msgid "Du bist hier :"
+msgstr ""
+
+#~ msgid "Home"
+#~ msgstr "Accueil"
+
+#~ msgid ""
+#~ "Congratulations! You have successfully installed the %sZF2 Skeleton "
+#~ "Application%s. You are currently running Zend Framework version %s. This "
+#~ "skeleton can serve as a simple starting point for you to begin building "
+#~ "your application on ZF2."
+#~ msgstr ""
+#~ "Félicitations ! Vous avez installé avec succès le %sZF2 Skeleton "
+#~ "Application%s. Vous utilisez actuellement Zend Framework version %s. "
+#~ "Cette structure peut vous servir comme un point de départ simple pour "
+#~ "démarrer la construction de votre application avec ZF2."
+
+#~ msgid "Fork Zend Framework 2 on GitHub"
+#~ msgstr "Faites un Fork de Zend Framework 2 sur GitHub"
+
+#~ msgid "Explore ZF2 Modules"
+#~ msgstr "Explorer les modules ZF2"
+
+#~ msgid "Ping us on IRC"
+#~ msgstr "Rejoignez-nous sur IRC"
+
+#~ msgid "Exception"
+#~ msgstr "Exception"

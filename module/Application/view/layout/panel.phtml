@@ -1,0 +1,26 @@
+<?php 
+/** @var \UIComponents\View\Helper\Bootstrap $oBootstrap **/
+$oBootstrap = $this->Bootstrap();
+/** @var \UIComponents\View\Helper\Components $oComponents **/
+$oComponents = $this->Components();
+/** @var \Admin\Entity\User $oUser **/
+$oUser = $this->zfcUserIdentity();
+
+$messages = $this->flashMessenger()->renderCurrent('error', array('error alert alert-error'));
+$messages .= $this->flashMessenger()->renderCurrent('warning', array('warning alert alert-warning'));
+$messages .= $this->flashMessenger()->renderCurrent('success', array('success alert alert-success'));
+$messages .= $this->flashMessenger()->renderCurrent('info', array('info alert alert-info'));
+$this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromContainer();
+
+$panelLayout = $oComponents->Panel()
+	->setHeader( (isset($this->title) ? $this->title : "") )
+	->setContent(
+		array(
+			'tagname' => 'div',
+			'classnames' => 'panel-body alert-wrap',
+			'content' => $messages . $this->content,
+		)
+	)
+;
+
+echo $panelLayout . $this->inlineScript();

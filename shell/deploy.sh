@@ -1,0 +1,16 @@
+CDIR=`pwd`
+
+# deploy files to release repo
+# (change this path to point to your (local) release repository)
+cd ../my-application
+
+cp -rp ../application-base/build/* ./
+cp -p ../application-base/build/.gitignore ../application-base/build/.gitlab-ci.yml ./
+
+git add .
+git commit -m "new release build"
+git pull
+git push
+
+cd $CDIR
+

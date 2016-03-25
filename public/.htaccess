@@ -1,0 +1,356 @@
+# deny directory listing, allow symlinks and CGI
+#
+Options -Indexes -MultiViews +ExecCGI +FollowSymLinks
+
+
+
+#
+# Prevent Framing the Site when mod_headers is enabled on server
+#
+# This prevents the website to be framed (i.e. put into an iframe tag), 
+# ...could still allows framing for a specific URI (when mod_setenvif is enabled on server).
+#
+<IfModule mod_headers.c>
+	<IfModule mod_setenvif.c>
+		SetEnvIf Request_URI "/starry-night" allow_framing=true
+	</IfModule>
+	Header set X-Frame-Options SAMEORIGIN env=!allow_framing
+</IfModule>
+
+
+
+#
+# Disable Internet Explorer Compatibility View when mod_headers and mod_setanvif are enabled on server
+#
+# Compatibility View in IE may affect how some websites are displayed. The following snippet should force IE to use the Edge Rendering Engine and disable the Compatibility View.
+#
+<IfModule mod_headers.c>
+	<IfModule mod_setenvif.c>
+		BrowserMatch MSIE is-msie
+		Header set X-UA-Compatible IE=edge env=is-msie
+	</IfModule>
+</IfModule>
+#  ...or...
+#<IfModule mod_headers.c>
+#	<IfModule mod_setenvif.c>
+#		BrowserMatch MSIE ie
+#		Header set X-UA-Compatible "IE=Edge,chrome=1" env=ie
+#	</IfModule>
+#</IfModule>
+
+# Because X-UA-Compatible isn't sent to non-IE (to save header bytes), inform proxies that content 
+# changes based on UA. Cache control is set only if mod_headers is enabled, so that's unncessary 
+# to declare
+<IfModule mod_headers.c>
+	Header append Vary User-Agent
+</IfModule>
+
+
+
+#
+# Auto UTF-8 Encode
+#
+# Use UTF-8 encoding for anything served text/plain or text/html
+AddDefaultCharset utf-8
+# Force UTF-8 for a number of file formats
+AddCharset utf-8 .atom .css .js .json .rss .vtt .xml
+
+
+
+#
+# Allow Cross-Domain Fonts when mod_headers is enabled on server
+# 
+# CDN-served webfonts might not work in Firefox or IE due to CORS. This snippet solves the problem.
+#
+<IfModule mod_headers.c>
+	<FilesMatch "\.(eot|otf|ttc|ttf|woff|woff2)$">
+		Header set Access-Control-Allow-Origin "*"
+	</FilesMatch>
+</IfModule>
+
+
+
+#
+# enable (text) compression when mod_deflate, mod_setenvif, mod_filter are enabled on server
+#
+<IfModule mod_deflate.c>
+
+	# Force compression for mangled headers.
+	# https://developer.yahoo.com/blogs/ydn/pushing-beyond-gzipping-25601.html
+	<IfModule mod_setenvif.c>
+		<IfModule mod_headers.c>
+			SetEnvIfNoCase ^(Accept-EncodXng|X-cept-Encoding|X{15}|~{15}|-{15})$ ^((gzip|deflate)\s*,?\s*)+|[X~-]{4,13}$ HAVE_Accept-Encoding
+			RequestHeader append Accept-Encoding "gzip,deflate" env=HAVE_Accept-Encoding
+		</IfModule>
+	</IfModule>
+
+	# Compress all output labeled with one of the following MIME-types
+	# (for Apache versions below 2.3.7, you don't need to enable `mod_filter`
+	#	and can remove the `<IfModule mod_filter.c>` and `</IfModule>` lines
+	#	as `AddOutputFilterByType` is still in the core directives).
+	<IfModule mod_filter.c>
+		AddOutputFilterByType DEFLATE application/atom+xml \
+										application/javascript \
+										application/json \
+										application/rss+xml \
+										application/vnd.ms-fontobject \
+										application/x-font-ttf \
+										application/x-web-app-manifest+json \
+										application/xhtml+xml \
+										application/xml \
+										font/opentype \
+										image/svg+xml \
+										image/x-icon \
+										text/css \
+										text/html \
+										text/plain \
+										text/x-component \
+										text/xml
+	</IfModule>
+
+</IfModule>
+
+
+
+#
+# proper MIME type for all files
+#
+
+#  - audio
+AddType audio/ogg                      oga ogg
+
+# video
+AddType video/ogg                      ogv
+AddType video/mp4                      mp4
+AddType video/webm                     webm
+
+#  - proper svg serving. Required for svg webfonts on iPad
+AddType     image/svg+xml              svg svgz
+AddEncoding gzip                       svgz
+
+#  - webfonts
+AddType application/vnd.ms-fontobject  eot
+AddType font/truetype                  ttf
+AddType font/opentype                  otf
+AddType application/x-font-woff        woff
+
+#  - assorted types
+AddType image/x-icon                   ico
+AddType image/webp                     webp
+AddType text/cache-manifest            appcache manifest
+AddType text/x-component               htc
+AddType application/x-chrome-extension crx
+AddType application/x-xpinstall        xpi
+AddType application/octet-stream       safariextz
+
+
+
+#
+# Cache Control
+#
+
+# Set Expires Headers when mod_expires is enabled on server
+# (should be turned of in development environments)
+#
+# Expires headers tell the browser whether they should request a specific file 
+# from the server or just grab it from the cache. It is advisable to set static 
+# content's expires headers to something far in the future.
+#
+# If you don’t control versioning with filename-based cache busting, consider 
+# lowering the cache time for resources like CSS and JS to something like 1 week.
+#
+#<IfModule mod_expires.c>
+#	ExpiresActive on
+#	ExpiresDefault										"access plus 1 month"
+#
+#	# CSS
+#	ExpiresByType text/css								"access plus 1 year"
+#
+#	# Data interchange
+#	ExpiresByType application/json						"access plus 0 seconds"
+#	ExpiresByType application/xml						"access plus 0 seconds"
+#	ExpiresByType text/xml								"access plus 0 seconds"
+#
+#	# Favicon (cannot be renamed!)
+#	ExpiresByType image/x-icon							"access plus 1 week"
+#
+#	# HTML components (HTCs)
+#	ExpiresByType text/x-component						"access plus 1 month"
+#
+#	# HTML
+#	ExpiresByType text/html								"access plus 0 seconds"
+#
+#	# JavaScript
+#	ExpiresByType application/javascript				"access plus 1 year"
+#
+#	# Manifest files
+#	ExpiresByType application/x-web-app-manifest+json	"access plus 0 seconds"
+#	ExpiresByType text/cache-manifest					"access plus 0 seconds"
+#
+#	# Media
+#	ExpiresByType audio/ogg								"access plus 1 month"
+#	ExpiresByType image/gif								"access plus 1 month"
+#	ExpiresByType image/jpeg							"access plus 1 month"
+#	ExpiresByType image/png								"access plus 1 month"
+#	ExpiresByType video/mp4								"access plus 1 month"
+#	ExpiresByType video/ogg								"access plus 1 month"
+#	ExpiresByType video/webm							"access plus 1 month"
+#
+#	# Web feeds
+#	ExpiresByType application/atom+xml					"access plus 1 hour"
+#	ExpiresByType application/rss+xml					"access plus 1 hour"
+#
+#	# Web fonts
+#	ExpiresByType application/font-woff2				"access plus 1 month"
+#	ExpiresByType application/font-woff					"access plus 1 month"
+#	ExpiresByType application/vnd.ms-fontobject			"access plus 1 month"
+#	ExpiresByType application/x-font-ttf				"access plus 1 month"
+#	ExpiresByType font/opentype							"access plus 1 month"
+#	ExpiresByType image/svg+xml							"access plus 1 month"
+#</IfModule>
+#
+#  - turn eTags off
+#    by removing the ETag header, you disable caches and browsers from being able to 
+#    validate files, so they are forced to rely on your Cache-Control and Expires header.
+#
+#<IfModule mod_headers.c>
+#	Header unset ETag
+#</IfModule>
+#FileETag None
+
+
+
+#
+# enable URL rewrite
+#
+
+RewriteEngine On
+
+#  - force HTTPS
+#
+#RewriteCond %{HTTPS} !on
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+#  - Note: it’s also recommended to enable HTTP Strict Transport Security (HSTS)
+#          on your HTTPS website to help prevent man-in-the-middle attacks.
+#          See https://developer.mozilla.org/en-US/docs/Web/Security/HTTP_strict_transport_security
+#<IfModule mod_headers.c>
+#	Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+#</IfModule>
+
+#  - force HTTPS behind a proxy
+#    useful if you have a proxy in front of your server performing TLS termination.
+#
+#RewriteCond %{HTTP:X-Forwarded-Proto} !https
+#RewriteRule (.*) https://%{HTTP_HOST}%{REQUEST_URI}
+
+# - redirect illegal/unwanted requests
+#
+RewriteRule ^themes/(.*)/view/(.*) [OR]
+RewriteRule ^(.*)config.php(.*) [OR]
+RewriteRule ^(.*)composer.json(.*) [R=404,L]
+
+#  - serve exiting filename
+#
+RewriteCond %{REQUEST_FILENAME} -s [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+# remember: ^.ht*$ should already be disabled by server configuration!
+RewriteRule ^.*$ - [NC,L]
+
+#  - force trailing slash
+#
+#RewriteCond %{REQUEST_URI} /+[^\.]+$
+#RewriteRule ^(.+[^/])$ %{REQUEST_URI}/ [R=301,L]
+
+#  - remove trailing slash
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_URI} (.+)/$
+#RewriteRule ^ %1 [R=301,L]
+
+# The following rewrites all other queries to index.php. The 
+# condition ensures that if you are using Apache aliases to do
+# mass virtual hosting, the base path will be prepended to 
+# allow proper resolution of the index.php file; it will work
+# in non-aliased environments as well, providing a safe, one-size 
+# fits all solution.
+#
+# framework/CMS target examples:
+# ZF/ZF2					: index.php
+# Symfony frontend			: app.php   or   app_dev.php
+# Symfony backend			: backend.php   or   backend_dev.php
+# WordPress					: index.php
+# Contenido client frontent	: front_content.php
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)(.+)::\2$
+RewriteRule ^(.*) - [E=BASE:%1]
+RewriteRule ^(.*)$ %{ENV:BASE}index.php [NC,L]
+
+
+
+#
+# request 'blocking'
+#
+
+
+
+#  - block single IPs
+#
+#order allow,deny
+#deny from 192.168.44.201
+#deny from 224.39.163.12
+#deny from 172.16.7.92
+#allow from all
+
+#  - block any IP address starting with "192.168." or "10.0.0."
+#
+#order allow,deny
+#deny from 192.168.
+#deny from 10.0.0.
+#allow from all
+
+#  - block any specific ISP from getting access:
+#
+#order allow,deny
+#deny from some-evil-isp.com
+#deny from subdomain.another-evil-isp.com
+#allow from all
+
+#  - block visitors by referrer
+#    this denies access for all users who are coming from (referred by) a specific domain. Source
+#
+#RewriteCond %{HTTP_REFERER} somedomain\.com [NC,OR]
+#RewriteCond %{HTTP_REFERER} anotherdomain\.com
+#RewriteRule .* - [F]
+
+
+
+#
+#  - disable image hotlinking (for specific domains)
+#    remove the following line if you want to block blank referrer too
+#
+#RewriteCond %{HTTP_REFERER} !^$
+
+#  - disable for all refferers but our own domain
+#
+#RewriteCond %{HTTP_REFERER} !^https?://(.+\.)?example.com [NC]
+#RewriteRule \.(jpe?g|png|gif|bmp)$ - [NC,F,L]
+
+#  - sometimes you want to disable image hotlinking from some bad guys only.
+#
+#RewriteCond %{HTTP_REFERER} ^https?://(.+\.)?badsite\.com [NC,OR]
+#RewriteCond %{HTTP_REFERER} ^https?://(.+\.)?badsite2\.com [NC,OR]
+#RewriteRule \.(jpe?g|png|gif|bmp)$ - [NC,F,L]
+
+#  - if you want to display a “blocked” banner in place of the hotlinked image,
+#    replace the above rules with:
+#
+# RewriteRule \.(jpe?g|png|gif|bmp) http://example.com/blocked.png [R,L]
+
+
+
+#
+#  - block POST request which are noch coming from our realm
+#
+#RewriteCond %{REQUEST_METHOD} POST
+#RewriteCond %{HTTP_REFERER} !^http://example.com [NC]
+#RewriteRule .* - [F]
