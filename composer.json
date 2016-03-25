@@ -28,7 +28,7 @@
   "type" : "project",
   "scripts" : {
     "post-install-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ],
-    "post-update-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ],
+    "post-update-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ]
   },
   "homepage" : "http://my-application.net/",
   "authors" : [ {
