@@ -16,9 +16,7 @@ deployment.xml
 ##
 *cache*
 vendor*
-themes/
 data/
-components/
 public/test-coverage
 *.local.php
 module/module-*
