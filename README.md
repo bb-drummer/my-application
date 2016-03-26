@@ -107,13 +107,17 @@ project and you should be ready to go! It should look something like below:
 
 ## Status
 
-[![Build Status](https://scrutinizer-ci.com/gp/my-application/badges/build.png?b=scrutinizer-ci&s=25220d7512eda160963cae929e05c8fd38a07492)](https://scrutinizer-ci.com/gp/my-application/build-status/scrutinizer-ci)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/gp/my-application/badges/quality-score.png?b=master&s=c01d3a7a0c48d0408ac89a340e2dc93dc477b915)](https://scrutinizer-ci.com/gp/my-application/?branch=master)
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/gp/my-application/badges/quality-score.png?b=scrutinizer-ci&s=2b681dc578ffee5a89ccfd0866b3a66411252fae)](https://scrutinizer-ci.com/gp/my-application/?branch=scrutinizer-ci)
+[![Code Coverage](https://scrutinizer-ci.com/gp/my-application/badges/coverage.png?b=master&s=26dff175674bc97d350f18578bd44a63e9e6c5e9)](https://scrutinizer-ci.com/gp/my-application/?branch=master)
 
-## LICENCE
+[![Build Status](https://scrutinizer-ci.com/gp/my-application/badges/build.png?b=master&s=b2bedfe685020a0158c5dcbc9a300b081e3faa32)](https://scrutinizer-ci.com/gp/my-application/build-status/master)
 
-please see LICENCE file in project's root directory
+
+
+## LICENSE
+
+please see LICENSE file in project's root directory
 
 
 ## COPYRIGHT
