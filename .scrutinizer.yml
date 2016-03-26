@@ -29,4 +29,10 @@ build:
             - 'replace "_MYSQL_DATABASE_" "dp_mydemo" -- config/autoload/database.local.php'
             - 'replace "_MYSQL_USER_" "root" -- config/autoload/database.local.php'
             - 'replace "_MYSQL_PASSWORD_" "" -- config/autoload/database.local.php'
+        override:
+            -
+                command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
+                coverage:
+                    file: 'my-application.clover'
+                    format: 'php-clover'
 
