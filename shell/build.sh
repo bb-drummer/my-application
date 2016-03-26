@@ -26,13 +26,13 @@ rm -rf build/public/**/*/composer*
 # remove obsolete assets files
 rm -rf build/public/application-assets/.* 
 rm -rf build/public/application-assets/*.sh
-rm -rf build/public/application-assets/.json
+rm -rf build/public/application-assets/*.json
 rm -rf build/public/application-assets/package*  
 rm -rf build/public/application-assets/gulp*
 rm -rf build/public/application-assets/lib 
 rm -rf build/public/application-assets/src 
 rm -rf build/public/application-assets/test 
-rm -rf build/public/application-assets/CONTRIBUTING 
+rm -rf build/public/application-assets/CONTRIBUTING.md
 rm -rf build/public/application-assets/LICENSE.txt 
 rm -rf build/public/application-assets/README.md 
 #rm -rf build/public/themes/foundation 
