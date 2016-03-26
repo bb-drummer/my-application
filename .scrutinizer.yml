@@ -19,7 +19,15 @@ build:
         mysql: true
         memcached: true
         timezone: 'Europe/Berlin'
-    tests:
+        hosts:
+            myapplication.test: '127.0.0.1'
+
+        apache2:
+            modules: ['rewrite']
+            sites:
+                symfony_app:
+                    web_root: 'public/'
+                    host: 'myapplication.test'    tests:
         before:
             - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
             - 'mysql -u root dp_mydemo < sql/install.sql'
