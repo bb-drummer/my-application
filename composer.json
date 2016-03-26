@@ -2,8 +2,6 @@
   "name" : "my-application/application-base",
   "description" : "My Web-Application (http://my-application.net)",
   "version" : "0.0.1",
-  "disable-tls" : "false",
-  "secure-http" : "true",
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
@@ -26,14 +24,10 @@
     }
   },
   "type" : "project",
-  "scripts" : {
-    "post-install-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ],
-    "post-update-cmd" : [ "chmod -R ugoa+rx ./shell; chmod -R ugoa+r ./public; ./shell/files.components.sh" ]
-  },
   "homepage" : "http://my-application.net/",
   "authors" : [ {
     "name" : "Björn Bartels",
-    "email" : "development@bjoernbartels.earth",
+    "email" : "coding@bjoernbartels.earth",
     "homepage" : "https://bjoernbartels.earth"
   } ],
   "autoload" : {

@@ -27,7 +27,8 @@ build:
             sites:
                 symfony_app:
                     web_root: 'public/'
-                    host: 'myapplication.test'    tests:
+                    host: 'myapplication.test'
+    tests:
         before:
             - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
             - 'mysql -u root dp_mydemo < sql/install.sql'
