@@ -24,7 +24,7 @@ rm -rf build/public/**/composer*
 rm -rf build/public/**/*/composer*
 
 # remove test themes
-rm -rf build/public/application-assets 
+rm -rf build/public/application-assets/.git* 
 #rm -rf build/public/themes/foundation 
 #rm -rf build/public/themes/bootstrap 
 
