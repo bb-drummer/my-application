@@ -39,3 +39,7 @@ build_job:
   - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
   allow_failure: false
 
+trigger:
+  type: deploy
+  script:
+    - 'while read LINE; do set -- ${LINE}; curl https://scrutinizer-ci.com/api/repositories/gp/my-application/callbacks/post-receive?access_token=a8ed3895416d4f4ac750869928b48fc1609081f6206cdc6562cef57a3e695b80 -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"head\":{\"sha\":\"$1\"},\"base\":{\"sha\":\"$2\"},\"ref\":\"$3\"}"; done;'
