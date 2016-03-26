@@ -47,4 +47,4 @@ rm -rf build/public/themes/taurus
 # other clean up
 rm -rf build/module/UIComponents/tests
 
-touch build/test.txt
+#touch build/test.txt
