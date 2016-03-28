@@ -20,7 +20,8 @@
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
   "extra" : {
     "branch-alias" : {
-      "dev-master" : "master"
+      "dev-master" : "master",
+      "dev-master" : "master-dev"
     }
   },
   "type" : "project",
