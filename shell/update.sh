@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # simple project update script
 #

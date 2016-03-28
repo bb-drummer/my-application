@@ -1,3 +1,4 @@
+#!/bin/bash
 #
 # project code qualitiy assurance and testing script
 #
