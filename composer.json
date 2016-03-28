@@ -1,7 +1,7 @@
 {
   "name" : "my-application/my-application",
   "description" : "ZendFramework2 -ready to go- application base '[my-application]'",
-  "version" : "0.0.1",
+  "version" : "1.0.0",
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
@@ -20,8 +20,8 @@
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
   "extra" : {
     "branch-alias" : {
-      "dev-master" : "master",
-      "dev-master" : "master-dev"
+      "master" : "master-dev",
+      "1.0.0" : "1.0.x-dev"
     }
   },
   "type" : "project",
