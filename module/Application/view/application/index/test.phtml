@@ -1,54 +1,54 @@
 <?php 
-	/** @var \UIComponents\View\Helper\Bootstrap $oBootstrap **/
-	$oBootstrap = $this->Bootstrap();
-	/** @var \UIComponents\View\Helper\Components $oComponents **/
-	$oComponents = $this->Components();
-	/** @var \Admin\Entity\User $oUser **/
-	$oUser = $this->zfcUserIdentity();
+    /** @var \UIComponents\View\Helper\Bootstrap $oBootstrap **/
+    $oBootstrap = $this->Bootstrap();
+    /** @var \UIComponents\View\Helper\Components $oComponents **/
+    $oComponents = $this->Components();
+    /** @var \Admin\Entity\User $oUser **/
+    $oUser = $this->zfcUserIdentity();
 ?>
 <div class="clearfix"><?php 
-	/** @var Admin\Model\ApplicationsTable $dataService */
-	$dataService = \Application\Module::getService('AdminApplicationsTable');
-	$body = $oComponents()->Panel()->setContent(
-		"<pre>".
-			print_r( $dataService->fetchAll()->toArray(), true )
-		."</pre>"
-	);
-	echo $body;
+    /** @var Admin\Model\ApplicationsTable $dataService */
+    $dataService = \Application\Module::getService('AdminApplicationsTable');
+    $body = $oComponents()->Panel()->setContent(
+        "<pre>".
+            print_r( $dataService->fetchAll()->toArray(), true )
+        ."</pre>"
+    );
+    echo $body;
 ?></div>
-		
+        
 <div class="clearfix"><?php 
-	$body = $oComponents()->Void(array(
-			'tagname'	=> 'div',
-			'classnames'=> 'panel-body',
-	))->setContent("<pre>".
-		($oUser ? var_export( $oUser->getAclrole(), true ) : 'public') . PHP_EOL . 
-		var_export( $this->isallowed('mvc:nouser'), true ) . PHP_EOL . 
-		var_export( $this->isallowed('mvc:admin'), true ) . PHP_EOL .  
-		var_export( $this->isdenied('mvc:nouser'), true ) . PHP_EOL . 
-		var_export( $this->isdenied('mvc:admin'), true )
-	."</pre>");
-	$header = $oComponents()->Void( 
-		array(
-			'tagname'		=> 'div',
-			'classnames'	=> 'panel-heading',
-			'content'		=> array(
-				'tagname'		=> 'h3',
-				'classnames'	=> 'panel-title',
-				'content'		=> 'debug display'
-			)
-		) 
-	);
-	$panel = $oComponents()->Panel()
-		->setHeader( $header
-		)
-		->setContent( array(
-			$body
-		) )
-	;
- 	$panel->setTagname('section');
-	echo $panel->render();
-	
+    $body = $oComponents()->Void(array(
+            'tagname'    => 'div',
+            'classnames'=> 'panel-body',
+    ))->setContent("<pre>".
+        ($oUser ? var_export( $oUser->getAclrole(), true ) : 'public') . PHP_EOL . 
+        var_export( $this->isallowed('mvc:nouser'), true ) . PHP_EOL . 
+        var_export( $this->isallowed('mvc:admin'), true ) . PHP_EOL .  
+        var_export( $this->isdenied('mvc:nouser'), true ) . PHP_EOL . 
+        var_export( $this->isdenied('mvc:admin'), true )
+    ."</pre>");
+    $header = $oComponents()->Void( 
+        array(
+            'tagname'        => 'div',
+            'classnames'    => 'panel-heading',
+            'content'        => array(
+                'tagname'        => 'h3',
+                'classnames'    => 'panel-title',
+                'content'        => 'debug display'
+            )
+        ) 
+    );
+    $panel = $oComponents()->Panel()
+        ->setHeader( $header
+        )
+        ->setContent( array(
+            $body
+        ) )
+    ;
+     $panel->setTagname('section');
+    echo $panel->render();
+    
 ?></div>
 
 <div class="clearfix"><?php echo $oComponents->Toolbar() //->setContent("the toolbar content..."); ?></div>
@@ -56,64 +56,64 @@
 <div class="clearfix"><?php echo $oComponents->Dashboard(); ?></div>
 
 <div class="clearfix"><?php echo ($block = $oComponents->Block()
-	->setHeader("Here come the header...")
-	->setFooter("Here come the footer...")
-	->render()
+    ->setHeader("Here come the header...")
+    ->setFooter("Here come the footer...")
+    ->render()
 ); ?></div>
 
 <div class="clearfix"><?php echo $someContent = $oComponents()->Void(array(
-	'tagname'	 => 'div',
-	'class' => 'panel',
+    'tagname'     => 'div',
+    'class' => 'panel',
 ))->setContent("here comes some content..."); ?></div>
 <div class="clearfix"><?php 
 
-	$body = $oComponents()->Void(array(
-			'tagname'	=> 'div',
-			'classnames'=> 'panel-body',
-	))->setContent("<em>content, content, content...</em>");
-	
-	$header = $oComponents()->Void( 
-		array(
-			'tagname'		=> 'div',
-			'classnames'	=> 'panel-heading',
-			'content'		=> array(
-				'tagname'		=> 'h3',
-				'classnames'	=> 'panel-title',
-				'content'		=> 'my header...'
-			)
-		) 
-	);
-	$panel = $oComponents()->Panel()
-		->setHeader( $header
-		)
-		->setContent( array(
-			array(
-				'tagname'		=> 'div',
-				'classnames'	=> 'panel-body',
-				'content'		=> 'here comes the widget content...'
-			),
-			array(
-				'tagname'		=> 'div',
-				'classnames'	=> 'panel-body',
-				'content'		=> array(
-					'<p>here comes more content...</p>',
-					'<p>here comes more content...</p>',
-					'<p><a id="xhrtest" class="fancybox.ajax" href="'.$this->url('application/default', array('controller' => 'index', 'action' => 'xhrtest', )).'">AJAX/XMLHTTPRequest test</a></p>',
-					$someContent
-				)
-			),
-			$body
-		) )
-		->setFooter( array(
-			'tagname'		=> 'div',
-			'classnames'	=> 'panel-footer',
-			'content'		=> 'footer content...'
-		) )
-	;
-	
- 	$panel->setTagname('section');
-	echo $panel->render();
-	
+    $body = $oComponents()->Void(array(
+            'tagname'    => 'div',
+            'classnames'=> 'panel-body',
+    ))->setContent("<em>content, content, content...</em>");
+    
+    $header = $oComponents()->Void( 
+        array(
+            'tagname'        => 'div',
+            'classnames'    => 'panel-heading',
+            'content'        => array(
+                'tagname'        => 'h3',
+                'classnames'    => 'panel-title',
+                'content'        => 'my header...'
+            )
+        ) 
+    );
+    $panel = $oComponents()->Panel()
+        ->setHeader( $header
+        )
+        ->setContent( array(
+            array(
+                'tagname'        => 'div',
+                'classnames'    => 'panel-body',
+                'content'        => 'here comes the widget content...'
+            ),
+            array(
+                'tagname'        => 'div',
+                'classnames'    => 'panel-body',
+                'content'        => array(
+                    '<p>here comes more content...</p>',
+                    '<p>here comes more content...</p>',
+                    '<p><a id="xhrtest" class="fancybox.ajax" href="'.$this->url('application/default', array('controller' => 'index', 'action' => 'xhrtest', )).'">AJAX/XMLHTTPRequest test</a></p>',
+                    $someContent
+                )
+            ),
+            $body
+        ) )
+        ->setFooter( array(
+            'tagname'        => 'div',
+            'classnames'    => 'panel-footer',
+            'content'        => 'footer content...'
+        ) )
+    ;
+    
+     $panel->setTagname('section');
+    echo $panel->render();
+    
 ?></div>
 
 <div class="clearfix well"><?php echo $oComponents->Button(); ?></div>
@@ -125,21 +125,21 @@ $btn2 = $oComponents->Button(array('label' => 'button 2', 'tagname' => 'button')
 $btn3 = $oComponents->Button(array('label' => 'button 3', 'disabled' => 'disabled'))->render();
 
 echo $oComponents->ButtonGroup(array(
-	'buttons' => array( 
-		$btn1, $btn2, $btn3, 
-	)	
+    'buttons' => array( 
+        $btn1, $btn2, $btn3, 
+    )    
 )); 
 
  ?></div>
  
 <div class="clearfix well"><?php echo $oComponents->ButtonGroup(array(
-	'block' => true,
-	'vertical' => true,
-	'buttons' => array( 
-		$oComponents->Button(array('label' => 'button 1', 'type' => 'warning')), 
-		$oComponents->Button(array('label' => 'button 2', 'tagname' => 'button', 'disabled' => 'disabled')),
-		$oComponents->Button(array('label' => 'button 3', 'block' => true)), 
-	)	
+    'block' => true,
+    'vertical' => true,
+    'buttons' => array( 
+        $oComponents->Button(array('label' => 'button 1', 'type' => 'warning')), 
+        $oComponents->Button(array('label' => 'button 2', 'tagname' => 'button', 'disabled' => 'disabled')),
+        $oComponents->Button(array('label' => 'button 3', 'block' => true)), 
+    )    
 )); ?></div>
 
 

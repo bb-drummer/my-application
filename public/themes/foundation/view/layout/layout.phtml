@@ -1,11 +1,11 @@
 <?php 
-	echo $this->doctype(); 
-	/** @var \UIComponents\View\Helper\Utilities $oUtilities **/
-	$oUtilities = $this->Utilities();
-	/** @var \UIComponents\View\Helper\Components $oComponents **/
-	$oComponents = $this->Components();
-	/** @var \Admin\Entity\User $user **/
-	$oUser = $this->zfcUserIdentity();
+    echo $this->doctype(); 
+    /** @var \UIComponents\View\Helper\Utilities $oUtilities **/
+    $oUtilities = $this->Utilities();
+    /** @var \UIComponents\View\Helper\Components $oComponents **/
+    $oComponents = $this->Components();
+    /** @var \Admin\Entity\User $user **/
+    $oUser = $this->zfcUserIdentity();
 ?>
 <html class="no-js" lang="<?php echo \Locale::getPrimaryLanguage(null) ?>">
     <head>
@@ -17,169 +17,169 @@
         ?>
         <!-- styles -->
         <?php 
-        	$themePath = "themes/foundation/assets/";
-        	$assetPath = "application-assets/dist/";
-        	$this->headLink(array(
-        			'rel' => 'shortcut icon', 
-        			'type' => 'image/vnd.microsoft.icon', 
-        			'href' => $this->basePath($themePath . $oUtilities->AppFavicon())
-     			))
-				->appendStylesheet($this->basePath($themePath . 'css/foundation.min.css'))
-			    ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
-				->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css')
-				->appendStylesheet($this->basePath($themePath . 'js/datatables/css/dataTables.foundation.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'css/flag-icon-css/flag-icon.min.css'))
-				
-				->appendStylesheet($this->basePath($assetPath . 'myapplication.css'))
-        	;
+            $themePath = "themes/foundation/assets/";
+            $assetPath = "application-assets/dist/";
+            $this->headLink(array(
+                    'rel' => 'shortcut icon', 
+                    'type' => 'image/vnd.microsoft.icon', 
+                    'href' => $this->basePath($themePath . $oUtilities->AppFavicon())
+                 ))
+                ->appendStylesheet($this->basePath($themePath . 'css/foundation.min.css'))
+                ->appendStylesheet('//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css')
+                ->appendStylesheet('//cdnjs.cloudflare.com/ajax/libs/foundicons/3.0.0/foundation-icons.css')
+                ->appendStylesheet($this->basePath($themePath . 'js/datatables/css/dataTables.foundation.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'css/flag-icon-css/flag-icon.min.css'))
+                
+                ->appendStylesheet($this->basePath($assetPath . 'myapplication.css'))
+            ;
             $cssfiles = $oUtilities->Config()->get('app')->get('css');
             if (is_array($cssfiles) || ($cssfiles instanceof \Zend\Config\Config)) foreach ($cssfiles as $key => $file) {
                 $this->headLink()->appendStylesheet($this->basePath($file));
             }
-        	echo $this->headLink();
-        	
-        	$this->headScript()
-        		->appendFile($this->basePath($themePath . 'js/modernizr.js'))
-				->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-				->appendFile($this->basePath($themePath . 'js/jquery.js'))
-				->appendFile($this->basePath($themePath . 'js/foundation.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.foundation.min.js'))
-				
-				->appendFile($this->basePath($assetPath . 'myapplication.js'))
-			;
-			$jsfiles = $oUtilities->Config()->get('app')->get('js');
-			if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
-			    $this->inlineScript()->appendFile($this->basePath($file));
-			}
+            echo $this->headLink();
+            
+            $this->headScript()
+                ->appendFile($this->basePath($themePath . 'js/modernizr.js'))
+                ->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->appendFile($this->basePath($themePath . 'js/jquery.js'))
+                ->appendFile($this->basePath($themePath . 'js/foundation.min.js'))
+                ->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
+                ->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.foundation.min.js'))
+                
+                ->appendFile($this->basePath($assetPath . 'myapplication.js'))
+            ;
+            $jsfiles = $oUtilities->Config()->get('app')->get('js');
+            if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
+                $this->inlineScript()->appendFile($this->basePath($file));
+            }
         ?>
-		<?php echo $this->headScript() ?>
+        <?php echo $this->headScript() ?>
       </head>
     <body>
             
-			<div class="title-bar" data-responsive-toggle="my-application-main-menu" data-hide-for="medium">
-			  <button class="menu-icon" type="button" data-toggle></button>
-			  <div class="title-bar-title">Menu</div>
-			</div>
-			<div class="top-bar" id="my-application-main-menu">
-				<div class="top-bar-left">
-					<?php
-						//$oUtilities = $this->bootstrap();
-						//$oBootstrapComponents = $oUtilities->Components();
-						$oNavBar = $oComponents->Topbar('navigation')
-							->setUlClass('dropdown menu')
-							->setSubUlClass('menu')
-							->setSubUlClassLevel1('menu')
-							->setDefaultLiClass('')
-							->setSubLiClass('')
-							->setSubLiClassLevel0('')
-							->setMinDepth(0)
-							->setMaxDepth(3)
-							->setIconPrefixClass('fa fa-')
-							//->setHrefSubToggleOverride("#")
-							->setAttributes(array('data-dropdown-menu' => ''))
-						;
-						$navbar = $oNavBar->render();
-						//$navbar = str_replace("<ul class=\"dropdown", "<ul data-dropdown-menu class=\"dropdown", $navbar);
-						//$navbar = str_replace("class=\"dropdown-toggle\"", "", $navbar);
-						//$navbar = str_replace("&#x2F;", "/", $navbar);
-						//$navbar = str_replace("&#x20;", " ", $navbar);
-						echo $navbar;
-					?>
-				</div>
-				<div class="top-bar-right">
-					<?php 
-						$oLocaleMenu = $oComponents->Languagemenu()
-							->setUlClass('dropdown menu')
-							->setSubUlClass('menu')
-							->setSubUlClassLevel1('menu')
-							->setDefaultLiClass('')
-							->setSubLiClass('')
-							->setSubLiClassLevel0('')
-							->setIconPrefixClass('flag-icon flag-icon-')
-							->setHrefSubToggleOverride("#")
-							->setAttributes(array('data-dropdown-menu' => ''))
-						;
-						$localemenu = $oLocaleMenu->render(); 
-						echo $localemenu; 
-						// echo str_replace("<ul class=\"dropdown", "<ul data-dropdown-menu class=\"dropdown", $localemenu);
-					?>
-				</div>
-			</div>
+            <div class="title-bar" data-responsive-toggle="my-application-main-menu" data-hide-for="medium">
+              <button class="menu-icon" type="button" data-toggle></button>
+              <div class="title-bar-title">Menu</div>
+            </div>
+            <div class="top-bar" id="my-application-main-menu">
+                <div class="top-bar-left">
+                    <?php
+                        //$oUtilities = $this->bootstrap();
+                        //$oBootstrapComponents = $oUtilities->Components();
+                        $oNavBar = $oComponents->Topbar('navigation')
+                            ->setUlClass('dropdown menu')
+                            ->setSubUlClass('menu')
+                            ->setSubUlClassLevel1('menu')
+                            ->setDefaultLiClass('')
+                            ->setSubLiClass('')
+                            ->setSubLiClassLevel0('')
+                            ->setMinDepth(0)
+                            ->setMaxDepth(3)
+                            ->setIconPrefixClass('fa fa-')
+                            //->setHrefSubToggleOverride("#")
+                            ->setAttributes(array('data-dropdown-menu' => ''))
+                        ;
+                        $navbar = $oNavBar->render();
+                        //$navbar = str_replace("<ul class=\"dropdown", "<ul data-dropdown-menu class=\"dropdown", $navbar);
+                        //$navbar = str_replace("class=\"dropdown-toggle\"", "", $navbar);
+                        //$navbar = str_replace("&#x2F;", "/", $navbar);
+                        //$navbar = str_replace("&#x20;", " ", $navbar);
+                        echo $navbar;
+                    ?>
+                </div>
+                <div class="top-bar-right">
+                    <?php 
+                        $oLocaleMenu = $oComponents->Languagemenu()
+                            ->setUlClass('dropdown menu')
+                            ->setSubUlClass('menu')
+                            ->setSubUlClassLevel1('menu')
+                            ->setDefaultLiClass('')
+                            ->setSubLiClass('')
+                            ->setSubLiClassLevel0('')
+                            ->setIconPrefixClass('flag-icon flag-icon-')
+                            ->setHrefSubToggleOverride("#")
+                            ->setAttributes(array('data-dropdown-menu' => ''))
+                        ;
+                        $localemenu = $oLocaleMenu->render(); 
+                        echo $localemenu; 
+                        // echo str_replace("<ul class=\"dropdown", "<ul data-dropdown-menu class=\"dropdown", $localemenu);
+                    ?>
+                </div>
+            </div>
         
         <br />
         
         <div class="row columns">
-        	<nav role="navigation">
-			<?php 
-				$oBreadcrumbs = $oComponents->Breadcrumbs('navigation')
-					->setHeader( $this->translate('you are here :') )
-					->setMinDepth(0)
-				;
-				$breadcrumb = $oBreadcrumbs->render(); 
-				$breadcrumb = str_replace('<ol class="breadcrumb nav-breadcrumb">', '<ul class="breadcrumbs">', $breadcrumb);
-				$breadcrumb = str_replace('</ol>', '</ul>', $breadcrumb);
-				echo $breadcrumb;
-			?>
-			</nav>
+            <nav role="navigation">
+            <?php 
+                $oBreadcrumbs = $oComponents->Breadcrumbs('navigation')
+                    ->setHeader( $this->translate('you are here :') )
+                    ->setMinDepth(0)
+                ;
+                $breadcrumb = $oBreadcrumbs->render(); 
+                $breadcrumb = str_replace('<ol class="breadcrumb nav-breadcrumb">', '<ul class="breadcrumbs">', $breadcrumb);
+                $breadcrumb = str_replace('</ol>', '</ul>', $breadcrumb);
+                echo $breadcrumb;
+            ?>
+            </nav>
         </div>
         
-		<?php 
-			$oToolbarNav = $oComponents->Toolbar('toolbarnavigation');
-			if ($oToolbarNav->hasPages()) {
-				$oToolbarNav 
-					->setUlClass('btn-group btn-group-sm')
-					/*->setSubUlClass('')
-					->setSubUlClassLevel1('')
-					->setDefaultLiClass('')
-					->setSubLiClass('')
-					->setSubLiClassLevel0('')
-					->setMinDepth(0)
-					->setMaxDepth(1)*/
-					->setIconPrefixClass('fa fa-')
-				;
-				$toolbarPanel = $oComponents->Panel()
-					->setContent( $oToolbarNav->render() )
-				;
-				?><div class="row columns"><?php echo $toolbarPanel; ?></div><?php
-			}
-		?>
+        <?php 
+            $oToolbarNav = $oComponents->Toolbar('toolbarnavigation');
+            if ($oToolbarNav->hasPages()) {
+                $oToolbarNav 
+                    ->setUlClass('btn-group btn-group-sm')
+                    /*->setSubUlClass('')
+                    ->setSubUlClassLevel1('')
+                    ->setDefaultLiClass('')
+                    ->setSubLiClass('')
+                    ->setSubLiClassLevel0('')
+                    ->setMinDepth(0)
+                    ->setMaxDepth(1)*/
+                    ->setIconPrefixClass('fa fa-')
+                ;
+                $toolbarPanel = $oComponents->Panel()
+                    ->setContent( $oToolbarNav->render() )
+                ;
+                ?><div class="row columns"><?php echo $toolbarPanel; ?></div><?php
+            }
+        ?>
 
         <div class="row columns">
             <?php
-				echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
-				echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
-				echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
-				echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
-			?>
-		</div>
-		
-		<div class="row columns container">
-			<?php
-				$panelLayout = $oComponents->Panel()
-					->setHeader( (isset($this->title) ? $this->title : "") )
-					->setContent(
-						array(
-								'tagname' => 'div',
-								'classnames' => 'panel-body alert-wrap',
-								'content' => $this->content,
-						)
-					)
-				;
-				echo $panelLayout;
-			?>
-			
+                echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
+                echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
+                echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
+                echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
+            ?>
+        </div>
+        
+        <div class="row columns container">
+            <?php
+                $panelLayout = $oComponents->Panel()
+                    ->setHeader( (isset($this->title) ? $this->title : "") )
+                    ->setContent(
+                        array(
+                                'tagname' => 'div',
+                                'classnames' => 'panel-body alert-wrap',
+                                'content' => $this->content,
+                        )
+                    )
+                ;
+                echo $panelLayout;
+            ?>
+            
             <hr>
             <footer>
                 <p>
-                	<span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//bjoernbartels.earth" target="_blank">[Bj&ouml;rn Bartels]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
-                	<span class="pull-right poweredby">
-                		<?php echo $this->translate('Powered by') ?> &nbsp;
-                		<a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
-                		<a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
-                		<a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
-                		<a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
-                	</span>
+                    <span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//bjoernbartels.earth" target="_blank">[Bj&ouml;rn Bartels]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
+                    <span class="pull-right poweredby">
+                        <?php echo $this->translate('Powered by') ?> &nbsp;
+                        <a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
+                        <a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
+                        <a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
+                        <a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
+                    </span>
                </p>
             </footer>
         </div> <!-- /container -->
@@ -187,11 +187,11 @@
         <!-- Scripts -->
         <?php echo $this->inlineScript() ?>
         <script type="text/javascript">
-		    $(document).foundation();
-		    
-			$(document).ready(function() { 
-				
-			});
+            $(document).foundation();
+            
+            $(document).ready(function() { 
+                
+            });
         </script>
     </body>
 </html>

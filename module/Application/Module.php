@@ -79,9 +79,9 @@ class Module implements AutoloaderProviderInterface, ServiceLocatorAwareInterfac
         $serviceManager = $application->getServiceManager();
         static::$services = $serviceManager;
         /*$serviceManager->addInitializer(function ($instance) use ($serviceManager) {
-        	if ($instance instanceof ServiceLocatorAwareInterface) {
-        		$instance->setServiceLocator($serviceManager);
-        	}
+            if ($instance instanceof ServiceLocatorAwareInterface) {
+                $instance->setServiceLocator($serviceManager);
+            }
         });*/
         
         /**
@@ -244,12 +244,12 @@ class Module implements AutoloaderProviderInterface, ServiceLocatorAwareInterfac
 
     public static function getService($name) 
     {
-    	try {
-    		$serviceManager = static::$services;
-    		return $serviceManager->get($name);
-    	} catch (\Exception $e) {
-    	}
-    	return (null);
+        try {
+            $serviceManager = static::$services;
+            return $serviceManager->get($name);
+        } catch (\Exception $e) {
+        }
+        return (null);
     }
 
     public function getConsoleUsage(Console $console)

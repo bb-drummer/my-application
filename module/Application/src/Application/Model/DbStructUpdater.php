@@ -83,7 +83,7 @@ class DbStructUpdater
     {
         //table operations: create, drop; field operations: add, remove, modify
         $this->config['updateTypes'] = 'create, drop, add, remove, modify';
-        //ignores default part in cases like (var)char NOT NULL default '' upon the	comparison
+        //ignores default part in cases like (var)char NOT NULL default '' upon the    comparison
         $this->config['varcharDefaultIgnore'] = true;
         //the same for int NOT NULL default 0
         $this->config['intDefaultIgnore'] = true;

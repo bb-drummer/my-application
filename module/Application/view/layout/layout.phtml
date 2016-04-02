@@ -1,136 +1,136 @@
 <?php 
-	echo $this->doctype(); 
-	/** @var \UIComponents\View\Helper\Utilities $oUtilities **/
-	$oUtilities = $this->Utilities();
-	/** @var \UIComponents\View\Helper\Components $oComponents **/
-	$oComponents = $this->Components();
+    echo $this->doctype(); 
+    /** @var \UIComponents\View\Helper\Utilities $oUtilities **/
+    $oUtilities = $this->Utilities();
+    /** @var \UIComponents\View\Helper\Components $oComponents **/
+    $oComponents = $this->Components();
 ?>
 <html lang="<?php echo \Locale::getPrimaryLanguage(null) ?>">
-	<head>
-		<meta charset="utf-8" />
-		<?php echo $this->headTitle('[BB] '. $this->translate($oUtilities->AppTitle()))->setSeparator(' - ')->setAutoEscape(false) ?>
-		<?php echo $this->headMeta()
-			->appendName('viewport', 'width=device-width, initial-scale=1.0')
-			->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
-		?>
-		<!-- styles -->
-		<?php 
-			$themePath = "/themes/bootstrap/assets/";
-			$this->headLink(array(
-					'rel' => 'shortcut icon', 
-					'type' => 'image/vnd.microsoft.icon', 
-					'href' => $this->basePath($themePath . $oUtilities->AppFavicon())
-					//'href' => '/'.$oUtilities->AppFavicon()
-	 			))
-				->appendStylesheet($this->basePath($themePath . 'css/bootstrap/css/bootstrap.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'css/bootstrap/css/bootstrap-theme.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'css/fontawesome/css/font-awesome.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'js/fancy-box/source/jquery.fancybox.css'))
-				//->appendStylesheet($this->basePath($themePath . 'js/datatables/css/jquery.dataTables.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'js/datatables/css/dataTables.bootstrap.min.css'))
-				//->appendStylesheet('//cdn.datatables.net/1.10.9/css/jquery.dataTables.css')
-				->appendStylesheet($this->basePath($themePath . 'css/flag-icon-css/flag-icon.min.css'))
-				->appendStylesheet($this->basePath($themePath . 'css/app.css'))
-			;
-			$cssfiles = $oUtilities->Config()->get('app')->get('css');
-			if (is_array($cssfiles) || ($cssfiles instanceof \Zend\Config\Config)) foreach ($cssfiles as $key => $file) {
-				$this->headLink()->appendStylesheet($this->basePath($file));
-			}
-			echo $this->headLink();
-		?>
-		<?php echo $this->headScript() ?>
-	</head>
-	<body>
-		<nav class="navbar navbar-inverse" role="navigation">
-			<div class="container-fluid">
-				<div class="navbar-header">
-					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-						<span class="icon-bar"></span>
-					</button>
-					<a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath($themePath.$oUtilities->AppLogo()) ?>" alt="<?php echo $oUtilities->AppTitle(); ?>" />&nbsp;<?php echo $this->translate($oUtilities->AppTitle()) ?></a>
-				</div>
-				<div class="collapse navbar-collapse">
-					<?php
-						$oNavBar = $oComponents->Navbar('navigation')
-							->setUlClass('nav navbar-nav')
-							->setMinDepth(0)
-							->setMaxDepth(3)
-							->setIconPrefixClass('fa fa-')
-						;
-						echo $oNavBar->render();
-					?>
-					<?php 
-						$oLocaleMenu = $oComponents->Languagemenu()
-							->setUlClass('nav navbar-nav navbar-right')
-							->setIconPrefixClass('flag-icon flag-icon-')
-						;
-						echo $oLocaleMenu->render(); 
-					?>
-				</div> 
-			</div>
-		</nav>
-		<div class="container-fluid">
-			<?php 
-				$oBreadcrumbs = $oComponents->Breadcrumbs('navigation')
-					->setHeader( $this->translate('you are here :') )
-					->setMinDepth(0)
-				;
-				echo $oBreadcrumbs->render(); 
-			?>
-			<?php
-				echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
-				echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
-				echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
-				echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
-			?>
-			<?php 
-				$panelLayout = $oComponents->Panel()
-					->setHeader( (isset($this->title) ? $this->title : "") )
-					->setContent(
-						array(
-								'tagname' => 'div',
-								'classnames' => 'panel-body alert-wrap',
-								'content' => $this->content,
-						)
-					)
-				;
-				
-				echo $panelLayout;
-			?>
-			<hr>
-			<footer>
-				<p>
-					<span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//dragon-projects.net" target="_blank">[dragon-projects.net]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
-					<span class="pull-right poweredby">
-						<?php echo $this->translate('Powered by') ?> &nbsp;
-						<a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
-						<a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
-						<a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
-						<a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
-					</span>
-			   </p>
-			</footer>
-		</div> <!-- /container -->
-		<!-- Scripts -->
-		<?php 
-			$this->inlineScript()
-				->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-				->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
-				->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
-				->appendFile($this->basePath($themePath . 'js/fancy-box/source/jquery.fancybox.pack.js'))
-				->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.js'))
-				//->appendFile('//cdn.datatables.net/1.10.9/js/jquery.dataTables.js')
-				->appendFile($this->basePath($themePath . 'js/app.js'))
-			;
-			$jsfiles = $oUtilities->Config()->get('app')->get('js');
-			if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
-				$this->inlineScript()->appendFile($this->basePath($file));
-			}
-		?>
-		<?php echo $this->inlineScript() ?>
-	</body>
+    <head>
+        <meta charset="utf-8" />
+        <?php echo $this->headTitle('[BB] '. $this->translate($oUtilities->AppTitle()))->setSeparator(' - ')->setAutoEscape(false) ?>
+        <?php echo $this->headMeta()
+            ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+            ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+        ?>
+        <!-- styles -->
+        <?php 
+            $themePath = "/themes/bootstrap/assets/";
+            $this->headLink(array(
+                    'rel' => 'shortcut icon', 
+                    'type' => 'image/vnd.microsoft.icon', 
+                    'href' => $this->basePath($themePath . $oUtilities->AppFavicon())
+                    //'href' => '/'.$oUtilities->AppFavicon()
+                 ))
+                ->appendStylesheet($this->basePath($themePath . 'css/bootstrap/css/bootstrap.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'css/bootstrap/css/bootstrap-theme.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'css/fontawesome/css/font-awesome.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'js/fancy-box/source/jquery.fancybox.css'))
+                //->appendStylesheet($this->basePath($themePath . 'js/datatables/css/jquery.dataTables.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'js/datatables/css/dataTables.bootstrap.min.css'))
+                //->appendStylesheet('//cdn.datatables.net/1.10.9/css/jquery.dataTables.css')
+                ->appendStylesheet($this->basePath($themePath . 'css/flag-icon-css/flag-icon.min.css'))
+                ->appendStylesheet($this->basePath($themePath . 'css/app.css'))
+            ;
+            $cssfiles = $oUtilities->Config()->get('app')->get('css');
+            if (is_array($cssfiles) || ($cssfiles instanceof \Zend\Config\Config)) foreach ($cssfiles as $key => $file) {
+                $this->headLink()->appendStylesheet($this->basePath($file));
+            }
+            echo $this->headLink();
+        ?>
+        <?php echo $this->headScript() ?>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath($themePath.$oUtilities->AppLogo()) ?>" alt="<?php echo $oUtilities->AppTitle(); ?>" />&nbsp;<?php echo $this->translate($oUtilities->AppTitle()) ?></a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <?php
+                        $oNavBar = $oComponents->Navbar('navigation')
+                            ->setUlClass('nav navbar-nav')
+                            ->setMinDepth(0)
+                            ->setMaxDepth(3)
+                            ->setIconPrefixClass('fa fa-')
+                        ;
+                        echo $oNavBar->render();
+                    ?>
+                    <?php 
+                        $oLocaleMenu = $oComponents->Languagemenu()
+                            ->setUlClass('nav navbar-nav navbar-right')
+                            ->setIconPrefixClass('flag-icon flag-icon-')
+                        ;
+                        echo $oLocaleMenu->render(); 
+                    ?>
+                </div> 
+            </div>
+        </nav>
+        <div class="container-fluid">
+            <?php 
+                $oBreadcrumbs = $oComponents->Breadcrumbs('navigation')
+                    ->setHeader( $this->translate('you are here :') )
+                    ->setMinDepth(0)
+                ;
+                echo $oBreadcrumbs->render(); 
+            ?>
+            <?php
+                echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
+                echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
+                echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
+                echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
+            ?>
+            <?php 
+                $panelLayout = $oComponents->Panel()
+                    ->setHeader( (isset($this->title) ? $this->title : "") )
+                    ->setContent(
+                        array(
+                                'tagname' => 'div',
+                                'classnames' => 'panel-body alert-wrap',
+                                'content' => $this->content,
+                        )
+                    )
+                ;
+                
+                echo $panelLayout;
+            ?>
+            <hr>
+            <footer>
+                <p>
+                    <span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//dragon-projects.net" target="_blank">[dragon-projects.net]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
+                    <span class="pull-right poweredby">
+                        <?php echo $this->translate('Powered by') ?> &nbsp;
+                        <a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
+                        <a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
+                        <a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
+                        <a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
+                    </span>
+               </p>
+            </footer>
+        </div> <!-- /container -->
+        <!-- Scripts -->
+        <?php 
+            $this->inlineScript()
+                ->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+                ->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
+                ->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
+                ->appendFile($this->basePath($themePath . 'js/fancy-box/source/jquery.fancybox.pack.js'))
+                ->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
+                ->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.js'))
+                ->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.js'))
+                //->appendFile('//cdn.datatables.net/1.10.9/js/jquery.dataTables.js')
+                ->appendFile($this->basePath($themePath . 'js/app.js'))
+            ;
+            $jsfiles = $oUtilities->Config()->get('app')->get('js');
+            if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
+                $this->inlineScript()->appendFile($this->basePath($file));
+            }
+        ?>
+        <?php echo $this->inlineScript() ?>
+    </body>
 </html>

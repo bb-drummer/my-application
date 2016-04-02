@@ -13,14 +13,14 @@ $messages .= $this->flashMessenger()->renderCurrent('info', array('info panel pa
 $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromContainer();
 
 $modalLayout = $oComponents->Modal()
-	->setHeader( (isset($this->title) ? $this->title : "") )
-	->setContent(
-		array(
-			'tagname' => 'div',
-			'classnames' => 'modal-body panel-wrap',
-			'content' => $messages . $this->content,
-		)
-	)
+    ->setHeader( (isset($this->title) ? $this->title : "") )
+    ->setContent(
+        array(
+            'tagname' => 'div',
+            'classnames' => 'modal-body panel-wrap',
+            'content' => $messages . $this->content,
+        )
+    )
 ;
 
 echo $modalLayout . $this->inlineScript();

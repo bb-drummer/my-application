@@ -13,14 +13,14 @@ $messages .= $this->flashMessenger()->renderCurrent('info', array('info alert al
 $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromContainer();
 
 $panelLayout = $oComponents->Panel()
-	->setHeader( (isset($this->title) ? $this->title : "") )
-	->setContent(
-		array(
-			'tagname' => 'div',
-			'classnames' => 'panel-body alert-wrap',
-			'content' => $messages . $this->content,
-		)
-	)
+    ->setHeader( (isset($this->title) ? $this->title : "") )
+    ->setContent(
+        array(
+            'tagname' => 'div',
+            'classnames' => 'panel-body alert-wrap',
+            'content' => $messages . $this->content,
+        )
+    )
 ;
 
 echo $panelLayout . $this->inlineScript();

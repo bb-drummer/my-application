@@ -97,7 +97,7 @@ return array(
         'router' => array(
             'routes' => array(
                 'update-db' => array(
-                    //'type'	=> 'simple',
+                    //'type'    => 'simple',
                     'options' => array(
                         'route'    => 'update-db [--test] [--verbose|-v]:verbose',
                         'defaults' => array(
