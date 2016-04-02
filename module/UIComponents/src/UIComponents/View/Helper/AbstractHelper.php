@@ -13,7 +13,7 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Components;
+namespace UIComponents\View\Helper;
 
 use RecursiveIteratorIterator;
 use Zend\EventManager\EventManager;
@@ -26,8 +26,6 @@ use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View;
 use Zend\View\Exception;
-use UIComponents\View\Helper\Components;
-//use UIComponents\View\Helper\Bootstrap\AbstractHelper;
 
 /**
  * Base class for navigational helpers
@@ -121,6 +119,27 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	protected $serviceLocator;
 
 	/**
+	 * Translator (optional)
+	 *
+	 * @var Translator
+	 */
+	protected $translator;
+
+	/**
+	 * Translator text domain (optional)
+	 *
+	 * @var string
+	 */
+	protected $translatorTextDomain = 'default';
+
+	/**
+	 * Whether translator should be used
+	 *
+	 * @var bool
+	 */
+	protected $translatorEnabled = true;
+
+	/**
 	 * AbstractContainer to operate on by default
 	 *
 	 * @var Navigation\AbstractContainer
@@ -175,27 +194,6 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	 * @var bool
 	 */
 	protected $useAcl = true;
-
-	/**
-	 * Translator (optional)
-	 *
-	 * @var Translator
-	 */
-	protected $translator;
-
-	/**
-	 * Translator text domain (optional)
-	 *
-	 * @var string
-	 */
-	protected $translatorTextDomain = 'default';
-
-	/**
-	 * Whether translator should be used
-	 *
-	 * @var bool
-	 */
-	protected $translatorEnabled = true;
 
 	/**
 	 * Default ACL to use when iterating pages if not explicitly set in the
@@ -458,13 +456,48 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	protected function htmlAttribs($attribs)
 	{
 		// filter out null values and empty string values
+		// except for "data-" and "aria-" attributes
 		foreach ($attribs as $key => $value) {
 			if ($value === null || (is_string($value) && !strlen($value))) {
-				unset($attribs[$key]);
+				if ( (strpos($key, "data") === false) && (strpos($key, "aria") === false) ) {
+					unset($attribs[$key]);
+				}
 			}
 		}
 
-		return parent::htmlAttribs($attribs);
+        $xhtml          = '';
+        $escaper        = $this->getView()->plugin('escapehtml');
+        $escapeHtmlAttr = $this->getView()->plugin('escapehtmlattr');
+
+        foreach ((array) $attribs as $key => $val) {
+            $key = $escaper($key);
+
+            if (('on' == substr($key, 0, 2)) || ('constraints' == $key)) {
+                // Don't escape event attributes; _do_ substitute double quotes with singles
+                if (!is_scalar($val)) {
+                    // non-scalar data should be cast to JSON first
+                    $val = \Zend\Json\Json::encode($val);
+                }
+            } else {
+                if (is_array($val)) {
+                    $val = implode(' ', $val);
+                }
+            }
+
+            $val = $escapeHtmlAttr($val);
+
+            if ('id' == $key) {
+                $val = $this->normalizeId($val);
+            }
+
+            if (strpos($val, '"') !== false) {
+                $xhtml .= " $key='$val'";
+            } else {
+                $xhtml .= " $key=\"$val\"";
+            }
+        }
+
+        return $xhtml;
 	}
 
 	/**
@@ -532,6 +565,87 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 		return $prefix . '-' . $value;
 	}
 
+	//
+	// component related methods
+	//
+	
+	/**
+	 * @return string the assemled component rendered to HTML
+	 */
+	public function buildComponent() {
+		$html = ' '.__CLASS__.' ';
+		if ( empty($this->getTagname()) ) {
+			return '';
+		}
+		
+		$header = $this->getHeader();
+		
+		$footer = $this->getFooter();
+		
+		$body = $this->getContent();
+		
+		$content = (array($header, $body, $footer));
+		if ( is_array($body) && !isset($body["tagname"])) {
+			$content = array_merge(array($header), ($body), array($footer));
+		}
+		
+		$component = $this->_createElement($this->getTagname(), $this->getClassnames(), (array)$this->getAttributes(), $content);
+
+		return $component;
+
+	} 
+	
+	/**
+	 * create the component markup
+	 * 
+	 * @return string the component markup
+	 */
+	public function _createElement($tagname = 'div', $classnames = '', $attributes = array(), $content = '') {
+		$html = '';
+		$html .= '<'.$tagname.''.((isset($classnames) && !empty($classnames)) ? ' class="'.$classnames.'"' : '').' '.$this->htmlAttribs($attributes).'>';
+		if (!empty($content)) {
+			if ( $content instanceof AbstractHelper ) {
+				$html .= $content->render();
+			} else if ( is_array($content) && isset($content['tagname']) ) {
+				$html .= $this->_createElement(
+					$content['tagname'],
+					(isset($content['classnames']) && !empty($content['classnames']) ? $content['classnames'] : (isset($content['class']) && !empty($content['class']) ? $content['class'] : '')),
+					(isset($content['attributes']) && !empty($content['attributes']) ? $content['attributes'] : (isset($content['attr']) && !empty($content['attr']) ? $content['attr'] : '')),
+					(isset($content['content']) && !empty($content['content']) ? $content['content'] : '')
+				);
+			} else if ( is_array($content) ) {
+				foreach ($content as $key => $item) {
+					if ( $item instanceof AbstractHelper ) {
+						$html .= $item->render();
+					} else if ( is_array($item) && isset($item['tagname']) ) {
+						$html .= $this->_createElement(
+							$item['tagname'],
+							(isset($item['classnames']) && !empty($item['classnames']) ? $item['classnames'] : (isset($item['class']) && !empty($item['class']) ? $item['class'] : '')),
+							(array)(isset($item['attributes']) && !empty($item['attributes']) ? $item['attributes'] : (isset($item['attr']) && !empty($item['attr']) ? $item['attr'] : '')),
+							(isset($item['content']) && !empty($item['content']) ? $item['content'] : '')
+						);
+					} else if ( is_array($item) ) {
+						foreach ($content as $key => $value) {
+							$html .= (string)$value;
+						}
+					} else {
+						$html .= $item;
+					}
+				}
+			} else {
+				$html .= $content;
+			}
+		}
+		$html .= '</'.$tagname.'>';
+		
+		return $html;
+	} 
+	
+	
+	//
+	// component related getters/setters
+	//
+	
 	/**
 	 * Sets ACL to use when iterating pages
 	 *
@@ -831,117 +945,6 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	}
 
 	/**
-	 * Set the service locator.
-	 *
-	 * @param	ServiceLocatorInterface $serviceLocator
-	 * @return AbstractHelper
-	 */
-	public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-	{
-		$this->serviceLocator = $serviceLocator;
-		return $this;
-	}
-
-	/**
-	 * Get the service locator.
-	 *
-	 * @return ServiceLocatorInterface
-	 */
-	public function getServiceLocator()
-	{
-		return $this->serviceLocator;
-	}
-
-	// Translator methods - Good candidate to refactor as a trait with PHP 5.4
-
-	/**
-	 * Sets translator to use in helper
-	 *
-	 * @param	Translator $translator	[optional] translator.
-	 *								 Default is null, which sets no translator.
-	 * @param	string	 $textDomain	[optional] text domain
-	 *								 Default is null, which skips setTranslatorTextDomain
-	 * @return AbstractHelper
-	 */
-	public function setTranslator(Translator $translator = null, $textDomain = null)
-	{
-		$this->translator = $translator;
-		if (null !== $textDomain) {
-			$this->setTranslatorTextDomain($textDomain);
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Returns translator used in helper
-	 *
-	 * @return Translator|null
-	 */
-	public function getTranslator()
-	{
-		if (! $this->isTranslatorEnabled()) {
-			return;
-		}
-
-		return $this->translator;
-	}
-
-	/**
-	 * Checks if the helper has a translator
-	 *
-	 * @return bool
-	 */
-	public function hasTranslator()
-	{
-		return (bool) $this->getTranslator();
-	}
-
-	/**
-	 * Sets whether translator is enabled and should be used
-	 *
-	 * @param	bool $enabled
-	 * @return AbstractHelper
-	 */
-	public function setTranslatorEnabled($enabled = true)
-	{
-		$this->translatorEnabled = (bool) $enabled;
-		return $this;
-	}
-
-	/**
-	 * Returns whether translator is enabled and should be used
-	 *
-	 * @return bool
-	 */
-	public function isTranslatorEnabled()
-	{
-		return $this->translatorEnabled;
-	}
-
-	/**
-	 * Set translation text domain
-	 *
-	 * @param	string $textDomain
-	 * @return AbstractHelper
-	 */
-	public function setTranslatorTextDomain($textDomain = 'default')
-	{
-		$this->translatorTextDomain = $textDomain;
-		return $this;
-	}
-
-	/**
-	 * Return the translation text domain
-	 *
-	 * @return string
-	 */
-	public function getTranslatorTextDomain()
-	{
-		return $this->translatorTextDomain;
-	}
-
-	/**
 	 * Sets whether ACL should be used
 	 *
 	 * Implements {@link HelperInterface::setUseAcl()}.
@@ -1023,96 +1026,130 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	}
 	
 
-	
-	//
-	// component related methods
-	//
-	
 	/**
-	 * @return string the assemled component rendered to HTML
+	 * Set the service locator.
+	 *
+	 * @param	ServiceLocatorInterface $serviceLocator
+	 * @return AbstractHelper
 	 */
-	public function buildComponent() {
-		$html = ' '.__CLASS__.' ';
-		if ( empty($this->getTagname()) ) {
-			return '';
-		}
-		
-		$header = $this->getHeader();
-		
-		$footer = $this->getFooter();
-		
-		$body = $this->getContent();
-		
-		$content = (array($header, $body, $footer));
-		if ( is_array($body) && !isset($body["tagname"])) {
-			$content = array_merge(array($header), ($body), array($footer));
-		}
-		
-		$component = $this->_createElement($this->getTagname(), $this->getClassnames(), (array)$this->getAttributes(), $content);
-
-		return $component;
-
-	} 
+	public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+	{
+		$this->serviceLocator = $serviceLocator;
+		return $this;
+	}
 	
 	/**
-	 * create the component markup
+	 * Get the service locator.
+	 *
+	 * @return ServiceLocatorInterface
+	 */
+	public function getServiceLocator()
+	{
+		return $this->serviceLocator;
+	}
+	
+	// Translator methods
+	
+	/**
+	 * Sets translator to use in helper
+	 *
+	 * @param	Translator $translator	[optional] translator.
+	 *								 Default is null, which sets no translator.
+	 * @param	string	 $textDomain	[optional] text domain
+	 *								 Default is null, which skips setTranslatorTextDomain
+	 * @return AbstractHelper
+	 */
+	public function setTranslator(Translator $translator = null, $textDomain = null)
+	{
+		$this->translator = $translator;
+		if (null !== $textDomain) {
+			$this->setTranslatorTextDomain($textDomain);
+		}
+	
+		return $this;
+	}
+	
+	/**
+	 * Returns translator used in helper
+	 *
+	 * @return Translator|null
+	 */
+	public function getTranslator()
+	{
+		if (! $this->isTranslatorEnabled()) {
+			return;
+		}
+	
+		return $this->translator;
+	}
+	
+	/**
+	 * Checks if the helper has a translator
+	 *
+	 * @return bool
+	 */
+	public function hasTranslator()
+	{
+		return (bool) $this->getTranslator();
+	}
+	
+	/**
+	 * Sets whether translator is enabled and should be used
+	 *
+	 * @param	bool $enabled
+	 * @return AbstractHelper
+	 */
+	public function setTranslatorEnabled($enabled = true)
+	{
+		$this->translatorEnabled = (bool) $enabled;
+		return $this;
+	}
+	
+	/**
+	 * Returns whether translator is enabled and should be used
+	 *
+	 * @return bool
+	 */
+	public function isTranslatorEnabled()
+	{
+		return $this->translatorEnabled;
+	}
+	
+	/**
+	 * Set translation text domain
+	 *
+	 * @param	string $textDomain
+	 * @return AbstractHelper
+	 */
+	public function setTranslatorTextDomain($textDomain = 'default')
+	{
+		$this->translatorTextDomain = $textDomain;
+		return $this;
+	}
+	
+	/**
+	 * Return the translation text domain
+	 *
+	 * @return string
+	 */
+	public function getTranslatorTextDomain()
+	{
+		return $this->translatorTextDomain;
+	}
+	
+	
+	/**
+	 * get main tag-name
 	 * 
-	 * @return string the component markup
-	 */
-	public function _createElement($tagname = 'div', $classnames = '', $attributes = array(), $content = '') {
-		$html = '';
-		$html .= '<'.$tagname.''.((isset($classnames) && !empty($classnames)) ? ' class="'.$classnames.'"' : '').' '.$this->htmlAttribs($attributes).'>';
-		if (!empty($content)) {
-			if ( $content instanceof AbstractHelper ) {
-				$html .= $content->render();
-			} else if ( is_array($content) && isset($content['tagname']) ) {
-				$html .= $this->_createElement(
-					$content['tagname'],
-					(isset($content['classnames']) && !empty($content['classnames']) ? $content['classnames'] : (isset($content['class']) && !empty($content['class']) ? $content['class'] : '')),
-					(isset($content['attributes']) && !empty($content['attributes']) ? $content['attributes'] : (isset($content['attr']) && !empty($content['attr']) ? $content['attr'] : '')),
-					(isset($content['content']) && !empty($content['content']) ? $content['content'] : '')
-				);
-			} else if ( is_array($content) ) {
-				foreach ($content as $key => $item) {
-					if ( $item instanceof AbstractHelper ) {
-						$html .= $item->render();
-					} else if ( is_array($item) && isset($item['tagname']) ) {
-						$html .= $this->_createElement(
-							$item['tagname'],
-							(isset($item['classnames']) && !empty($item['classnames']) ? $item['classnames'] : (isset($item['class']) && !empty($item['class']) ? $item['class'] : '')),
-							(array)(isset($item['attributes']) && !empty($item['attributes']) ? $item['attributes'] : (isset($item['attr']) && !empty($item['attr']) ? $item['attr'] : '')),
-							(isset($item['content']) && !empty($item['content']) ? $item['content'] : '')
-						);
-					} else if ( is_array($item) ) {
-						foreach ($content as $key => $value) {
-							$html .= (string)$value;
-						}
-					} else {
-						$html .= $item;
-					}
-				}
-			} else {
-				$html .= $content;
-			}
-		}
-		$html .= '</'.$tagname.'>';
-		
-		return $html;
-	} 
-	
-	
-	//
-	// component related getters/setters
-	//
-	
-	/**
-	 * @return the $tagname
+	 * @return string the $tagname
 	 */
 	public function getTagname() {
 		return $this->tagname;
 	}
 
 	/**
+	 * set main tag-name
+	 * 
 	 * @param string $tagname
 	 */
 	public function setTagname($tagname) {
@@ -1123,13 +1160,17 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	}
 
 	/**
-	 * @return the $classnames
+	 * get class names
+	 * 
+	 * @return string the $classnames
 	 */
 	public function getClassnames() {
 		return $this->classnames;
 	}
 
 	/**
+	 * set class names
+	 * 
 	 * @param string $classnames
 	 */
 	public function setClassnames($classnames) {
@@ -1140,92 +1181,10 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 	}
 
 	/**
-	 * @return the $attributes
-	 */
-	public function getAttributes() {
-		return $this->attributes;
-	}
-
-	/**
-	 * @param multitype: $attributes
-	 */
-	public function setAttributes($attributes) {
-		if ( null !== $attributes ) {
-			$this->attributes = $attributes;
-		}
-		return $this;
-	}
-
-	/**
-	 * @return the $header
-	 */
-	public function getHeader() {
-		return $this->header;
-	}
-
-	/**
-	 * @param mixed $header
-	 */
-	public function setHeader($header) {
-		if ( null !== $header ) {
-			$this->header = $header;
-		}
-		return $this;
-	}
-
-	/**
-	 * @return the $footer
-	 */
-	public function getFooter() {
-		return $this->footer;
-	}
-
-	/**
-	 * @param mixed $footer
-	 */
-	public function setFooter($footer = null) {
-		if ( null !== $footer ) {
-			$this->footer = $footer;
-		}
-		return $this;
-	}
-
-	/**
-	 * @return the $content
-	 */
-	public function getContent() {
-		return $this->content;
-	}
-
-	/**
-	 * @param string|array $content
-	 */
-	public function setContent($content = '') {
-		$this->content = $content;
-		return $this;
-	}
-	
-	/**
-	 * @return the $_DOMDoc
-	 */
-	public function getDOMDoc() {
-		if ( ! $this->_DOMDoc instanceof \DOMDocument ) {
-			$this->_DOMDoc = new \DOMDocument();
-		}
-		return $this->_DOMDoc;
-	}
-
-	/**
-	 * @param \DOMDocument $_DOMDoc
-	 */
-	public function setDOMDoc(\DOMDocument $_DOMDoc) {
-		$this->_DOMDoc = $_DOMDoc;
-		return $this;
-	}
-	
-	/**
 	 * check if classname occurs in classnames
+	 * 
 	 * @param string $classname
+	 * @return boolean 
 	 */
 	public function hasClass ($classname) {
 		$classname = trim($classname);
@@ -1238,6 +1197,7 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 
 	/**
 	 * add classname to classnames
+	 * 
 	 * @param string $classname
 	 */
 	public function addClass ($classname) {
@@ -1254,6 +1214,7 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 
 	/**
 	 * add classname to classnames
+	 * 
 	 * @param string $classname
 	 */
 	public function removeClass ($classname) {
@@ -1266,6 +1227,132 @@ abstract class AbstractHelper extends \Zend\View\Helper\AbstractHtmlElement impl
 				}
 			}
 		}
+		return $this;
+	}
+	
+	/**
+	 * get a single HTML atrributes
+	 * 
+	 * @param string $name the attribute to get
+	 * @return the $attribute 
+	 */
+	public function getAttribute($name) {
+		return ( isset($this->attributes[$name]) ? $this->attributes[$name] : null );
+	}
+
+	/**
+	 * set a single HTML attribute
+	 * 
+	 * @param string $attribute 
+	 * @param mixed $value
+	 */
+	public function setAttribute($attribute, $value = "") {
+		if ( null !== $attribute ) {
+			$this->attributes[$attribute] = $value;
+		}
+		return $this;
+	}
+
+	/**
+	 * get all attributes
+	 * 
+	 * @return the $attributes
+	 */
+	public function getAttributes() {
+		return $this->attributes;
+	}
+
+	/**
+	 * set attributes
+	 * 
+	 * @param array $attributes
+	 */
+	public function setAttributes($attributes) {
+		if ( is_array($attributes) ) {
+			$this->attributes = array_merge_recursive($this->attributes, $attributes);
+		}
+		return $this;
+	}
+
+	/**
+	 * get the element header
+	 * 
+	 * @return mixed the $header
+	 */
+	public function getHeader() {
+		return $this->header;
+	}
+
+	/**
+	 * set the element header
+	 * 
+	 * @param mixed $header
+	 */
+	public function setHeader($header) {
+		if ( null !== $header ) {
+			$this->header = $header;
+		}
+		return $this;
+	}
+
+	/**
+	 * get the element footer
+	 * 
+	 * @return mixed the $footer
+	 */
+	public function getFooter() {
+		return $this->footer;
+	}
+
+	/**
+	 * set the element footer
+	 * 
+	 * @param mixed $footer
+	 */
+	public function setFooter($footer = null) {
+		if ( null !== $footer ) {
+			$this->footer = $footer;
+		}
+		return $this;
+	}
+
+	/**
+	 * get the element content
+	 * @return the $content
+	 */
+	public function getContent() {
+		return $this->content;
+	}
+
+	/**
+	 * set the element content
+	 * 
+	 * @param string|array $content
+	 */
+	public function setContent($content = '') {
+		$this->content = $content;
+		return $this;
+	}
+	
+	/**
+	 * get DOM object
+	 * 
+	 * @return the $_DOMDoc
+	 */
+	public function getDOMDoc() {
+		if ( ! $this->_DOMDoc instanceof \DOMDocument ) {
+			$this->_DOMDoc = new \DOMDocument();
+		}
+		return $this->_DOMDoc;
+	}
+
+	/**
+	 * set DOM object
+	 * 
+	 * @param \DOMDocument $_DOMDoc
+	 */
+	public function setDOMDoc(\DOMDocument $_DOMDoc) {
+		$this->_DOMDoc = $_DOMDoc;
 		return $this;
 	}
 	

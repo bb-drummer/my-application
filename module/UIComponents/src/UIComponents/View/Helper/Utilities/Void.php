@@ -13,14 +13,15 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
+namespace UIComponents\View\Helper\Utilities;
 
 /**
  *
  * render nothing
  *
  */
-class AppLogo extends AbstractHelper implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+class Void extends \UIComponents\View\Helper\AbstractHelper 
+//implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
 
 	/**
@@ -30,9 +31,13 @@ class AppLogo extends AbstractHelper implements \Zend\ServiceManager\ServiceLoca
 	 * @param  AbstractContainer $container [optional] container to operate on
 	 * @return self
 	 */
-	public function __invoke()
+	public function __invoke($container = null)
 	{
-		return $this->render();
+		if (null !== $container) {
+			$this->setContainer($container);
+		}
+
+		return ($this);
 	}
 
 	/**
@@ -42,8 +47,9 @@ class AppLogo extends AbstractHelper implements \Zend\ServiceManager\ServiceLoca
 	 */
 	public function render($container = null)
 	{
-		$config = new \Zend\Config\Config( $this->getServiceLocator()->getServiceLocator()->get('Config') );
-		return $config->get('app')->get('logo');
+		$html = '';
+		
+		return $html;
 	}
-	
+
 }

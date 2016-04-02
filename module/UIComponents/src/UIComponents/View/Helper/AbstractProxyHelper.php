@@ -18,19 +18,18 @@ namespace UIComponents\View\Helper;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\View\Exception;
 use Zend\View\Renderer\RendererInterface as Renderer;
-use Zend\Mvc\Application;
 
 /**
  * Proxy helper for retrieving navigational helpers and forwarding calls
  */
-class Bootstrap extends Bootstrap\AbstractHelper
+class AbstractProxyHelper extends AbstractHelper
 {
 	/**
 	 * View helper namespace
 	 *
 	 * @var string
 	 */
-	const NS = 'UIComponents\View\Helper\Bootstrap';
+	const NS = 'UIComponents\View\Helper\Components';
 
 	/**
 	 * Default proxy to use in {@link render()}
@@ -73,18 +72,25 @@ class Bootstrap extends Bootstrap\AbstractHelper
 	protected $plugins;
 
 	/**
+	 * AbstractContainer to operate on by default
+	 *
+	 * @var Navigation\AbstractContainer
+	 */
+	protected $container;
+
+	/**
 	 * Helper entry point
 	 *
 	 * @param  string|AbstractContainer $container container to operate on
-	 * @return Bootstrap
+	 * @return Components
 	 */
-	public function __invoke($container = null)
+	public function __invoke($options = array())
 	{
-		if (null !== $container) {
-			$this->setContainer($container);
+		if (isset($options['container']) && null !== $options['container']) {
+			$this->setContainer($options['container']);
 		}
 
-		return $this;
+		return ($this);
 	}
 
 	/**
@@ -92,12 +98,7 @@ class Bootstrap extends Bootstrap\AbstractHelper
 	 *
 	 * Examples of usage from a view script or layout:
 	 * <code>
-	 * // proxy to Menu helper and render container:
-	 * echo $this->bootstrap()->menu();
-	 *
-	 * // proxy to Breadcrumbs helper and set indentation:
-	 * $this->bootstrap()->breadcrumbs()->setIndent(8);
-	 *
+	 *   echo $this->Components()->Widget(...);
 	 * </code>
 	 *
 	 * @param  string $method			 helper name or method name in container
@@ -118,11 +119,51 @@ class Bootstrap extends Bootstrap\AbstractHelper
 			if (method_exists($helper, "setServiceLocator") && $this->getServiceLocator()) {
 				$helper->setServiceLocator($this->getServiceLocator());
 			}
+
+			if (method_exists($helper, "setTranslator") && $this->getTranslator()) {
+				$helper->setTranslator($this->getTranslator());
+			}
+			
 			return call_user_func_array($helper, $arguments);
 		}
 
 		// default behaviour: proxy call to container
 		return parent::__call($method, $arguments);
+	}
+
+	/**
+	 * Sets navigation container the helper operates on by default
+	 *
+	 * Implements {@link HelperInterface::setContainer()}.
+	 *
+	 * @param  string|Navigation\AbstractContainer $container Default is null, meaning container will be reset.
+	 * @return AbstractHelper
+	 */
+	public function setContainer($container = null)
+	{
+		$this->parseContainer($container);
+		$this->container = $container;
+
+		return $this;
+	}
+
+	/**
+	 * Returns the navigation container helper operates on by default
+	 *
+	 * Implements {@link HelperInterface::getContainer()}.
+	 *
+	 * If no container is set, a new container will be instantiated and
+	 * stored in the helper.
+	 *
+	 * @return Navigation\AbstractContainer	navigation container
+	 */
+	public function getContainer()
+	{
+		if (null === $this->container) {
+			$this->container = new \UIComponents\Navigation\Navigation();
+		}
+
+		return $this->container;
 	}
 
 	/**
@@ -134,21 +175,22 @@ class Bootstrap extends Bootstrap\AbstractHelper
 	 */
 	public function render($container = null)
 	{
-		return $this->findHelper($this->getDefaultProxy())->render($container);
+		return '';
+		//return $this->findHelper($this->getDefaultProxy())->render($container);
 	}
 
 	/**
 	 * Returns the helper matching $proxy
 	 *
 	 * The helper must implement the interface
-	 * {@link UIComponents\View\Helper\Bootstrap\Helper}.
+	 * {@link UIComponents\View\Helper\Components\HelperInterface}.
 	 *
 	 * @param string $proxy  helper name
 	 * @param bool   $strict [optional] whether exceptions should be
 	 *								  thrown if something goes
 	 *								  wrong. Default is true.
 	 * @throws Exception\RuntimeException if $strict is true and helper cannot be found
-	 * @return \Application\View\Helper\Bootstrap\HelperInterface  helper instance
+	 * @return \UIComponents\View\Helper\Components\HelperInterface  helper instance
 	 */
 	public function findHelper($proxy, $strict = true)
 	{
@@ -166,10 +208,9 @@ class Bootstrap extends Bootstrap\AbstractHelper
 		$helper	= $plugins->get($proxy);
 
 		if ($helper && ($helper instanceof \Zend\View\Helper\Navigation\Menu)) {
-		
+			
 			$container = $this->getContainer();
 			$hash	  = spl_object_hash($container) . spl_object_hash($helper);
-	
 			if (!isset($this->injected[$hash])) {
 				$helper->setContainer();
 				$this->inject($helper);
@@ -179,7 +220,7 @@ class Bootstrap extends Bootstrap\AbstractHelper
 					$helper->setContainer($container);
 				}
 			}
-
+			
 		}
 		
 		return $helper;
@@ -306,10 +347,10 @@ class Bootstrap extends Bootstrap\AbstractHelper
 	/**
 	 * Set manager for retrieving navigation helpers
 	 *
-	 * @param  Bootstrap\PluginManager $plugins
-	 * @return Bootstrap
+	 * @param  Components\PluginManager $plugins
+	 * @return Components
 	 */
-	public function setPluginManager(Bootstrap\PluginManager $plugins)
+	public function setPluginManager(AbstractPluginManager $plugins)
 	{
 		$renderer = $this->getView();
 		if ($renderer) {
@@ -326,12 +367,12 @@ class Bootstrap extends Bootstrap\AbstractHelper
 	 * Lazy-loads an instance of Navigation\HelperLoader if none currently
 	 * registered.
 	 *
-	 * @return Bootstrap\PluginManager
+	 * @return Components\PluginManager
 	 */
 	public function getPluginManager()
 	{
 		if (null === $this->plugins) {
-			$this->setPluginManager(new Bootstrap\PluginManager());
+			$this->setPluginManager(new Components\PluginManager());
 		}
 
 		return $this->plugins;
