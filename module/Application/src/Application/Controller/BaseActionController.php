@@ -75,7 +75,7 @@ class BaseActionController extends AbstractActionController implements Dispatcha
 
         $toolbarItems = $this->getToolbarItem($action);
         if ($toolbarItems) {
-            $toolbarNav = $serviceManager->get('toolbarnavigation');
+            $toolbarNav = $serviceManager->get('componentnavigationhelper');
             $toolbarNav->addPages($toolbarItems);
         }
         
