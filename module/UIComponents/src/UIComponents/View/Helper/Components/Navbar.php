@@ -13,10 +13,7 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
-
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceLocatorAwareTrait;
+namespace UIComponents\View\Helper\Components;
 
 /**
  *
@@ -24,9 +21,8 @@ use Zend\ServiceManager\ServiceLocatorAwareTrait;
  * 
  * @see \UIComponents\View\Helper\Navigation\Menu
  */
-class Navbar extends \UIComponents\View\Helper\Navigation\Menu // implements ServiceLocatorAwareInterface
+class Navbar extends \UIComponents\View\Helper\Navigation\Menu
 {
-	//use ServiceLocatorAwareTrait;
 	
 	/**
 	 * View helper entry point:

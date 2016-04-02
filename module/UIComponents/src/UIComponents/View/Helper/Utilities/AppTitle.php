@@ -13,14 +13,15 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
+namespace UIComponents\View\Helper\Utilities;
 
 /**
  *
  * render nothing
  *
  */
-class AppTitle extends AbstractHelper // implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+class AppTitle extends \UIComponents\View\Helper\AbstractHelper 
+//implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
 
 	/**

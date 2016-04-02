@@ -13,14 +13,15 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
+namespace UIComponents\View\Helper\Utilities;
 
 /**
  *
- * Helper to get Components colletion opject/view helper plugin
- * 
+ * render nothing
+ *
  */
-class Components extends \UIComponents\View\Helper\Navigation\Menu
+class AppFavicon extends \UIComponents\View\Helper\AbstractHelper 
+//implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
 
 	/**
@@ -30,10 +31,20 @@ class Components extends \UIComponents\View\Helper\Navigation\Menu
 	 * @param  AbstractContainer $container [optional] container to operate on
 	 * @return self
 	 */
-	public function __invoke($options = array())
+	public function __invoke()
 	{
-		return $this->view->components($options);
+		return $this->render();
 	}
 
+	/**
+	 * render nothing
+	 * 
+	 * @return string
+	 */
+	public function render($container = null)
+	{
+		$config = new \Zend\Config\Config( $this->getServiceLocator()->getServiceLocator()->get('Config') );
+		return $config->get('app')->get('favicon');
+	}
 	
 }

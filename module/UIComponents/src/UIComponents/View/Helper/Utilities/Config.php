@@ -13,14 +13,15 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
+namespace UIComponents\View\Helper\Utilities;
 
 /**
  *
  * render nothing
  *
  */
-class AppFavicon extends AbstractHelper implements \Zend\ServiceManager\ServiceLocatorAwareInterface
+class Config extends \UIComponents\View\Helper\AbstractHelper 
+//implements \Zend\ServiceManager\ServiceLocatorAwareInterface
 {
 
 	/**
@@ -43,7 +44,7 @@ class AppFavicon extends AbstractHelper implements \Zend\ServiceManager\ServiceL
 	public function render($container = null)
 	{
 		$config = new \Zend\Config\Config( $this->getServiceLocator()->getServiceLocator()->get('Config') );
-		return $config->get('app')->get('favicon');
+		return $config;
 	}
 	
 }

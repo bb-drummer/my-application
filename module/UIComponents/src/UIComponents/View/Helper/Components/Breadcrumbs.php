@@ -13,7 +13,7 @@
  * @copyright	copyright (c) 2016 Björn Bartels <development@bjoernbartels.earth>
  */
 
-namespace UIComponents\View\Helper\Bootstrap;
+namespace UIComponents\View\Helper\Components;
 
 use Zend\Navigation\AbstractContainer;
 use Zend\Navigation\Page\AbstractPage;
@@ -74,12 +74,12 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
 		if ($this->getNoList()) {
 			$html .= parent::renderStraight($container);
 		} {
-			$html .= $this->renderBoostrapOl($container);
+			$html .= $this->renderOl($container);
 		}
 		return $html; 
 	}
 	
-	public function renderBoostrapOl($container = null)
+	public function renderOl($container = null)
 	{
 		$this->parseContainer($container);
 		if (null === $container) {
@@ -104,7 +104,7 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
 			$html = '<li class="active">' . $this->htmlify($active) . '</li>' . PHP_EOL;
 		} else {
 			$html	= '<li class="active">' . $escaper(
-				$this->translate($active->getLabel(), $active->getTextDomain())
+				$this->translate($active->getLabel()) //, $active->getTextDomain())
 			) . '</li>' . PHP_EOL;
 		}
 
@@ -130,6 +130,33 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
 		return strlen($html) ? $listHtmlOpen . $this->getIndent() . $html . $listHtmlClose : '';
 	}
 	
+    /**
+     * Returns an HTML string containing an 'a' element for the given page
+     *
+     * @param  AbstractPage $page  page to generate HTML for
+     * @return string              HTML string (<a href="…">Label</a>)
+     */
+    public function htmlify(AbstractPage $page)
+    {
+        $label = $this->translate($page->getLabel()); //, $page->getTextDomain());
+        $title = $this->translate($page->getTitle()); //, $page->getTextDomain());
+
+        // get attribs for anchor element
+        $attribs = [
+            'id'     => $page->getId(),
+            'title'  => $title,
+            'class'  => $page->getClass(),
+            'href'   => $page->getHref(),
+            'target' => $page->getTarget()
+        ];
+
+        /** @var \Zend\View\Helper\EscapeHtml $escaper */
+        $escaper = $this->view->plugin('escapeHtml');
+        $label   = $escaper($label);
+
+        return '<a' . $this->htmlAttribs($attribs) . '>' . $label . '</a>';
+    }
+
 	/**
 	 * @return the $olClass
 	 */
