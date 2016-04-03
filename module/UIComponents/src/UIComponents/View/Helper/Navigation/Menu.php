@@ -354,7 +354,7 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
      *                         to an attribute name and value
      * @return string
      */
-    protected function htmlAttribs($attribs)
+    public function htmlAttribs($attribs)
     {
         // filter out null values and empty string values
         // except for "data-" and "aria-" attributes
@@ -401,6 +401,35 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
         return $xhtml;
     }
 
+    /**
+     * Finds the deepest active page in the given container
+     *
+     * @param  Navigation\AbstractContainer $container  container to search
+     * @param  int|null             $minDepth   [optional] minimum depth
+     *                                          required for page to be
+     *                                          valid. Default is to use
+     *                                          {@link getMinDepth()}. A
+     *                                          null value means no minimum
+     *                                          depth required.
+     * @param  int|null             $maxDepth   [optional] maximum depth
+     *                                          a page can have to be
+     *                                          valid. Default is to use
+     *                                          {@link getMaxDepth()}. A
+     *                                          null value means no maximum
+     *                                          depth required.
+     * @return array                            an associative array with
+     *                                          the values 'depth' and
+     *                                          'page', or an empty array
+     *                                          if not found
+     */
+    public function findActive($container = null, $minDepth = null, $maxDepth = -1)
+    {
+    	if ( null == $container ) {
+    		$container = $this->getContainer();
+    	}
+    	return parent::findActive($container, $minDepth, $maxDepth);
+    }
+    
     /**
      * Returns an HTML string containing an 'a' element for the given page if
      * the page's href is not empty, and a 'span' element if it is empty
@@ -503,7 +532,7 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
             'page' => $page,
             'escapeLabel' => $escapeLabel,
             'addClassToListItem' => $addClassToListItem,
-            'menu' => $this,
+            'menu' => (clone $this),
             
         ];
     
