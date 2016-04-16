@@ -59,5 +59,32 @@ trait ControllerToolbarTrait {
         $this->toolbarItems[$action] = $item;
         return $this;
     }
+    
+    /**
+     * apply toolbar configuration on controller dispatch
+     * 
+     * @param \Zend\Mvc\MvcEvent $oEvent dispatch event
+     * @return \Zend\Mvc\MvcEvent
+     */
+    public function applyToolbarOnDispatch(\Zend\Mvc\MvcEvent $oEvent) 
+    {
+        /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
+        $serviceManager = $this->getServiceLocator();
+        
+        \Zend\Navigation\Page\Mvc::setDefaultRouter($serviceManager->get('router'));
+        $this->defineActionTitles();
+        $this->defineToolbarItems();
+        
+        $action = $oEvent->getRouteMatch()->getParam('action');
+        $this->layout()->setVariable("title", $this->getActionTitle($action));
 
+        $toolbarItems = $this->getToolbarItem($action);
+        if ($toolbarItems) {
+            $toolbarNav = $serviceManager->get('componentnavigationhelper');
+            $toolbarNav->addPages($toolbarItems);
+        }
+        return $oEvent;
+    }
+
+    
 }

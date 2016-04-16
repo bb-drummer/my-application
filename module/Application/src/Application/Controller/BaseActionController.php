@@ -47,10 +47,16 @@ class BaseActionController extends AbstractActionController implements Dispatcha
      */
     public function defineActionTitles() 
     {
-        /*$this->setActionTitles(
-            array(
-            )
-        );*/
+        /*
+         * set a title for each action via a key/value array
+         * $this->setActionTitles(
+         *   array(
+         *      'index' => '...',
+         *      ...
+         *   )
+         * );
+         * 
+         */
         return $this;
     }
 
@@ -60,10 +66,17 @@ class BaseActionController extends AbstractActionController implements Dispatcha
      */
     public function defineToolbarItems() 
     {
-        /*$this->setToolbarItems(
-            array(
-            )
-        );*/
+        /*
+         * set a page/def for each action via a key/value array
+         * $this->setToolbarItems(
+         *   array(
+         *   	array("controller"=>"...", "action"=>"...", "label" =>...),
+         *      $myZendMvcPage,
+         *      ...
+         *   )
+         * );
+         * 
+         */
         return $this;
     }
 
@@ -75,25 +88,8 @@ class BaseActionController extends AbstractActionController implements Dispatcha
      */
     public function onDispatch(MvcEvent $e)
     {
-        /**
-         * @var $serviceManager \Zend\ServiceManager\ServiceManager 
-         */
-        $serviceManager = $this->getServiceLocator();
-        
-        \Zend\Navigation\Page\Mvc::setDefaultRouter($serviceManager->get('router'));
-        $this->defineActionTitles();
-        $this->defineToolbarItems();
-        
-        $action = $e->getRouteMatch()->getParam('action');
-        $this->layout()->setVariable("title", $this->getActionTitle($action));
-
-        $toolbarItems = $this->getToolbarItem($action);
-        if ($toolbarItems) {
-            $toolbarNav = $serviceManager->get('componentnavigationhelper');
-            $toolbarNav->addPages($toolbarItems);
-        }
-        
-        $result = parent::onDispatch($e);
+        $oEvent = $this->applyToolbarOnDispatch($e);
+        $result = parent::onDispatch($oEvent);
         return $result;
     }
     
