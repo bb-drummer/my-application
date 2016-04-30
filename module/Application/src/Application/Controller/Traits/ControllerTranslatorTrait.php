@@ -36,7 +36,8 @@ trait ControllerTranslatorTrait {
     public function getTranslator() 
     {
         if (!$this->translator) {
-            $this->setTranslator($this->getServiceLocator()->get('translator'));
+            //$this->setTranslator($this->getServiceLocator()->get('translator'));
+            $this->setTranslator(\Application\Module::getService('translator'));
         }
         return $this->translator;
     }

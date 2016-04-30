@@ -22,12 +22,14 @@ class IndexControllerTest extends BaseActionControllerTest
      */
     public function setupController()
     {
-        $this->setController(new IndexController());
-        $this->getController()->setServiceLocator($this->getApplicationServiceLocator());
+    	$serviceLocator = $this->getApplicationServiceLocator();
+    	
+        $this->setController(new IndexController( $serviceLocator ));
+        $this->getController()->setServiceLocator( $serviceLocator );
         $this->setRequest(new Request());
         $this->setRouteMatch(new RouteMatch(array('controller' => '\Application\Controller\Index', 'action' => 'index')));
         $this->setEvent(new MvcEvent());
-        $config = $this->getApplicationServiceLocator()->get('Config');
+        $config = $serviceLocator->get('Config');
         $routerConfig = isset($config['router']) ? $config['router'] : array();
         $router = HttpRouter::factory($routerConfig);
         $this->getEvent()->setRouter($router);
@@ -38,7 +40,7 @@ class IndexControllerTest extends BaseActionControllerTest
 
     /**
      * is the action accessable per request/response action name ?
-  *
+     *
      * @covers ::indexAction
      */
     public function testIndexActionCanBeDispatched()
@@ -56,7 +58,15 @@ class IndexControllerTest extends BaseActionControllerTest
     
         // Check for a ViewModel to be returned
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
-    
+
+        /*$this->dispatch("/de/");
+        $this->assertResponseStatusCode(200);
+        
+        $this->assertModuleName('Application');
+        $this->assertControllerName('Application\Controller\Index');
+        $this->assertControllerClass('IndexController');
+        $this->assertMatchedRouteName('home');*/
+        
         // Test the parameters contained in the View model
         //$vars = $result->getVariables();
         //$this->assertTrue(isset($vars['var']));

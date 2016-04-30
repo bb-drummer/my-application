@@ -23,12 +23,14 @@ class SetupControllerTest extends ActionControllerTestCase
      */
     public function setupController()
     {
-        $this->setController(new SetupController());
-        $this->getController()->setServiceLocator($this->getApplicationServiceLocator());
+    	$serviceLocator = $this->getApplicationServiceLocator();
+    	
+        $this->setController(new SetupController( $serviceLocator ));
+        $this->getController()->setServiceLocator( $serviceLocator );
         $this->setRequest(new Request());
         $this->setRouteMatch(new RouteMatch(array('controller' => '\Application\Controller\Setup', 'action' => 'index')));
         $this->setEvent(new MvcEvent());
-        $config = $this->getApplicationServiceLocator()->get('Config');
+        $config = $serviceLocator->get('Config');
         $routerConfig = isset($config['router']) ? $config['router'] : array();
         $router = HttpRouter::factory($routerConfig);
         $this->getEvent()->setRouter($router);

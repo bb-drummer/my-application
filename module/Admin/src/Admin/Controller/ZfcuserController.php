@@ -31,6 +31,7 @@ use Zend\Stdlib\ResponseInterface as Response;
 use ZfcUser\Controller\UserController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 use Application\Controller\Traits\ControllerTranslatorTrait;
 use Application\Controller\Traits\ControllerActiontitlesTrait;
@@ -60,6 +61,28 @@ class ZfcuserController extends UserController
      */
     protected $userTable;
     
+    /**
+     * @param callable $redirectCallback
+     * @param callable $redirectCallback
+     */
+    //public function __construct(ServiceLocatorInterface $serviceLocator, $redirectCallback)
+    public function __construct($userService, $options, $registerForm, $loginForm)
+    {
+        $this->userService = $userService;
+        $this->options = $options;
+        $this->registerForm = $registerForm;
+        $this->loginForm = $loginForm;
+        
+        /*if ( $serviceLocator ) {
+    		$this->setServiceLocator($serviceLocator);
+    	}
+    	if (!is_callable($redirectCallback)) {
+            throw new \InvalidArgumentException('You must supply a callable redirectCallback');
+        }
+        $this->redirectCallback = $redirectCallback;*/
+        
+    }
+
     /**
      * set current action titles
      * @return self
@@ -196,7 +219,7 @@ class ZfcuserController extends UserController
     /**
      * Register new user
      * @return mixed|\Zend\Http\Response|\Zend\View\Model\ViewModel
-     */
+     * /
     public function registerAction()
     {
         // if the user is logged in, we don't need to register
@@ -215,7 +238,7 @@ class ZfcuserController extends UserController
         $oModule = new AdminModule();
         $oModule->setAppConfig($config);
         
-        /** @var \Zend\Http\Response $registrationResponse */
+        /** @var \Zend\Http\Response $registrationResponse * /
         $registrationResponse = parent::registerAction();
         
         if ($registrationResponse instanceof Response) {
@@ -248,14 +271,23 @@ class ZfcuserController extends UserController
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
-
-        $config        = $this->getServiceLocator()->get('Config');
-        $options    = $this->getServiceLocator()->get('zfcuser_module_options');
+        // \Application\Module::getService
+        //$config     = $this->getServiceLocator()->get('Config');
+        //$options    = $this->getServiceLocator()->get('zfcuser_module_options');
+/*        
+        $userService  = $serviceLocator->get('zfcuser_user_service');
+        $registerForm = $serviceLocator->get('zfcuser_register_form');
+        $loginForm    = $serviceLocator->get('zfcuser_login_form');
+        $options      = $serviceLocator->get('zfcuser_module_options');
+*/
+        $config     = \Application\Module::getService('Config');
+        $options    = \Application\Module::getService('zfcuser_module_options');
         /**
          * @var \Zend\Http\PhpEnvironment\Request|\Zend\Http\Request $request
          */
         $request    = $this->getRequest();
-        $service    = $this->getUserService();
+        //$service    = $this->getUserService();
+        $service    = \Application\Module::getService('zfcuser_user_service');
         $form        = new RequestPasswordResetForm(null, $options);
         $translator    = $this->getTranslator();
         
@@ -264,7 +296,7 @@ class ZfcuserController extends UserController
             return array('enableRegistration' => false);
         }
         
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
+        if ($options->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
             $redirect = $request->getQuery()->get('redirect');
         } else {
             $redirect = false;
@@ -288,12 +320,12 @@ class ZfcuserController extends UserController
         $user = false;
         
             /** @var \Admin\Model\UserTable $userTable */
-            $userTable = $this->getServiceLocator()->get('\Admin\Model\UserTable');
+            $userTable = \Application\Module::getService('\Admin\Model\UserTable');
             /** @var \Admin\Entity\User $selectedUser */
             $selectedUser = $userTable->getUserByEmailOrUsername($identity);
             if ($selectedUser) {
                 /** @var \ZfcUser\Mapper\User $userMapper */
-                $userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
+                $userMapper = \Application\Module::getService('zfcuser_user_mapper');
                 $user = $userMapper->findByUsername($selectedUser->username);
                 if (!$user) {
                     $user = $userMapper->findByEmail($selectedUser->email);
@@ -334,13 +366,16 @@ class ZfcuserController extends UserController
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
-        $config        = $this->getServiceLocator()->get('Config');
-        $options    = $this->getServiceLocator()->get('zfcuser_module_options');
+        //$config     = $this->getServiceLocator()->get('Config');
+        //$options    = $this->getServiceLocator()->get('zfcuser_module_options');
+        $config     = \Application\Module::getService('Config');
+        $options    = \Application\Module::getService('zfcuser_module_options');
         /**
          * @var \Zend\Http\PhpEnvironment\Request|\Zend\Http\Request $request
          */
         $request    = $this->getRequest();
-        $service    = $this->getUserService();
+        //$service    = $this->getUserService();
+        $service    = \Application\Module::getService('zfcuser_user_service');
         $form        = new ResetPasswordForm(null, $options);
         $translator    = $this->getTranslator();
         
@@ -349,7 +384,7 @@ class ZfcuserController extends UserController
             return array('enableRegistration' => false);
         }
         
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
+        if ($options->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
             $redirect = $request->getQuery()->get('redirect');
         } else {
             $redirect = false;
@@ -363,7 +398,7 @@ class ZfcuserController extends UserController
             $userId = (int) $this->params()->fromRoute('user_id');
             $resetToken = $this->params()->fromRoute('resettoken');
             
-            $userTable = $this->getServiceLocator()->get('zfcuser_user_mapper');
+            $userTable = \Application\Module::getService('zfcuser_user_mapper');
             $user = $userTable->findById($userId);
             
             if (!$user ) {
@@ -399,7 +434,7 @@ class ZfcuserController extends UserController
         $oModule->setAppConfig($config);
         $user = false;
         
-        $userTable = $this->getServiceLocator()->get('zfcuser_user_mapper');
+        $userTable = \Application\Module::getService('zfcuser_user_mapper');
         $user = $userTable->findByEmail($userId);
             
         if (!$user ) {
@@ -665,6 +700,17 @@ class ZfcuserController extends UserController
         }
         return $this->aclroleTable;
     }
+    
+    /**
+     * retrieve ZfcUser\ModuleOptions
+     *
+     * @return array|\ZfcUser\ModuleOptions
+     * @throws \Exception
+     */
+    public function getOptions()
+    {
+    	return \Application\Module::getService('zfcuser_module_options');
+    } 
     
 }
     

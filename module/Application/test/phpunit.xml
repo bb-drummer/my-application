@@ -13,7 +13,7 @@
 		 printerClass="PHPUnit_TextUI_ResultPrinter"
 		 processIsolation="false"
 		 stopOnError="false"
-		 stopOnFailure="false"
+		 stopOnFailure="true"
 		 stopOnIncomplete="false"
 		 stopOnSkipped="false"
 		 stopOnRisky="false"

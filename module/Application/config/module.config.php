@@ -16,10 +16,12 @@
 return array(
     'controllers' => array(
         'invokables' => array(
-            'Application\Controller\Index'  => 'Application\Controller\IndexController',
-            'Application\Controller\System' => 'Application\Controller\SystemController',
-            'Application\Controller\Setup'  => 'Application\Controller\SetupController',
         ),
+    	'factories' => array(
+            'Application\Controller\Index'  => 'Application\Factory\IndexControllerFactory',
+            'Application\Controller\System' => 'Application\Factory\SystemControllerFactory',
+            'Application\Controller\Setup'  => 'Application\Factory\SetupControllerFactory',
+    	),
     ),
     'router' => array(
         'routes' => array(
@@ -58,7 +60,7 @@ return array(
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
                             'defaults' => array(
-                                'controller' => 'Application\Controller\Iindex',
+                                'controller' => 'Application\Controller\Index',
                             ),
                         ),
                     ),

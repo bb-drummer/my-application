@@ -17,7 +17,6 @@ namespace Application\Controller;
 
 use Zend\Mvc\MvcEvent;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\ServiceLocatorAwareTrait;
 use Zend\Stdlib\DispatchableInterface as Dispatchable;
@@ -33,13 +32,26 @@ use Application\Controller\Traits\ControllerToolbarTrait;
  *
  * @version
  */
-class BaseActionController extends AbstractActionController implements Dispatchable, ServiceLocatorAwareInterface
+class BaseActionController extends AbstractActionController implements Dispatchable
 {
+	//use ServiceLocatorAwareTrait;
 	use ControllerTranslatorTrait;
 	use ControllerActiontitlesTrait;
 	use ControllerToolbarTrait;
     
-    protected $services;
+    //protected $serviceLocator;
+    
+
+    /**
+     * basic constructor injecting global service manager/locator
+     * @return self
+     */
+    public function __construct( ServiceLocatorInterface $serviceLocator )
+    {
+    	if ( $serviceLocator ) {
+    		$this->setServiceLocator($serviceLocator);
+    	}
+    }
     
     /**
      * set current action titles
@@ -95,12 +107,12 @@ class BaseActionController extends AbstractActionController implements Dispatcha
     
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
     {
-        $this->services = $serviceLocator;
+        $this->serviceLocator = $serviceLocator;
     }
 
     public function getServiceLocator()
     {
-        return $this->services;
+        return $this->serviceLocator;
     }
 
     /**
