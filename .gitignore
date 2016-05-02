@@ -26,7 +26,7 @@ extras*
 ## 
 ## ignore (php) composer files
 ##
-composer.lock
+#composer.lock
 composer.phar
 
 ##
