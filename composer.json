@@ -22,10 +22,10 @@
   },
   "repositories" : [ {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
+    "url" : "git@gitlab.bjoernbartels.earth:zf2/SlmLocale.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/ZfcUser.git"
+    "url" : "git@gitlab.bjoernbartels.earth:zf2/ZfcUser.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
