@@ -2,6 +2,10 @@
   "name" : "my-application/my-application",
   "description" : "ZendFramework2 -ready to go- application base '[my-application]'",
   "version" : "0.0.1",
+  "config": {
+    "disable-tls" : true,
+    "secure-http": false
+  },
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
@@ -16,16 +20,12 @@
     "visualappeal/php-auto-update": "^0.9.2",
     "robloach/component-installer" : ">=0.2.3"
   },
-  "config": {
-    "disable-tls" : true,
-    "secure-http": false
-  },
   "repositories" : [ {
     "type" : "git",
-    "url" : "git@gitlab.bjoernbartels.earth:zf2/SlmLocale.git"
+    "url" : "http://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
   }, {
     "type" : "git",
-    "url" : "git@gitlab.bjoernbartels.earth:zf2/ZfcUser.git"
+    "url" : "http://gitlab.bjoernbartels.earth/zf2/ZfcUser.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
