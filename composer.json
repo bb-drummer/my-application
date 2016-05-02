@@ -16,6 +16,8 @@
     "visualappeal/php-auto-update": "^0.9.2",
     "robloach/component-installer" : ">=0.2.3"
   },
+  "disable-tls" : true,
+  "secure-http" : false,
   "repositories" : [ {
     "type" : "git",
     "url" : "http://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
