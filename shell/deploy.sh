@@ -5,11 +5,12 @@
 ## @param string release-repo-target-path (ex: ../my-application)
 ##
 CDIR=`pwd`;
+BUILD_SRC='build';
 TARGET=$1;
 
 echo 'deploying build files to release repository...';
 echo 'target: ' $TARGET;
-echo 'source: ' $CDIR'/build/';
+echo 'source: ' $CDIR'/'$BUILD_SRC'/';
 
 
 #
@@ -28,7 +29,7 @@ echo 'syncronizing files from build directory...';
 
 # 'rsync' version, exclude .git* files to keep repo info *g* O:)
 #
-rsync -v -a --inplace --delete --exclude='.git*' $CDIR/build/ ./
+rsync -v -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' $CDIR/$BUILD_SRC/ ./
 
 
 #

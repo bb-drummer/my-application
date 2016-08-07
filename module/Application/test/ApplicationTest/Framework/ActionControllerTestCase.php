@@ -203,9 +203,11 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
      */
     public function setZfcUserValidAuthMock() 
     {
-        $mockAuth = $this->getMock('ZfcUser\Entity\UserInterface');
+        $mockAuth = $this->createMock('ZfcUser\Entity\UserInterface'); 
+        //  $this->getMock('ZfcUser\Entity\UserInterface');
         
-        $ZfcUserMock = $this->getMock('Admin\Entity\User');  
+        
+        $ZfcUserMock = $this->createMock('Admin\Entity\User');  
         
         $ZfcUserMock->expects($this->any())
             ->method('getId')
@@ -215,7 +217,7 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
             ->method('getToken')
             ->will($this->returnValue('valid-password-reset-token'));
         
-        $authMock = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
+        $authMock = $this->createMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
         
         $authMock->expects($this->any())
             ->method('hasIdentity')
@@ -234,9 +236,9 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
      */
     public function setZfcUserNoAuthMock() 
     {
-        $mockAuth = $this->getMock('ZfcUser\Entity\UserInterface');
+        $mockAuth = $this->createMock('ZfcUser\Entity\UserInterface');
         
-        $ZfcUserMock = $this->getMock('Admin\Entity\User');  
+        $ZfcUserMock = $this->createMock('Admin\Entity\User');  
 
         $ZfcUserMock->expects($this->any())
             ->method('getId')
@@ -246,7 +248,7 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
             ->method('getToken')
             ->will($this->returnValue('valid-password-reset-token'));
         
-        $authMock = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
+        $authMock = $this->createMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
         
         $authMock->expects($this->any())
             ->method('hasIdentity')
@@ -266,7 +268,7 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
     public  function setZfcUserMapperFindByIdMock() 
     {
         // user/auth entity
-        $ZfcUserMock = $this->getMock('Admin\Entity\User');  
+        $ZfcUserMock = $this->createMock('Admin\Entity\User');  
 
         $ZfcUserMock->expects($this->any())
             ->method('getId')
@@ -277,7 +279,7 @@ class ActionControllerTestCase extends AbstractHttpControllerTestCase
             ->will($this->returnValue('valid-password-reset-token'));
         
         // mapper
-        $mockMapper = $this->getMock('ZfcUser\Mapper\User');
+        $mockMapper = $this->createMock('ZfcUser\Mapper\User');
         
         $mockMapper->expects($this->any())
             ->method('findById')

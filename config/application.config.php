@@ -25,7 +25,7 @@ return array(
             
         ),
         'js' => array(
-            
+        	
         ),
     ),
         
@@ -53,7 +53,6 @@ return array(
             './module',
             './vendor',
 
-        	//'SlmLocale' => '../SlmLocale/',
             //'UIComponents' => '../module-uicomponents/',
             //'Admin' => '../module-admin/',
             

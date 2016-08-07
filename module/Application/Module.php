@@ -141,36 +141,36 @@ class Module implements AutoloaderProviderInterface, ServiceLocatorAwareInterfac
     public function getAutoloaderConfig()
     {
         return array(
-        'Zend\Loader\StandardAutoloader' => array(
-        'namespaces' => array(
-        __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-        ),
-        ),
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+                ),
+            ),
         );
     }
     
     public function getViewHelperConfig()
     {
         return array(
-        'factories' => array(
-        'navigation' => function (HelperPluginManager $pm) {
-            $this->setServiceLocator($pm->getServiceLocator());
-            $acl = \Admin\Module::initACL($pm->getServiceLocator());
-                    
-            $navigation = $pm->get('Zend\View\Helper\Navigation');
-            $navigation->setAcl($acl);
-                    
-            $oAuth = $pm->getServiceLocator()->get('zfcuser_auth_service');
-            if ($oAuth->hasIdentity() ) {
-                $oUser = $oAuth->getIdentity();
-                $navigation->setRole($oUser->getAclrole());
-            } else {
-                $navigation->setRole('public');
-            }
-                    
-            return $navigation;
-        },
-        )
+            'factories' => array(
+                'navigation' => function (HelperPluginManager $pm) {
+                    $this->setServiceLocator($pm->getServiceLocator());
+                    $acl = \Admin\Module::initACL($pm->getServiceLocator());
+
+                    $navigation = $pm->get('Zend\View\Helper\Navigation');
+                    $navigation->setAcl($acl);
+
+                    $oAuth = $pm->getServiceLocator()->get('zfcuser_auth_service');
+                    if ($oAuth->hasIdentity() ) {
+                        $oUser = $oAuth->getIdentity();
+                        $navigation->setRole($oUser->getAclrole());
+                    } else {
+                        $navigation->setRole('public');
+                    }
+
+                    return $navigation;
+                },
+            )
         );
     }
     

@@ -68,10 +68,6 @@ trait ControllerToolbarTrait {
      */
     public function applyToolbarOnDispatch(\Zend\Mvc\MvcEvent $oEvent) 
     {
-        /** @var $serviceManager \Zend\ServiceManager\ServiceManager */
-        //$serviceManager = $this->getServiceLocator();
-
-    	//\Zend\Navigation\Page\Mvc::setDefaultRouter($serviceManager->get('router'));
         \Zend\Navigation\Page\Mvc::setDefaultRouter(\Application\Module::getService('router'));
         $this->defineActionTitles();
         $this->defineToolbarItems();
@@ -81,7 +77,7 @@ trait ControllerToolbarTrait {
 
         $toolbarItems = $this->getToolbarItem($action);
         if ($toolbarItems) {
-            $toolbarNav = \Application\Module::getService('componentnavigationhelper'); //$serviceManager->get('componentnavigationhelper');
+            $toolbarNav = \Application\Module::getService('componentnavigationhelper');
             $toolbarNav->addPages($toolbarItems);
         }
         return $oEvent;

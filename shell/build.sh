@@ -2,12 +2,12 @@
 ##
 ## copy current source files into a build container directory, ex: to prepare for deployment
 ##
-
+BUILD_TARGET='build';
 
 # prepare build dir 
 # (when using the 'copy' version, uncomment the next line 'rm ...' to have a clean build directory)
 #rm -rf build
-mkdir -p build
+mkdir -p $BUILD_TARGET
 
 
 #
@@ -28,9 +28,9 @@ echo 'copying files into build directory...';
 
 # 'rsync' version
 #
-rsync -a --inplace --delete --exclude='.git*' config module public shell sql build/
-rsync -a --inplace --delete --exclude='.git*' LICENSE.txt README.md init_autoloader.php .gitlab-ci.yml .scrutinizer.yml build/
-rsync -a --inplace --delete --exclude='.git*' composer.build.json build/composer.json
+rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' config module public shell sql $BUILD_TARGET/
+rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' LICENSE.txt README.md init_autoloader.php .gitlab-ci.yml .scrutinizer.yml $BUILD_TARGET/
+rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' composer.build.json $BUILD_TARGET/composer.json
 
 
 #
@@ -41,45 +41,49 @@ echo 'removing files from build directory which should not be included with the 
 
 # remove (local) configs
 echo 'remove local configurations';
-rm -rf build/config/**/*local.php
+rm -rf $BUILD_TARGET/config/**/*local.php
+
+# remove git files
+echo 'remove local report files';
+rm -rf $BUILD_TARGET/public/.report*
 
 # remove git files
 echo 'remove local (sub)git files';
-rm -rf build/module/**/.git*
-rm -rf build/public/**/.git*
-rm -rf build/public/**/*/.git*
+rm -rf $BUILD_TARGET/module/**/.git*
+rm -rf $BUILD_TARGET/public/**/.git*
+rm -rf $BUILD_TARGET/public/**/*/.git*
 
 # remove obsolete composer files
 echo 'remove local (sub)composer files';
-rm -rf build/module/**/composer* 
-rm -rf build/public/**/composer*
-rm -rf build/public/**/*/composer*
+rm -rf $BUILD_TARGET/module/**/composer* 
+rm -rf $BUILD_TARGET/public/**/composer*
+rm -rf $BUILD_TARGET/public/**/*/composer*
 
 # remove obsolete assets dev and build files
 echo 'remove local dev and build files';
-rm -rf build/public/application-assets/.* 
-rm -rf build/public/application-assets/*.sh
-rm -rf build/public/application-assets/*.json
-rm -rf build/public/application-assets/package*  
-rm -rf build/public/application-assets/gulp*
-rm -rf build/public/application-assets/lib 
-rm -rf build/public/application-assets/src 
-rm -rf build/public/application-assets/test 
-rm -rf build/public/application-assets/CONTRIBUTING.md
-rm -rf build/public/application-assets/LICENSE.txt 
-rm -rf build/public/application-assets/README.md 
+rm -rf $BUILD_TARGET/public/application-assets/.* 
+rm -rf $BUILD_TARGET/public/application-assets/*.sh
+rm -rf $BUILD_TARGET/public/application-assets/*.json
+rm -rf $BUILD_TARGET/public/application-assets/package*  
+rm -rf $BUILD_TARGET/public/application-assets/gulp*
+rm -rf $BUILD_TARGET/public/application-assets/lib 
+rm -rf $BUILD_TARGET/public/application-assets/src 
+rm -rf $BUILD_TARGET/public/application-assets/test 
+rm -rf $BUILD_TARGET/public/application-assets/CONTRIBUTING.md
+rm -rf $BUILD_TARGET/public/application-assets/LICENSE.txt 
+rm -rf $BUILD_TARGET/public/application-assets/README.md 
 
 # remove test themes
 echo 'remove local test themes';
-#rm -rf build/public/themes/foundation 
-#rm -rf build/public/themes/bootstrap 
-rm -rf build/public/themes/adminlte 
-rm -rf build/public/themes/lcars 
-rm -rf build/public/themes/remark 
-rm -rf build/public/themes/taurus
+#rm -rf $BUILD_TARGET/public/themes/foundation 
+#rm -rf $BUILD_TARGET/public/themes/bootstrap 
+rm -rf $BUILD_TARGET/public/themes/adminlte 
+rm -rf $BUILD_TARGET/public/themes/lcars 
+rm -rf $BUILD_TARGET/public/themes/remark 
+rm -rf $BUILD_TARGET/public/themes/taurus
 
 # other clean up
 echo 'clean up...';
-rm -rf build/module/UIComponents/tests
+rm -rf $BUILD_TARGET/module/UIComponents/tests
 
 exit

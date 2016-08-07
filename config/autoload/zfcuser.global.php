@@ -180,16 +180,44 @@ $settings = array(
      * this to configure which Zend\Captcha adapter to use, and the options to
      * pass to it. The default uses the Figlet captcha.
      */
-    'form_captcha_options' => array(
+    /*
+     * This causes an error in a php7/OSX Environment!? 
+     * Neither with OSX+ZendServer nor in a (ubuntu) linux 'vagrant/virtualbox'
+     * VM including a standard LAMP (apache2, php7) setup 
+     * error is either one of:
+     *  - an apache seg-fault(11) in the VM errorlogs, also ZendServer v8.0)
+     *  ...or...
+     *  - "Could not open device" (ZendServer v8.5+, indicating an issue with
+     *    'random_bytes' method, already known to the Zend guys...)
+     *    (Support: 'next update... blah...' - "LOL")
+     * however, it does work in a 'pure' (ubuntu) linux environment like my 
+     * webservers (ubuntu+plesk)...
+	 */
+	/* 'form_captcha_options' => array(
         'class'   => 'figlet',
         'options' => array(
             'wordLen'    => 5,
             'expiration' => 300,
             'timeout'    => 300,
         ),
+    ), */ 
+		
+	/*
+	 * this one works in 'all' environments
+	 */
+    'form_captcha_options' => array(
+        'class'   => 'ReCaptcha',
+        'options' => array(
+            'label'      => '',
+            'required'   => true,
+            'order'      => 500,
+			'privkey'    => '6Lc21xETAAAAAGKr7fz7L_DCamiqfHsIgtDZsySm', // '6LcToSETAAAAAGdOfPABvOcbS7zrMIyupjIejWsI',
+			'pubkey'     => '6Lc21xETAAAAAFVyLcUogLYh7P9KS-Q5IFr1Cn7t', // '6LcToSETAAAAAGYHx8E9e8ZSG87V3DSw7gF5-XuY',
+			'ssl'        => true
+		),
     ),
 
-    /**
+	/**
      * Use Redirect Parameter If Present
      *
      * Upon successful authentication, check for a 'redirect' POST or GET parameter
@@ -215,7 +243,7 @@ $settings = array(
      * Accepted values: A valid route name within your application
      *
      */
-    //'login_redirect_route' => 'zfcuser',
+    'login_redirect_route' => 'zfcuser',
 
     /**
      * Logout Redirect Route

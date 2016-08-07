@@ -16,6 +16,10 @@
 
 namespace Admin\Controller;
 
+use Application\Controller\Traits\ControllerTranslatorTrait;
+use Application\Controller\Traits\ControllerActiontitlesTrait;
+use Application\Controller\Traits\ControllerToolbarTrait;
+
 use Admin\Module as AdminModule;
 use Admin\Form\RequestPasswordResetForm;
 use Admin\Form\ResetPasswordForm;
@@ -28,14 +32,11 @@ use Admin\Model\UserProfile;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\ResponseInterface as Response;
 
-use ZfcUser\Controller\UserController;
 use Zend\View\Model\ViewModel;
 use Zend\Mvc\MvcEvent;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-use Application\Controller\Traits\ControllerTranslatorTrait;
-use Application\Controller\Traits\ControllerActiontitlesTrait;
-use Application\Controller\Traits\ControllerToolbarTrait;
+use ZfcUser\Controller\UserController;
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication;
 
 /**
@@ -64,7 +65,7 @@ class ZfcuserController extends UserController
     /**
      * @param callable $redirectCallback
      * @param callable $redirectCallback
-     */
+     * /
     //public function __construct(ServiceLocatorInterface $serviceLocator, $redirectCallback)
     public function __construct($userService, $options, $registerForm, $loginForm)
     {
@@ -79,7 +80,7 @@ class ZfcuserController extends UserController
     	if (!is_callable($redirectCallback)) {
             throw new \InvalidArgumentException('You must supply a callable redirectCallback');
         }
-        $this->redirectCallback = $redirectCallback;*/
+        $this->redirectCallback = $redirectCallback; * /
         
     }
 
@@ -174,8 +175,28 @@ class ZfcuserController extends UserController
     public function onDispatch(MvcEvent $e)
     {
         $oEvent = $this->applyToolbarOnDispatch($e);
-        $result = parent::onDispatch($oEvent);
-        return $result;
+        
+        $routeMatch = $e->getRouteMatch();
+        if (!$routeMatch) {
+            /**
+             * @todo Determine requirements for when route match is missing.
+             *       Potentially allow pulling directly from request metadata?
+             */
+            throw new Exception\DomainException('Missing route matches; unsure how to retrieve action');
+        }
+
+        $action = $routeMatch->getParam('action', 'not-found');
+        $method = static::getMethodFromAction($action);
+
+        if (!method_exists($this, $method)) {
+            $method = 'notFoundAction';
+        }
+
+        $actionResponse = $this->$method();
+
+        $e->setResult($actionResponse);
+
+        return $actionResponse;
     }
     
     /**
@@ -187,7 +208,7 @@ class ZfcuserController extends UserController
         // if the user is logged in...
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             // ...redirect to the login redirect route
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+            return $this->redirect()->toRoute('zfcuser/login'); //$this->getOptions()->getLoginRedirectRoute());
         }
     	$oIdentity = $this->zfcUserAuthentication()->getIdentity();
         $oProfile = new \Admin\Model\UserProfile();
@@ -210,10 +231,78 @@ class ZfcuserController extends UserController
         // if the user is logged in...
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             // ...redirect to the login redirect route
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+            //return $this->redirect()->toRoute('zfcuser/login'); //$this->getOptions()->getLoginRedirectRoute());
         }
         return $this->userprofileAction();
         
+    }
+
+    /**
+     * General-purpose authentication action
+     * /
+    public function authenticateAction()
+    {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+
+        $result = $adapter->prepareForAuthentication($this->getRequest());
+
+        // Return early if an adapter returned a response
+        if ($result instanceof Response) {
+            return $result;
+        }
+
+        $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
+
+        if (!$auth->isValid()) {
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+            $adapter->resetAdapters();
+            return $this->redirect()->toUrl(
+                $this->url()->fromRoute(static::ROUTE_LOGIN) .
+                ($redirect ? '?redirect='. rawurlencode($redirect) : '')
+            );
+        }
+
+        $redirect = $this->redirectCallback;
+
+        return $redirect();
+    }
+    
+    /**
+     * Logout and clear the identity
+     * /
+    public function logoutAction()
+    {
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+
+        //$redirect = $this->redirectCallback;
+
+        //return $redirect();
+    }
+
+    
+    /**
+     * call parent object's authenticate... 
+     * @return mixed|\Zend\Http\Response|\Zend\View\Model\ViewModel
+     * /
+    public function authenticateAction()
+    {
+    	return parent::authenticateAction();
+    }
+
+    /**
+     * call parent object's logout... 
+     * @return mixed|\Zend\Http\Response|\Zend\View\Model\ViewModel
+     * /
+    public function logoutAction()
+    {
+    	return parent::logoutAction();
     }
 
     /**

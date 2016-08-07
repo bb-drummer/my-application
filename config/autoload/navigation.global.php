@@ -12,9 +12,6 @@
  * @license        http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
  * @copyright      copyright (c) 2016 Björn Bartels <coding@bjoernbartels.earth>
  */
-/*    "slm/locale" : ">=0.1.0,<1.2.0-dev",
-    "zf-commons/zfc-user" : ">=1.2.2",
-*/
 return array(
     'navigation' => array(
         'default' => array(

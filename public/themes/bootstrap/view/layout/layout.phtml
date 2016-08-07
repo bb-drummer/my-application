@@ -1,10 +1,10 @@
 <?php 
 	echo $this->doctype(); 
-	/** @var \UIComponents\View\Helper\Bootstrap $oTwitterBootstrap **/
+	/** @var \UIComponents\View\Helper\Utilities $oUtilities **/
 	$oUtilities = $this->Utilities();
 	/** @var \UIComponents\View\Helper\Components $oComponents **/
 	$oComponents = $this->Components();
-	/** @var \Admin\Entity\User $user **/
+	/** @var \Admin\Entity\User $oUser **/
 	$oUser = $this->zfcUserIdentity();
 ?>
 <html lang="<?php echo \Locale::getPrimaryLanguage(null) ?>">
@@ -52,8 +52,6 @@
                 </div>
 				<div class="collapse navbar-collapse">
 					<?php
-						//$oTwitterBootstrap = $this->bootstrap();
-						//$oBootstrapComponents = $oTwitterBootstrap->Components();
 						$oNavBar = $oComponents->Topbar()
 							->setUlClass('nav navbar-nav')
 							->setMinDepth(0)
