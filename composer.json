@@ -12,6 +12,7 @@
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
     "zendframework/zendframework" : ">=2.5",
+    "zendframework/zendservice-recaptcha": "*",
     "phpunit/phpunit" : ">=5.1.4",
     "zf-commons/zfc-user" : ">=1",
     "neilime/zf2-assets-bundle" : ">=3.4.1",

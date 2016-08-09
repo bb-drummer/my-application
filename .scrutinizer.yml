@@ -31,11 +31,7 @@ build:
                     host: 'myapplication.test'
     tests:
         before:
-            - 'apt-get update -y'
-            - 'apt-get upgrade -y'
-            - 'apt-get install git -y'
             - 'ifconfig'
-            - 'wget http://ipinfo.io/ip -qO -'
             - 'curl http://ipinfo.io/ip'
             - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
             - 'mysql -u root dp_mydemo < sql/install.sql'
