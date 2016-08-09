@@ -15,8 +15,6 @@ curl http://ipinfo.io/ip
 php -v
 #which php
 
-php -m
-
 # Install composer
 curl -sS https://getcomposer.org/installer | php
 php composer.phar --version
