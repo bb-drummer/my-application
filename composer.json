@@ -8,7 +8,6 @@
   },
   "disable-tls" : false,
   "secure-http" : true,
-  "minimum-stability" : "dev",
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
