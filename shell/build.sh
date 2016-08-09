@@ -26,12 +26,13 @@ echo 'copying files into build directory...';
 #cp -p .gitlab-ci.yml build/
 #cp -p .scrutinizer.yml build/
 
-# 'rsync' version
-#
+# application files
 rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' config module public shell sql $BUILD_TARGET/
 rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' LICENSE.txt README.md init_autoloader.php .gitlab-ci.yml .scrutinizer.yml $BUILD_TARGET/
 rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' composer.build.json $BUILD_TARGET/composer.json
 
+# vendor modules
+rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' vendor/slm/locale $BUILD_TARGET/module/SlmLocale
 
 #
 # removing files from build directory which should NOT be included with the build, like local 

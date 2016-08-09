@@ -1,10 +1,3 @@
-before_commands:
-    - 'apt-get update -y'
-    - 'apt-get upgrade -y'
-    - 'apt-get install git -y'
-    - 'ifconfig'
-    - 'wget http://ipinfo.io/ip -qO -'
-    - 'curl http://ipinfo.io/ip'
 checks:
     php: true
     javascript: true
@@ -21,6 +14,15 @@ filter:
 coding_style:
     php: {  }
 build:
+  dependencies:
+    before:
+      - 'apt-get update -y'
+      - 'apt-get upgrade -y'
+      - 'apt-get install git -y'
+      - 'ifconfig'
+      - 'wget http://ipinfo.io/ip -qO -'
+      - 'curl http://ipinfo.io/ip'
+      
     environment:
         php: '7.0'
         mysql: true

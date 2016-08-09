@@ -13,7 +13,6 @@
     "php" : "^5.5 || ^7.0",
     "zendframework/zendframework" : ">=2.5",
     "phpunit/phpunit" : ">=5.1.4",
-    "slm/locale" : "dev-master",
     "zf-commons/zfc-user" : ">=1",
     "neilime/zf2-assets-bundle" : ">=3.4.1",
     "zendexperts/ze-theme" : "dev-master",
