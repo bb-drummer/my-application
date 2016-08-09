@@ -1,8 +1,8 @@
 #!/bin/bash
 #whoami
-apt-get update -y;
-apt-get upgrade -y;
-apt-get install git unzip -y;
+apt-get update -y -q;
+apt-get upgrade -y -q;
+apt-get install git unzip mysql-server -y;
 
 pecl install intl;
 pecl install zip;
