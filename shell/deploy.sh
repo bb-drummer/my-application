@@ -44,7 +44,8 @@ echo 'commiting files to release repository...';
 git add .
 git commit -m "new release build"
 git pull
-git push --set-upstream origin master
+git push --all -u
+#git push --set-upstream origin master
 
 
 # going back to where we came from...
