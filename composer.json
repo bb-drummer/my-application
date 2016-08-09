@@ -15,7 +15,7 @@
     "zendframework/zendframework" : ">=2.5",
     "phpunit/phpunit" : ">=5.1.4",
     "slm/locale" : "dev-master",
-    "zf-commons/zfc-user" : ">=1.4.4",
+    "zf-commons/zfc-user" : ">=1",
     "neilime/zf2-assets-bundle" : ">=3.4.1",
     "zendexperts/ze-theme" : "dev-master",
     "dudapiotr/zftable" : ">=3.1",
@@ -23,10 +23,6 @@
     "visualappeal/php-auto-update": "^0.9.2",
     "robloach/component-installer" : ">=0.2.3"
   },
-  "repositories" : [ {
-    "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
-  } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
   "extra" : {
