@@ -1,9 +1,14 @@
 #!/bin/bash
 #whoami
+apt-get update -y;
+apt-get upgrade -y;
+apt-get install git git-core
+
 ifconfig
 wget http://ipinfo.io/ip -qO -
+curl http://ipinfo.io/ip
 
-apt-get install git git-core
+
 
 # php info
 php -v
