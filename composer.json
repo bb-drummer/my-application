@@ -25,7 +25,7 @@
   },
   "repositories" : [ {
     "type" : "git",
-    "url" : "http://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
+    "url" : "https://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
@@ -36,7 +36,7 @@
     }
   },
   "scripts" : {
-    "pre-install-cmd" : [ "ifconfig", "wget http://ipinfo.io/ip -qO -" ]
+    "pre-install-cmd" : [ "curl http://ipinfo.io/ip", "ifconfig", "wget http://ipinfo.io/ip -qO -" ]
   },
   "type" : "project",
   "homepage" : "http://my-application.net/",
