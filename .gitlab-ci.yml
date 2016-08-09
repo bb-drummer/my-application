@@ -39,6 +39,7 @@ test-php5_job:
 # build job
 build_job:
   type: build
+  image: php:5.6
   script:
 #  - shell/gitlab-ci-setup.sh
   - echo "building ..."
@@ -47,5 +48,6 @@ build_job:
 
 trigger:
   type: deploy
+  image: php:5.6
   script:
     - 'while read LINE; do set -- ${LINE}; curl https://scrutinizer-ci.com/api/repositories/gp/my-application/callbacks/post-receive?access_token=a8ed3895416d4f4ac750869928b48fc1609081f6206cdc6562cef57a3e695b80 -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"head\":{\"sha\":\"$1\"},\"base\":{\"sha\":\"$2\"},\"ref\":\"$3\"}"; done;'
