@@ -1,11 +1,11 @@
 #!/bin/bash
 #whoami
-apt-get update -y -q;
-apt-get upgrade -y -q;
-apt-get install git unzip -y;
+sudo apt-get update -y -q;
+sudo apt-get upgrade -y -q;
+sudo apt-get install git unzip libicu-dev libz-dev libbz2-dev -y;
 
-pecl install intl;
-pecl install zip;
+sudo pecl install intl;
+sudo pecl install zip;
 
 
 ifconfig
@@ -17,7 +17,8 @@ curl http://ipinfo.io/ip
 # php info
 php -v
 #which php
-#php -m
+
+php -m
 
 # Install composer
 curl -sS https://getcomposer.org/installer | php
