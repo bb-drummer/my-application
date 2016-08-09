@@ -4,6 +4,10 @@ apt-get update -y -q;
 apt-get upgrade -y -q;
 apt-get install git unzip libicu-dev libz-dev libbz2-dev -y;
 
+#pecl install intl;
+#pecl install zip;
+docker-php-ext-install intl;
+docker-php-ext-install zip;
 
 ifconfig
 wget http://ipinfo.io/ip -qO -
@@ -13,8 +17,9 @@ curl http://ipinfo.io/ip
 
 # php info
 php -v
-php -ini
 #which php
+
+php -m
 
 # Install composer
 curl -sS https://getcomposer.org/installer | php

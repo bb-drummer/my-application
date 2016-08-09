@@ -3,10 +3,10 @@
 # prepare gitlab-ci
 before_script:
 - shell/gitlab-ci-setup.sh
-- pecl install intl;
-- pecl install zip;
-- echo "extension=intl.so" > /etc/php.ini
-- echo "extension=zip.so" > /etc/php.ini
+#- pecl install intl;
+#- pecl install zip;
+#- echo "extension=intl.so" > /usr/local/etc/php/php.ini
+#- echo "extension=zip.so" > /usr/local/etc/php/php.ini
 - php -m
 - php -d memory_limit=-1 composer.phar install
 - cp config/autoload/database.local.dist.php config/autoload/database.local.php
