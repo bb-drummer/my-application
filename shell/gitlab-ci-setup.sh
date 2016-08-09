@@ -2,7 +2,7 @@
 #whoami
 apt-get update -y;
 apt-get upgrade -y;
-apt-get install git git-core
+apt-get install git
 
 ifconfig
 wget http://ipinfo.io/ip -qO -
