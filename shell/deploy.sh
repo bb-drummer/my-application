@@ -29,7 +29,9 @@ echo 'syncronizing files from build directory...';
 
 # 'rsync' version, exclude .git* files to keep repo info *g* O:)
 #
-rsync -v -a --inplace --delete --exclude='.git*' --include='.gitlab*' --exclude='.vagrant*' --exclude='.report*' $CDIR/$BUILD_SRC/ ./
+rsync -v -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' $CDIR/$BUILD_SRC/ ./
+
+cp -v -p $CDIR/$BUILD_SRC/.gitlab-ci.yml ./
 
 
 #

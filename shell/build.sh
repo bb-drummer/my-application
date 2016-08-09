@@ -30,7 +30,7 @@ rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.
 rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' --include='.gitlab*' LICENSE.txt README.md init_autoloader.php .gitlab* .scrutinizer.yml $BUILD_TARGET/
 rsync -a --inplace --delete --exclude='.git*' --exclude='.vagrant*' --exclude='.report*' composer.build.json $BUILD_TARGET/composer.json
 
-#cp -v -p .gitlab-ci.yml build/
+cp -v -p .gitlab-ci.yml build/
 
 
 # vendor modules
