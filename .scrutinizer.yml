@@ -37,10 +37,10 @@ build:
             - 'mysql -u root dp_mydemo < sql/install.sql'
             - 'mysql -u root dp_mydemo < sql/demo.sql'
             - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
-            - 'replace "_MYSQL_HOST_" "127.0.0.1" -- config/autoload/database.local.php'
-            - 'replace "_MYSQL_DATABASE_" "dp_mydemo" -- config/autoload/database.local.php'
-            - 'replace "_MYSQL_USER_" "root" -- config/autoload/database.local.php'
-            - 'replace "_MYSQL_PASSWORD_" "" -- config/autoload/database.local.php'
+            - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
+            - sed -i "s/_MYSQL_DATABASE_/dp_mydemo/g" config/autoload/database.local.php
+            - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
+            - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
         override:
             -
                 command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'

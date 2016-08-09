@@ -11,11 +11,6 @@ before_script:
 - sed -i "s/_MYSQL_DATABASE_/$MYSQL_DATABASE/g" config/autoload/database.local.php
 - sed -i "s/_MYSQL_USER_/$MYSQL_USER/g" config/autoload/database.local.php
 - sed -i "s/_MYSQL_PASSWORD_/$MYSQL_PASSWORD/" config/autoload/database.local.php
-- cat config/autoload/database.local.php
-#- replace "_MYSQL_HOST_" "$MYSQL_HOST" -- config/autoload/database.local.php
-#- replace "_MYSQL_DATABASE_" "$MYSQL_DATABASE" -- config/autoload/database.local.php
-#- replace "_MYSQL_USER_" "$MYSQL_USER" -- config/autoload/database.local.php
-#- replace "_MYSQL_PASSWORD_" "$MYSQL_PASSWORD" -- config/autoload/database.local.php
 
 # include services
 # define types/stages
@@ -32,22 +27,26 @@ test-php5_job:
   type: test
   image: php:5.6
   script:
-#  - echo "testing application-base php-5.6 ..."
   - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
   allow_failure: false
 
-# build job
-build_job:
-  type: build
-  image: php:5.6
+# testing with php 7.x jobs
+test-php7_job:
+  type: test
+  image: php:7.0
   script:
-#  - shell/gitlab-ci-setup.sh
-  - echo "building ..."
   - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
   allow_failure: false
 
-trigger:
-  type: deploy
-  image: php:5.6
-  script:
-    - 'while read LINE; do set -- ${LINE}; curl https://scrutinizer-ci.com/api/repositories/gp/my-application/callbacks/post-receive?access_token=a8ed3895416d4f4ac750869928b48fc1609081f6206cdc6562cef57a3e695b80 -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"head\":{\"sha\":\"$1\"},\"base\":{\"sha\":\"$2\"},\"ref\":\"$3\"}"; done;'
+#build_job:
+#  type: build
+#  image: php:5.6
+#  script:
+#  - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+#  allow_failure: false
+#
+#trigger:
+#  type: deploy
+#  image: php:5.6
+#  script:
+#    - 'while read LINE; do set -- ${LINE}; curl https://scrutinizer-ci.com/api/repositories/gp/my-application/callbacks/post-receive?access_token=a8ed3895416d4f4ac750869928b48fc1609081f6206cdc6562cef57a3e695b80 -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"head\":{\"sha\":\"$1\"},\"base\":{\"sha\":\"$2\"},\"ref\":\"$3\"}"; done;'
