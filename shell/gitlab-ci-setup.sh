@@ -4,6 +4,9 @@ apt-get update -y;
 apt-get upgrade -y;
 apt-get install git -y;
 
+pecl install intl;
+
+
 ifconfig
 wget http://ipinfo.io/ip -qO -
 curl http://ipinfo.io/ip
