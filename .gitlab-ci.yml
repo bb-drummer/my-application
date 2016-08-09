@@ -11,6 +11,7 @@ before_script:
 - sed -i "s/_MYSQL_DATABASE_/$MYSQL_DATABASE/g" config/autoload/database.local.php
 - sed -i "s/_MYSQL_USER_/$MYSQL_USER/g" config/autoload/database.local.php
 - sed -i "s/_MYSQL_PASSWORD_/$MYSQL_PASSWORD/g" config/autoload/database.local.php
+- cat config/autoload/database.local.php
 #- replace "_MYSQL_HOST_" "$MYSQL_HOST" -- config/autoload/database.local.php
 #- replace "_MYSQL_DATABASE_" "$MYSQL_DATABASE" -- config/autoload/database.local.php
 #- replace "_MYSQL_USER_" "$MYSQL_USER" -- config/autoload/database.local.php
