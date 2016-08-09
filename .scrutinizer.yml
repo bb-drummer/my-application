@@ -14,15 +14,6 @@ filter:
 coding_style:
     php: {  }
 build:
-  dependencies:
-    before:
-      - 'apt-get update -y'
-      - 'apt-get upgrade -y'
-      - 'apt-get install git -y'
-      - 'ifconfig'
-      - 'wget http://ipinfo.io/ip -qO -'
-      - 'curl http://ipinfo.io/ip'
-      
     environment:
         php: '7.0'
         mysql: true
@@ -40,6 +31,12 @@ build:
                     host: 'myapplication.test'
     tests:
         before:
+            - 'apt-get update -y'
+            - 'apt-get upgrade -y'
+            - 'apt-get install git -y'
+            - 'ifconfig'
+            - 'wget http://ipinfo.io/ip -qO -'
+            - 'curl http://ipinfo.io/ip'
             - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
             - 'mysql -u root dp_mydemo < sql/install.sql'
             - 'mysql -u root dp_mydemo < sql/demo.sql'
