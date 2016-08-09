@@ -6,6 +6,8 @@
     "disable-tls" : true,
     "secure-http": false
   },
+  "disable-tls" : "false",
+  "secure-http" : "true",
   "minimum-stability" : "dev",
   "require" : {
     "composer/installers": "~1.0",
