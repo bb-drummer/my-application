@@ -6,6 +6,7 @@
     "disable-tls" : true,
     "secure-http": false
   },
+  "minimum-stability" : "dev",
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
@@ -22,10 +23,10 @@
   },
   "repositories" : [ {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
+    "url" : "http://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/ZfcUser.git"
+    "url" : "http://gitlab.bjoernbartels.earth/zf2/ZfcUser.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
