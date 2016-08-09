@@ -1,11 +1,8 @@
 #!/bin/bash
 #whoami
-sudo apt-get update -y -q;
-sudo apt-get upgrade -y -q;
-sudo apt-get install git unzip libicu-dev libz-dev libbz2-dev -y;
-
-sudo pecl install intl;
-sudo pecl install zip;
+apt-get update -y -q;
+apt-get upgrade -y -q;
+apt-get install git unzip libicu-dev libz-dev libbz2-dev -y;
 
 
 ifconfig
