@@ -67,6 +67,7 @@ Execute the 'sql/install.sql' into that database you previously created.
 
     mysql --user=yourdbuser --password="yourdbpassword" yourdbname < /path/to/myapp/sql/install.sql
 
+
 #### TODO
 Open the setup inside your browser (http://myappliction.tld/setup) and follow the steps... 
 or
@@ -85,6 +86,7 @@ This will start the cli-server on port 8080, and bind it to all network
 interfaces.
 
 **Note: ** The built-in CLI server is *for development only*.
+
 
 #### Apache Setup
 
@@ -107,17 +109,20 @@ project and you should be ready to go! It should look something like below:
 
 ## Status
 
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/gp/my-application/badges/quality-score.png?b=master&s=c01d3a7a0c48d0408ac89a340e2dc93dc477b915)](https://scrutinizer-ci.com/gp/my-application/?branch=master)
+[![build status](https://gitlab.com/my-application.bjoernbartels.earth/my-application/badges/master/build.svg)](https://gitlab.com/my-application.bjoernbartels.earth/my-application/commits/master)
 
-[![Code Coverage](https://scrutinizer-ci.com/gp/my-application/badges/coverage.png?b=master&s=26dff175674bc97d350f18578bd44a63e9e6c5e9)](https://scrutinizer-ci.com/gp/my-application/?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bb-drummer/my-application/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application/?branch=master)
 
-[![Build Status](https://scrutinizer-ci.com/gp/my-application/badges/build.png?b=master&s=b2bedfe685020a0158c5dcbc9a300b081e3faa32)](https://scrutinizer-ci.com/gp/my-application/build-status/master)
+[![Code Coverage](https://scrutinizer-ci.com/g/bb-drummer/my-application/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application/?branch=master)
+
+[![Build Status](https://scrutinizer-ci.com/g/bb-drummer/my-application/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application/build-status/master)
 
 
 
 ## LICENSE
 
 please see LICENSE file in project's root directory
+
 
 
 ## COPYRIGHT
