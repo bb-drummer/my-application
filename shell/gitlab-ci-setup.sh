@@ -13,6 +13,7 @@ curl http://ipinfo.io/ip
 
 # php info
 php -v
+php -ini
 #which php
 
 # Install composer
