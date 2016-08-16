@@ -1,0 +1,19 @@
+language: php
+
+php:
+  - 5.6
+  - 7.0
+
+before_script:
+  - wget http://getcomposer.org/composer.phar
+  - php composer.phar install
+  - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
+  - 'mysql -u root dp_mydemo < sql/install.sql'
+  - 'mysql -u root dp_mydemo < sql/demo.sql'
+  - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
+  - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
+  - sed -i "s/_MYSQL_DATABASE_/dp_mydemo/g" config/autoload/database.local.php
+  - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
+  - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
+
+script: php -d memomry_limit=-1 vendor/bin/phpunit -c module/Application/test/phpunit.xml
