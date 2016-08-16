@@ -28,9 +28,12 @@
 		<testsuite name="[MyApplication] application base - Test Suite">
 			<directory suffix=".php">./</directory>
 		</testsuite>
-		<testsuite name="[MyApplication] admin base - Test Suite">
-			<directory suffix=".php">../../Admin/test/</directory>
-		</testsuite>
+        <testsuite name="[MyApplication] admin base - Test Suite">
+            <directory suffix=".php">../../Admin/test/</directory>
+        </testsuite>
+        <testsuite name="[MyApplication] slm/locale fork - Test Suite">
+            <directory suffix=".php">../../SlmLocale/tests/</directory>
+        </testsuite>
 	</testsuites>
 
 	<filter>

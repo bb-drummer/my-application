@@ -48,6 +48,12 @@ $settings = array(
                 'aliases' => array('com' => 'en_US', 'net' => 'en_US', 'de' => 'de_DE'),
             ),
         ), */
+    
+        array(
+            'name'     => 'acceptlanguage',
+            'priority' => 0.9
+        ),
+    		
         array(
             'name'     => 'uripath',
             'options'  => array(
@@ -55,11 +61,6 @@ $settings = array(
             ),
             'priority' => 1
         ),
-    
-        array(
-            'name'     => 'acceptlanguage',
-            'priority' => 0.5
-        )
     ),
 
     /**

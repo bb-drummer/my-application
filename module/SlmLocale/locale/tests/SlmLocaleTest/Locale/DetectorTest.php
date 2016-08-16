@@ -169,9 +169,9 @@ class DetectorTest extends TestCase
     public function testStrategyAttachesToEventManager()
     {
         $detector = new Detector;
-        $strategy = $this->getMock('SlmLocale\Strategy\StrategyInterface');
+        $strategy = $this->createMock('SlmLocale\Strategy\StrategyInterface');
 
-        $events = $this->getMock('Zend\EventManager\EventManager', array('attachAggregate'));
+        $events = $this->createMock('Zend\EventManager\EventManager', array('attachAggregate'));
         $events->expects($this->once())
                ->method('attachAggregate')
                ->with($strategy);
@@ -182,22 +182,28 @@ class DetectorTest extends TestCase
 
     public function testStrategyWithHighestPriorityWins()
     {
-        $detector  = new Detector;
+		$detector  = new Detector;
         $this->setEventManager($detector);
 
-        $strategy1 = $this->getMock('SlmLocale\Strategy\AbstractStrategy', array('detect'));
+        $strategy1 = $this->getMockBuilder('SlmLocale\Strategy\AbstractStrategy')
+                          ->setMethods(array('detect'))
+                          ->getMockForAbstractClass();
         $strategy1->expects($this->once())
                   ->method('detect')
                   ->will($this->returnValue('Foo'));
 
-        $strategy2 = $this->getMock('SlmLocale\Strategy\AbstractStrategy', array('detect'));
+        $strategy2 = $this->getMockBuilder('SlmLocale\Strategy\AbstractStrategy')
+                          ->setMethods(array('detect'))
+                          ->getMockForAbstractClass();
         $strategy2->expects($this->never())
                   ->method('detect');
 
         $detector->addStrategy($strategy1, 10);
         $detector->addStrategy($strategy2, 1);
 
-        $locale = $detector->detect(new Request, new Response);
+        $request = new Request;
+        $response = new Response;
+        $locale = $detector->detect($request, $response);
         $this->assertEquals('Foo', $locale);
     }
 

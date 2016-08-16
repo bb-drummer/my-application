@@ -5,6 +5,18 @@ SlmLocale
 
 Created by Jurian Sluiman
 
+
+[![Build Status](https://travis-ci.org/bb-drummer/my-application-slmlocale.svg?branch=master)](https://travis-ci.org/bb-drummer/my-application-slmlocale)
+
+[![build status](https://gitlab.com/my-application.bjoernbartels.earth/SlmLocale/badges/master/build.svg)](https://gitlab.com/my-application.bjoernbartels.earth/SlmLocale/commits/master)
+
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/?branch=master)
+[![Code Coverage](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/?branch=master)
+[![Build Status](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/badges/build.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application-slmlocale/build-status/master)
+
+Modified by Björn Bartels
+
+
 Introduction
 ------------
 SlmLocale is a Zend Framework 2 module to automatically detect a locale for your

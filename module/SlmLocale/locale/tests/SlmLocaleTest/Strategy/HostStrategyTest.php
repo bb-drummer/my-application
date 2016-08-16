@@ -14,7 +14,7 @@ class HostStrategyTest extends TestCase
     public function testDetectNonHttpRequestReturnsNull()
     {
         $event = new LocaleEvent();
-        $event->setRequest($this->getMockForAbstractClass('Zend\Stdlib\RequestInterface'));
+        $event->setRequest($this->createMock('Zend\Stdlib\RequestInterface'));
 
         $strategy = new HostStrategy();
         $this->assertNull($strategy->detect($event));
@@ -23,7 +23,7 @@ class HostStrategyTest extends TestCase
     public function testDetectWithoutSupportedReturnsNull()
     {
         $event = new LocaleEvent();
-        $event->setRequest($this->getMockForAbstractClass('Zend\Http\Request'));
+        $event->setRequest($this->createMock('Zend\Http\Request'));
         $event->setSupported(array());
 
         $strategy = new HostStrategy();
@@ -36,7 +36,7 @@ class HostStrategyTest extends TestCase
     public function testDetectWithoutDomainThrowsInvalidArgumentException()
     {
         $event = new LocaleEvent();
-        $event->setRequest($this->getMockForAbstractClass('Zend\Http\Request'));
+        $event->setRequest($this->createMock('Zend\Http\Request'));
         $event->setSupported(array('en_GB', 'de_DE'));
 
         $strategy = new HostStrategy();

@@ -354,7 +354,7 @@ class UriPathStrategyTest extends TestCase
         $sl = new ServiceManager;
         $sl->setService('router', $console ? new ConsoleRouter : new HttpRouter);
 
-        $pluginManager = $this->getMock('SlmLocale\Strategy\StrategyPluginManager', array(
+        $pluginManager = $this->createMock('SlmLocale\Strategy\StrategyPluginManager', array(
             'getServiceLocator'
         ));
         $pluginManager->expects($this->any())
