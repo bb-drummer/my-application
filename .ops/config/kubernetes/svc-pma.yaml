@@ -8,7 +8,6 @@ metadata:
     app: PROJECTSLUG-ENVIRONMENT
     team: PROJECTSLUG-ENVIRONMENT
     stage: ENVIRONMENT
-    build: BUILD_LABEL
 spec:
   type: LoadBalancer
   #type: NodePort
@@ -29,7 +28,6 @@ metadata:
     app: PROJECTSLUG-ENVIRONMENT
     team: PROJECTSLUG-ENVIRONMENT
     stage: ENVIRONMENT
-    build: BUILD_LABEL
 spec:
   selector:
     matchLabels:
@@ -45,7 +43,6 @@ spec:
         app: PROJECTSLUG-ENVIRONMENT
         team: PROJECTSLUG-ENVIRONMENT
         stage: ENVIRONMENT
-        build: BUILD_LABEL
         tier: admin
     spec:
       containers:
