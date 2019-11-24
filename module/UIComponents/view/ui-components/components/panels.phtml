@@ -6,9 +6,9 @@
     /** @var \Admin\Entity\User $oUser **/
     $oUser = $this->zfcUserIdentity();
 ?>
-<h4>Void</h4>
+<h4>Element</h4>
 <div class="clearfix"><?php 
-    $body = $oComponents()->Void(array(
+    $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'callout well',
     ))->setContent('some content...');
@@ -28,12 +28,12 @@
 <h4>Panel</h4>
 <div class="clearfix"><?php 
 
-    $body = $oComponents()->Void(array(
+    $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'panel-body',
     ))->setContent("<em>content, content, content...</em>");
     
-    $header = $oComponents()->Void( 
+    $header = $oComponents()->Element( 
         array(
             'tagname'        => 'div',
             'classnames'    => 'panel-heading',

@@ -1,3 +1,18 @@
+--
+-- Wichtig!
+--
+-- Darauf achten, dass der eigene Import ggf die Datenbank auch erstellen (und benutzen) muss!
+--
+
+-- altes löschen
+DROP DATABASE IF EXISTS `db_myapplication`;
+-- neue DB erstellen
+CREATE DATABASE IF NOT EXISTS `db_myapplication`;
+
+-- DB für Import auswählen
+USE `db_myapplication`;
+
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
@@ -197,3 +212,10 @@ INSERT INTO `clients` (`clients_id`, `name`, `extraname`, `homepage`, `email`, `
 
 INSERT INTO `applications` (`application_id`, `name`, `shortname`, `path`, `url`, `email`, `client_id`, `created`, `modified`) VALUES
 (1, 'example-app', 'example application', '/var/www/app', 'http://app.example.com', 'app@example.com', 1, '0000-00-00 00:00:00', '2016-02-23 23:49:27');
+
+--
+-- grand privileges
+--
+GRANT ALL PRIVILEGES ON *.* TO 'app'@'%';
+GRANT ALL PRIVILEGES ON db_myapplication.* TO 'app'@'%';
+FLUSH PRIVILEGES;

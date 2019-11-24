@@ -1,0 +1,74 @@
+##########################
+# testing & QA templates #
+##########################
+
+
+# prepare project for (unit) testing
+.prepare-test: &prepare-test
+  - php -m
+  - php -d memory_limit=-1 composer.phar install
+  # apply application config
+  - echo "${APP_CONFIG}" > config/autoload/app.local.php
+  - echo "${DB_CONFIG}" > config/autoload/database.local.php
+
+
+# define jobs
+
+# testing with php 5.x jobs
+.test-php56_job: &test-php56_job
+  stage: test
+  image: php:5.6
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+# testing with php 7.x jobs
+.test-php70_job: &test-php70_job
+  stage: test
+  image: php:7.0
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+.test-php71_job: &test-php70_job
+  stage: test
+  image: php:7.1
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+.test-php72_job: &test-php70_job
+  stage: test
+  image: php:7.2
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+.test-php73_job: &test-php70_job
+  stage: test
+  image: php:7.3
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+.test-php74_job: &test-php70_job
+  stage: test
+  image: php:7.4
+  script:
+    <<: [ *prepare-tests ]
+    - php -d memory_limit=-1 vendor/bin/phpunit --colors --debug --configuration ./module/Application/test/phpunit.xml --coverage-text
+  allow_failure: false
+
+
+# trigger static code analysis via 'scrutinzer'
+.qa-scrutinzer: &qa-scrutinzer
+  stage: deploy
+  image: php:7.3
+  script:
+    <<: [ *prepare-tests ]
+    - 'while read LINE; do set -- ${LINE}; curl https://scrutinizer-ci.com/api/repositories/gp/my-application/callbacks/post-receive?access_token=a8ed3895416d4f4ac750869928b48fc1609081f6206cdc6562cef57a3e695b80 -s -o /dev/null -X POST -H "Content-Type: application/json" -d "{\"head\":{\"sha\":\"$1\"},\"base\":{\"sha\":\"$2\"},\"ref\":\"$3\"}"; done;'

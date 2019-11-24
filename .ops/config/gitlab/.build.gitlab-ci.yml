@@ -1,0 +1,44 @@
+################################
+# build job templates          #
+################################
+
+# create build info file
+.build-label: &build-label
+  - echo -e "LABEL=`cat ${BUILD_LABEL_TMPFILE}`" > ${BUILD_INFO_FILE}
+  - echo -e "TAG=`git describe --always --tags`" >> ${BUILD_INFO_FILE}
+  - echo -e "COMMIT=${CI_COMMIT_SHA}" >> ${BUILD_INFO_FILE}
+  - echo -e "PIPELINE=${CI_PIPELINE_ID}" >> ${BUILD_INFO_FILE}
+
+
+# build application, create artifact
+.build-app: &build-app
+  <<: [*build-env-job, *pullcache]
+  stage: build
+  dependencies:
+    - init
+  cache: {}
+  variables:
+    APP_CONFIG: "$APP_LOCAL_CONFIG"
+    DB_CONFIG: "$DATABASE_LOCAL_CONFIG"
+    BUILD_INFO_FILE: dist/public/application-assets/build.txt
+  script:
+    # build resources
+    #- .ops/build-env.sh
+    # build the app/service
+    - mkdir dist
+    - php -m
+    - composer install --no-progress --no-suggest
+    # apply application config
+    - echo "${APP_CONFIG}" > config/autoload/app.local.php
+    - echo "${DB_CONFIG}" > config/autoload/database.local.php
+    # assemble distributional files
+    - cp -r config module public vendor composer* init_autoloader.php dist/
+    #- cd dist; ln -s public html; cd ..;
+    # create build info file
+    <<: [ *build-label ]
+    # print debug-info
+    - cat ${BUILD_INFO_FILE}
+    - ls -la dist/
+  artifacts:
+    paths:
+      - ${BUILD_TARGET}

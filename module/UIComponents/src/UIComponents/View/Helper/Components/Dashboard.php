@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Components;
  * render nothing
  *
  */
-class Dashboard extends Void
+class Dashboard extends Element
 {
     protected $tagname = 'section';
     

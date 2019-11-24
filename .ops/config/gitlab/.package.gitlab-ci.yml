@@ -1,0 +1,30 @@
+################################
+# distributional packaging     #
+################################
+
+.docker-build: &docker-build
+  <<: [*dind-job, *pullcache]
+  stage: package
+  #when: manual
+  only:
+    - master
+    - tags
+    - release
+  dependencies:
+    - init
+    - build-app
+  script:
+    - pwd
+    - ls -la dist/
+    - cp dist/build.txt public/application-assets/
+    - rm -rf dist
+    #
+    #- .ops/k8s-certs.sh
+    - export ENVIRONMENT=dev
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #
+    - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
+    # build docker image and tag with version
+    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME} .
+    - docker push harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME}

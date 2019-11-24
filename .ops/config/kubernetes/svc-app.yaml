@@ -1,0 +1,83 @@
+# frontend application
+apiVersion: v1
+kind: Service
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+    team: PROJECTSLUG-ENVIRONMENT
+    stage: ENVIRONMENT
+    build: BUILD_LABEL
+spec:
+  type: LoadBalancer
+  #type: NodePort
+  ports:
+    - port: 8080
+      #targetPort: 80
+  selector:
+    app: PROJECTSLUG-ENVIRONMENT
+    tier: frontend
+---
+
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+    team: PROJECTSLUG-ENVIRONMENT
+    stage: ENVIRONMENT
+    build: BUILD_LABEL
+spec:
+  selector:
+    matchLabels:
+      app: PROJECTSLUG-ENVIRONMENT
+      tier: frontend
+  replicas: 2
+  progressDeadlineSeconds: 600
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: PROJECTSLUG-ENVIRONMENT
+        team: PROJECTSLUG-ENVIRONMENT
+        stage: ENVIRONMENT
+        build: BUILD_LABEL
+        tier: frontend
+    spec:
+      containers:
+      - name: PROJECTSLUG-ENVIRONMENT-frontend
+        image: harbor.bjoernbartels.earth:8013/PROJECTNAMESPACE/PROJECTSLUG-distributional:DOCKER_TAG
+        env:
+        - name: MYSQL_HOST
+          value: PROJECTSLUG-ENVIRONMENT-mysql
+          #value: PROJECTSLUG-ENVIRONMENT-mysql
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: PROJECTNAMESPACE-db-pass
+              key: password
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        volumeMounts:
+        - name: PROJECTSLUG-ENVIRONMENT-persistent-storage
+          mountPath: /var/www/public/uploads
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 60
+          timeoutSeconds: 3
+          failureThreshold: 5
+      volumes:
+      - name: PROJECTSLUG-ENVIRONMENT-persistent-storage
+        persistentVolumeClaim:
+          claimName: PROJECTSLUG-ENVIRONMENT-pv-claim
+      imagePullSecrets:
+        - name: PROJECTSLUG-harbor-login
+---

@@ -1,6 +1,22 @@
+--
+-- neue DB erstellen
+--
+CREATE DATABASE IF NOT EXISTS `db_myapplication`;
+
+--
+-- DB für Import auswählen
+--
+USE `db_myapplication`;
+
+--
+-- Setup
+--
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
+--
+-- Schema
+--
 CREATE TABLE IF NOT EXISTS `acl` (
   `acl_id` bigint(10) NOT NULL AUTO_INCREMENT,
   `aclroles_id` bigint(10) NOT NULL,
@@ -129,7 +145,6 @@ CREATE TABLE IF NOT EXISTS `user_provider` (
 --
 -- Daten für Tabelle `aclresource`
 --
-
 INSERT INTO `aclresource` (`aclresources_id`, `resourceslug`, `resourcename`, `application_id`, `client_id`, `created`, `modified`) VALUES
 (1, 'mvc:nouser', 'kein Benutzer', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, 'mvc:user', 'Benutzer', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -138,7 +153,6 @@ INSERT INTO `aclresource` (`aclresources_id`, `resourceslug`, `resourcename`, `a
 --
 -- Daten für Tabelle `aclrole`
 --
-
 INSERT INTO `aclrole` (`aclroles_id`, `roleslug`, `rolename`, `application_id`, `client_id`, `created`, `modified`) VALUES
 (1, 'admin', 'Administrator', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'public', 'kein Benutzer', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -147,7 +161,6 @@ INSERT INTO `aclrole` (`aclroles_id`, `roleslug`, `rolename`, `application_id`, 
 --
 -- Daten für Tabelle `acl`
 --
-
 INSERT INTO `acl` (`acl_id`, `aclroles_id`, `aclresources_id`, `state`, `application_id`, `client_id`, `created`, `modified`) VALUES
 (1, 4, 1, 'allow', 0, 0, '0000-00-00 00:00:00', '2016-02-07 20:33:35'),
 (3, 1, 1, 'deny', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -162,14 +175,12 @@ INSERT INTO `acl` (`acl_id`, `aclroles_id`, `aclresources_id`, `state`, `applica
 --
 -- Daten für Tabelle `user`
 --
-
 INSERT INTO `user` (`user_id`, `display_name`, `username`, `email`, `password`, `state`, `aclrole`, `token`, `application_id`, `client_id`, `created`, `modified`) VALUES
 (1, 'System-Administrator', 'sysadmin', 'webmaster@myapplication.tld', '$2y$14$aNr/FPiS.Kbw8/ZYiOaXpum/4RrX7AGMaxA5vV6OIHUi1kr.w6GgC', 1, 'admin', '', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 --
 -- Daten für Tabelle `settings`
 --
-
 INSERT INTO `settings` (`settings_id`, `scope`, `ref_id`, `type`, `name`, `value`, `application_id`, `client_id`, `created`, `modified`) VALUES
 (1, '', 0, 'system', 'lang', 'de_DE', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, '', 0, 'user', 'lang', 'de_DE', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -178,13 +189,18 @@ INSERT INTO `settings` (`settings_id`, `scope`, `ref_id`, `type`, `name`, `value
 --
 -- Daten für Tabelle `clients`
 --
-
 INSERT INTO `clients` (`clients_id`, `name`, `extraname`, `homepage`, `email`, `contact`, `phone`, `statistics`, `created`, `modified`) VALUES
 (1, 'Example Client Inc.', '', 'https://example.com', 'email@example.com', 'Mr. Sample Client', '', 1, '0000-00-00 00:00:00', '2016-02-08 13:32:31');
 
 --
 -- Dumping data for table `applications`
 --
-
 INSERT INTO `applications` (`application_id`, `name`, `shortname`, `path`, `url`, `email`, `client_id`, `created`, `modified`) VALUES
 (1, 'example-app', 'example application', '/var/www/app', 'http://app.example.com', 'app@example.com', 1, '0000-00-00 00:00:00', '2016-02-23 23:49:27');
+
+--
+-- grand privileges
+--
+GRANT ALL PRIVILEGES ON *.* TO 'app'@'%';
+GRANT ALL PRIVILEGES ON db_myapplication.* TO 'app'@'%';
+FLUSH PRIVILEGES;

@@ -1,0 +1,67 @@
+# mySQL service
+apiVersion: v1
+kind: Service
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-mysql
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: PROJECTSLUG-ENVIRONMENT
+    tier: database
+  clusterIP: None
+---
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-mysql
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+spec:
+  selector:
+    matchLabels:
+      app: PROJECTSLUG-ENVIRONMENT
+      tier: database
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: PROJECTSLUG-ENVIRONMENT
+        tier: database
+    spec:
+      containers:
+      - image: mysql:latest
+      #- image: harbor.bjoernbartels.earth:8013/devops/mysql-runtime-env:latest
+        name: PROJECTSLUG-ENVIRONMENT-mysql
+        imagePullPolicy: Always
+        args:
+          - "--default-authentication-plugin=mysql_native_password"
+        #command: ["mysqld"]
+        #args: ["--default-authentication-plugin=mysql_native_password", "--user=root"]
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mysql-pass
+              key: password
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - name: PROJECTSLUG-ENVIRONMENT-mysql-persistent-storage
+          mountPath: /var/lib/mysql
+        - name: PROJECTSLUG-ENVIRONMENT-mysql-imports-storage
+          mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+      - name: PROJECTSLUG-ENVIRONMENT-mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: PROJECTSLUG-ENVIRONMENT-mysql-pv-claim
+      - name: PROJECTSLUG-ENVIRONMENT-mysql-imports-storage
+        persistentVolumeClaim:
+          claimName: PROJECTSLUG-ENVIRONMENT-mysql-imports-claim
+
+---

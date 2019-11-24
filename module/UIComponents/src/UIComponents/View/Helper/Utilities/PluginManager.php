@@ -1,7 +1,7 @@
 <?php
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * UI Components
  *
  * @package     [MyApplication]
@@ -32,10 +32,10 @@ class PluginManager extends AbstractPluginManager
      * @var array
      */
     protected $invokableClasses = [
-        'void'          => 'UIComponents\View\Helper\Utilities\Void',
-    		
+        'element'          => 'UIComponents\View\Helper\Utilities\Element',
+
         'config'        => 'UIComponents\View\Helper\Utilities\Config',
-    		
+
         'apptitle'      => 'UIComponents\View\Helper\Utilities\AppTitle',
         'appfavicon'    => 'UIComponents\View\Helper\Utilities\AppFavicon',
         'applogo'       => 'UIComponents\View\Helper\Utilities\AppLogo',
@@ -43,5 +43,5 @@ class PluginManager extends AbstractPluginManager
     	'framework'     => 'UIComponents\View\Helper\Utilities\Framework',
     	'template'      => 'UIComponents\View\Helper\Utilities\Framework',
     ];
-    
+
 }

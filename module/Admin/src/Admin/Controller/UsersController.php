@@ -1,7 +1,7 @@
 <?php
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * AdminModule
  *
  * @package   [MyApplication]
@@ -25,12 +25,12 @@ use Admin\Model\AclroleTable;
 
 class UsersController extends BaseActionController
 {
-	
+
 	/**
 	 * @var array|\Admin\Model\UserTable
 	 */
 	protected $userTable;
-	
+
 	/**
 	 * @var array|\Admin\Model\AclroleTable
 	 */
@@ -38,7 +38,7 @@ class UsersController extends BaseActionController
 
     /**
      * initialize titles and toolbar items
-     * 
+     *
      * {@inheritDoc}
      * @see \Zend\Mvc\Controller\AbstractActionController::onDispatch()
      */
@@ -73,7 +73,7 @@ class UsersController extends BaseActionController
     /**
      * list users in a table
      * @return mixed|\Zend\Http\Response|\Zend\View\Model\ViewModel
-     */ 
+     */
     public function indexAction()
     {
         $tmplVars = $this->getTemplateVars();
@@ -96,7 +96,7 @@ class UsersController extends BaseActionController
                     $row["password"] = "*********";
                     $row["_actions_"] = $actions;
                     return $row;
-                }, $datatablesData['data'] 
+                }, $datatablesData['data']
             );
             return $this->getResponse()->setContent(json_encode($datatablesData));
         }
@@ -113,7 +113,7 @@ class UsersController extends BaseActionController
      */
     public function addAction()
     {
-        $tmplVars = $this->getTemplateVars( 
+        $tmplVars = $this->getTemplateVars(
             array(
                 'showForm'    => true,
             )
@@ -128,7 +128,7 @@ class UsersController extends BaseActionController
         /** @var \Zend\Form\Element\Select $aclroleSelect */
         $aclroleSelect = $form->get('aclrole');
         $aclroleSelect->setValueOptions($valueoptions);
-        
+
         $request = $this->getRequest();
         $user = new User();
         if ($request->isPost()) {
@@ -144,7 +144,7 @@ class UsersController extends BaseActionController
                 } else {
                     return $this->redirect()->toRoute('admin/default', array('controller' => 'users'));
                 }
-                
+
             }
             $tmplVars["user"] = $user;
         }
@@ -158,7 +158,7 @@ class UsersController extends BaseActionController
      */
     public function editAction()
     {
-        $tmplVars = $this->getTemplateVars( 
+        $tmplVars = $this->getTemplateVars(
             array(
                 'showForm'    => true,
             )
@@ -184,7 +184,7 @@ class UsersController extends BaseActionController
             $valueoptions[$role["roleslug"]] = $role["rolename"];
         }
         $form->get('aclrole')->setValueOptions($valueoptions);
-                
+
         $request = $this->getRequest();
         if ($request->isPost()) {
             $form->setInputFilter($user->getInputFilter());
@@ -212,7 +212,7 @@ class UsersController extends BaseActionController
      */
     public function deleteAction()
     {
-        $tmplVars = $this->getTemplateVars( 
+        $tmplVars = $this->getTemplateVars(
             array(
                 'showForm'    => true,
             )
@@ -257,21 +257,21 @@ class UsersController extends BaseActionController
      */
     public function confirmAction()
     {
-        $tmplVars = array_merge( 
-            $this->params()->fromRoute(), 
+        $tmplVars = array_merge(
+            $this->params()->fromRoute(),
             $this->params()->fromPost(),
             array()
         );
         $config = $this->getServiceLocator()->get('Config');
         $users = $this->getServiceLocator()->get('zfcuser_user_mapper');
-        
+
         $user_id    = $this->params()->fromRoute('user_id', '');
         $token        = $this->params()->fromRoute('confirmtoken', '');
         if (empty($user_id) || empty($token)) {
             $this->flashMessenger()->addWarningMessage($this->translate("missing parameters"));
             return $this->redirect()->toRoute($config["zfcuser_registration_redirect_route"], array());
         }
-        
+
         if (is_numeric($user_id) ) {
             $oUser = $users->findById($user_id);
         } else {
@@ -285,7 +285,7 @@ class UsersController extends BaseActionController
             $this->flashMessenger()->addWarningMessage($this->translate("confirmation token is invalid"));
             return $this->redirect()->toRoute($config["zfcuser_registration_redirect_route"], array());
         }
-        
+
         // all ok, do stuff...
         $oModule = new AdminModule();
         $oModule->setAppConfig($config);
@@ -307,7 +307,7 @@ class UsersController extends BaseActionController
             $this->flashMessenger()->addSuccessMessage($this->translate("user has been activated"));
             return $this->redirect()->toRoute('zfcuser/login', array());
         }
-        
+
     }
 
     /**
@@ -316,14 +316,14 @@ class UsersController extends BaseActionController
      */
     public function activateAction()
     {
-        $tmplVars = array_merge( 
-            $this->params()->fromRoute(), 
+        $tmplVars = array_merge(
+            $this->params()->fromRoute(),
             $this->params()->fromPost(),
             array()
         );
         $config    = $this->getServiceLocator()->get('Config');
         $users    = $this->getServiceLocator()->get('zfcuser_user_mapper');
-        
+
         $user_id    = $this->params()->fromRoute('user_id', '');
         $token        = $this->params()->fromRoute('activatetoken', '');
         if (empty($user_id) || empty($token)) {
@@ -344,14 +344,14 @@ class UsersController extends BaseActionController
             $this->flashMessenger()->addWarningMessage($this->translate("activation token is invalid"));
             return $this->redirect()->toRoute($config["zfcuser_registration_redirect_route"], array());
         }
-        
+
         // all ok, do stuff...
         $oModule = new AdminModule();
         $oModule->setAppConfig($config);
         $this->getUserTable()->getTableGateway()->update(
             array(
                 "state"        => "1",
-                "token"        => $user->token,
+                "token"        => "",
             ), array(
                 "user_id"    => $oUser->getId(),
             )
@@ -359,9 +359,9 @@ class UsersController extends BaseActionController
         $oUser = $users->findById($user_id);
         $this->flashMessenger()->addSuccessMessage($this->translate("user has been activated"));
         $oModule->sendActivationNotificationMail($oUser);
-        
+
         return $this->redirect()->toRoute($config["zfcuser_registration_redirect_route"], array());
-        
+
     }
 
     /**
@@ -376,7 +376,7 @@ class UsersController extends BaseActionController
         }
         return $this->userTable;
     }
-    
+
     /**
      * retrieve role item table
      * @return array|\Admin\Model\AclroleTable

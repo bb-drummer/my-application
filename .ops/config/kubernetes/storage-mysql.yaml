@@ -1,0 +1,31 @@
+# storage claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-mysql-pv-claim
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-mysql-imports-claim
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+---

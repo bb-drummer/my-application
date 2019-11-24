@@ -1,0 +1,16 @@
+# storage claims
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-pv-claim
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 5Gi
+---

@@ -18,7 +18,7 @@ return array(
     'UIComponents\View\Helper\Bootstrap\HelperInterface'       => __DIR__ . '/src/UIComponents/View/Helper/Bootstrap/HelperInterface.php',
     'UIComponents\View\Helper\Bootstrap\Navbar'                => __DIR__ . '/src/UIComponents/View/Helper/Bootstrap/Navbar.php',
     'UIComponents\View\Helper\Bootstrap\PluginManager'         => __DIR__ . '/src/UIComponents/View/Helper/Bootstrap/PluginManager.php',
-    'UIComponents\View\Helper\Bootstrap\Void'                  => __DIR__ . '/src/UIComponents/View/Helper/Bootstrap/Void.php',
+    'UIComponents\View\Helper\Bootstrap\Element'                  => __DIR__ . '/src/UIComponents/View/Helper/Bootstrap/Element.php',
     'UIComponents\View\Helper\Components'                      => __DIR__ . '/src/UIComponents/View/Helper/Components.php',
     'UIComponents\View\Helper\Components\AbstractHelper'       => __DIR__ . '/src/UIComponents/View/Helper/Components/AbstractHelper.php',
     'UIComponents\View\Helper\Components\Block'                => __DIR__ . '/src/UIComponents/View/Helper/Components/Block.php',
@@ -32,7 +32,7 @@ return array(
     'UIComponents\View\Helper\Components\Panel'                => __DIR__ . '/src/UIComponents/View/Helper/Components/Panel.php',
     'UIComponents\View\Helper\Components\PluginManager'        => __DIR__ . '/src/UIComponents/View/Helper/Components/PluginManager.php',
     'UIComponents\View\Helper\Components\Toolbar'              => __DIR__ . '/src/UIComponents/View/Helper/Components/Toolbar.php',
-    'UIComponents\View\Helper\Components\Void'                 => __DIR__ . '/src/UIComponents/View/Helper/Components/Void.php',
+    'UIComponents\View\Helper\Components\Element'                 => __DIR__ . '/src/UIComponents/View/Helper/Components/Element.php',
     'UIComponents\View\Helper\Components\Widget'               => __DIR__ . '/src/UIComponents/View/Helper/Components/Widget.php',
     'UIComponents\View\Helper\Navigation\Menu'                 => __DIR__ . '/src/UIComponents/View/Helper/Navigation/Menu.php',
 );

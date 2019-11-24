@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Components;
  * render nothing
  *
  */
-class Panel extends Void
+class Panel extends Element
 {
     protected $tagname = 'div';
     

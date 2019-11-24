@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Utilities;
  * render nothing
  *
  */
-class Void extends \UIComponents\View\Helper\AbstractHelper 
+class Element extends \UIComponents\View\Helper\AbstractHelper 
 {
 
     /**

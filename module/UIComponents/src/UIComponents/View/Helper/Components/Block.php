@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Components;
  * render nothing
  *
  */
-class Block extends Void
+class Block extends Element
 {
     protected $tagname = 'div';
     

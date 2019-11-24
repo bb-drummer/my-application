@@ -1,0 +1,148 @@
+##########################
+# k8s project setup
+#
+##########################
+
+#
+# setup the project on k8s
+#
+namespace:
+  <<: [*dind-job]
+  stage: project
+  when: manual
+  only:
+    variables:
+      - $CI_SETUP
+  except:
+    - release
+    - tags
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/namespace.yaml
+    #
+    # create namespace in cluster
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/namespace.yaml
+
+
+storage-app:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
+    #
+    # deploy mysql service
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-app.yaml
+
+
+storage-mysql:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
+    #
+    # deploy mysql service
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-mysql.yaml
+
+
+ingress:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  only:
+    variables:
+      - $CI_SETUP
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
+    #
+    # deploy non-SSL/TLS ingress
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
+
+
+ingress-ssl-tls:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  only:
+    variables:
+      - $CI_SETUP
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    #
+    # deploy ingress with SSL/TLS (via letsencrypt)
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+
+
+service-mysql:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
+    #
+    # deploy mysql service
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-mysql.yaml
+
+
+service-phpmyadmin:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
+    #
+    # deploy phpMyAdmin service
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-pma.yaml
+
+
+service-redis:
+  <<: [*dind-job, *pullcache]
+  stage: project
+  when: manual
+  script:
+    - pwd
+    #
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
+    #
+    # deploy redis service
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-redis.yaml

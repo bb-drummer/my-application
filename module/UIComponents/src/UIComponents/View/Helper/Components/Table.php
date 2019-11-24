@@ -22,7 +22,7 @@ use UIComponents\Template\Template;
  * render a (simple) HTML table
  *
  */
-class Table extends Void 
+class Table extends Element 
 {
     /** @var \UIComponents\Template\Template $template */
 	public $template = null;
