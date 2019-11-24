@@ -1,0 +1,102 @@
+########################
+# DEPLOYMENT TEMPLATES #
+########################
+
+.dev-deploy-template: &deploy-dev
+  stage: deploy
+  dependencies:
+    - init
+  environment:
+    name: dev
+    url: http://${HOST_DEV}
+  script:
+    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
+    #- .ops/k8s-certs.sh
+    - export ENVIRONMENT=dev
+    - export PROJECTHOSTNAME=${HOST_DEV}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
+    # run kubernetes deployment
+    # delete existing harbor login secret (if exists)
+    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
+    # add new login secret
+    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
+    # apply configuration
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
+    # rollout image
+    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
+
+
+.staging-deploy-template: &deploy-staging
+  stage: deploy
+  dependencies:
+    - init
+  environment:
+    name: integ
+    url: http://${HOST_STAGING}
+  script:
+    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
+    #- .ops/k8s-certs.sh
+    - export ENVIRONMENT=staging
+    - export PROJECTHOSTNAME=${HOST_STAGING}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
+    # run kubernetes deployment
+    # delete existing harbor login secret (if exists)
+    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
+    # add new login secret
+    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
+    # apply configuration
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
+    # rollout image
+    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
+
+
+.hotfix-deploy-template: &deploy-hotfix
+  stage: deploy
+  dependencies:
+    - init
+  environment:
+    name: hotfix
+    url: http://${HOST_HOTFIX}
+  script:
+    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
+    #- .ops/k8s-certs.sh
+    - export ENVIRONMENT=hotfix
+    - export PROJECTHOSTNAME=${HOST_HOTFIX}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
+    # run kubernetes deployment
+    # delete existing harbor login secret (if exists)
+    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
+    # add new login secret
+    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
+    # apply configuration
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
+    # rollout image
+    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
+
+
+.prod-deploy-template: &deploy-prod
+  stage: deploy
+  dependencies:
+    - init
+  environment:
+    name: production
+    url: http://my-application.bjoernbartels.earth
+  script:
+    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
+    #- .ops/k8s-certs.sh
+    - export ENVIRONMENT=production
+    - export PROJECTHOSTNAME=${HOST_PROD}
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
+    # run kubernetes deployment
+    # delete existing harbor login secret (if exists)
+    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
+    # add new login secret
+    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
+    # apply configuration
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
+    # rollout image
+    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}

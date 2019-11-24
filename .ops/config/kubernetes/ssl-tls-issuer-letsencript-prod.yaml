@@ -1,0 +1,20 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-tls-issuer
+  namespace: PROJECTNAMESPACE
+spec:
+  acme:
+    # The ACME server URL
+    server: https://acme-v02.api.letsencrypt.org/directory
+    # Email address used for ACME registration
+    email: admin@bjoernbartels.earth
+    # Name of a secret used to store the ACME account private key
+    privateKeySecretRef:
+      name: PROJECTSLUG-ENVIRONMENT-tls-issuer-secret
+    solvers:
+    # An empty 'selector' means that this solver matches all domains
+    - selector: {}
+      http01:
+        ingress:
+          class: nginx

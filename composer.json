@@ -20,11 +20,25 @@
     "dudapiotr/zftable" : ">=3.1",
     "org_heigl/piwik" : ">=1.0",
     "visualappeal/php-auto-update": "^0.9.2",
-    "robloach/component-installer" : ">=0.2.3"
+    "robloach/component-installer" : ">=0.2.3",
+    "doctrine/orm": "^2.6.2",
+    "symfony/yaml": "2.*",
+    "my-application/theme-adminlte" : "dev-master",
+    "my-application/theme-remark" : "dev-master",
+    "my-application/theme-taurus" : "dev-master"
   },
   "repositories" : [ {
     "type" : "git",
     "url" : "https://gitlab.com/my-application.bjoernbartels.earth/SlmLocale.git"
+  }, {
+    "type" : "git",
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-adminlte.git"
+  }, {
+    "type" : "git",
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-remark.git"
+  }, {
+    "type" : "git",
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-taurus.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
@@ -32,8 +46,13 @@
     "branch-alias" : {
       "master" : "master-dev",
       "0.0.1" : "1.0.x-dev"
-    }
-  },
+    },
+		"installer-paths" : {
+			"public/themes/{$name}/" : [
+				"type:zend-extra"
+			]
+		}
+	},
   "scripts" : {
     "pre-install-cmd" : [ "curl http://ipinfo.io/ip", "ifconfig", "wget http://ipinfo.io/ip -qO -" ]
   },

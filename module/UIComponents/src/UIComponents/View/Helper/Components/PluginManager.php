@@ -1,7 +1,7 @@
 <?php
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * UI Components
  *
  * @package     [MyApplication]
@@ -35,7 +35,7 @@ class PluginManager extends AbstractPluginManager
 
     	// panels
     	//
-        'void'              => 'UIComponents\View\Helper\Components\Void',
+        'element'              => 'UIComponents\View\Helper\Components\Element',
         'block'             => 'UIComponents\View\Helper\Components\Block',
         //'well'              => 'UIComponents\View\Helper\Components\Well',
         //'jumbotron'         => 'UIComponents\View\Helper\Components\Jumbotron',
@@ -50,7 +50,7 @@ class PluginManager extends AbstractPluginManager
         'breadcrumbs'       => 'UIComponents\View\Helper\Components\Breadcrumbs',
         'languagemenu'      => 'UIComponents\View\Helper\Components\Languagemenu',
     	'toolbar'           => 'UIComponents\View\Helper\Components\Toolbar',
-        
+
         // controls
         //
         'button'            => 'UIComponents\View\Helper\Components\Button', // default, drop-down/up, splitted
@@ -61,13 +61,13 @@ class PluginManager extends AbstractPluginManager
     	// forms
     	//
         'formgroup'         => 'UIComponents\View\Helper\Components\Formgroup',
-    	
+
     	// lists/tables
     	//
         //'listgroup'         => 'UIComponents\View\Helper\Components\Listgroup',
         'table'         	=> 'UIComponents\View\Helper\Components\Listgroup',
     	//'pagination'        => 'UIComponents\View\Helper\Components\Pagination',
-    	
+
     	// widgets
     	//
         //'label'             => 'UIComponents\View\Helper\Components\Label',
@@ -77,7 +77,7 @@ class PluginManager extends AbstractPluginManager
 
         //'mediaobject'       => 'UIComponents\View\Helper\Components\Mediaobject',
         //'embed'             => 'UIComponents\View\Helper\Components\Embed',
-            
+
         // javascript components
         //
         //'datatable'         => 'UIComponents\View\Helper\Components\Datatable',

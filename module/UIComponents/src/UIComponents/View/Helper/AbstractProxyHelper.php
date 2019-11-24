@@ -1,7 +1,7 @@
 <?php
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * UI Components
  *
  * @package     [MyApplication]
@@ -36,7 +36,7 @@ class AbstractProxyHelper extends AbstractHelper
      *
      * @var string
      */
-    protected $defaultProxy = 'void';
+    protected $defaultProxy = 'element';
 
     /**
      * Indicates whether or not a given helper has been injected
@@ -123,7 +123,7 @@ class AbstractProxyHelper extends AbstractHelper
             if (method_exists($helper, "setTranslator") && $this->getTranslator()) {
                 $helper->setTranslator($this->getTranslator());
             }
-            
+
             return call_user_func_array($helper, $arguments);
         }
 
@@ -208,7 +208,7 @@ class AbstractProxyHelper extends AbstractHelper
         $helper    = $plugins->get($proxy);
 
         if ($helper && ($helper instanceof \Zend\View\Helper\Navigation\Menu)) {
-            
+
             $container = $this->getContainer();
             $hash      = spl_object_hash($container) . spl_object_hash($helper);
             if (!isset($this->injected[$hash])) {
@@ -220,9 +220,9 @@ class AbstractProxyHelper extends AbstractHelper
                     $helper->setContainer($container);
                 }
             }
-            
+
         }
-        
+
         return $helper;
     }
 
@@ -235,14 +235,14 @@ class AbstractProxyHelper extends AbstractHelper
      */
     protected function inject(\Zend\View\Helper\AbstractHelper $helper)
     {
-		if ( 
+		if (
 			($helper instanceof \UIComponents\View\Helper\AbstractHelper) ||
-			($helper instanceof \UIComponents\View\Helper\Navigation\Menu) 
+			($helper instanceof \UIComponents\View\Helper\Navigation\Menu)
 		) {
 	        if ($this->getInjectContainer() && !$helper->hasContainer()) {
 	            $helper->setContainer($this->getContainer());
 	        }
-	
+
 	        if ($this->getInjectAcl()) {
 	            if (!$helper->hasAcl()) {
 	                $helper->setAcl($this->getAcl());

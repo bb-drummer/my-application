@@ -1,32 +1,47 @@
-## 
+##
 ## ignore ZendStudio/Eclipse files
 ##
 .settings
 .buildpath
 .project
 
-## 
+##
 ## ignore ZendServer files
 ##
 deployment.properties
 deployment.xml
 
-## 
-## ignore sone project related and ZendFramework(2) files and folders
 ##
+## ignore some project related and ZendFramework(2) files and folders
+##
+*adminlte*
+*taurus*
+*remark*
+*lcars*
 *cache*
-vendor*
+!.cache.gitlab*
+/vendor*
 data/
-public/test-coverage
+/public/test-coverage
 *.local.php
 module/module-*
-extras*
+/extras*
+/components*
+.ops/config/kubernetes/save
 
+##
+## backups
+##
+#.*0
+_config*
+_save*
+._*
 
-## 
+##
 ## ignore (php) composer files
 ##
-#composer.lock
+.composer
+composer.lock
 composer.phar
 
 ##
@@ -39,7 +54,7 @@ merge/
 
 ##
 ## ignore some apple stuff
-## 
+##
 .DS_*
 .AppleDouble
 .LSOverride
@@ -62,4 +77,3 @@ Icon
 *.save
 *.report*
 *.vagrant
-

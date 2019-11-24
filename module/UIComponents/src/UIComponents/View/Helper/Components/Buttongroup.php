@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Components;
  * render nothing
  *
  */
-class Buttongroup extends Void
+class Buttongroup extends Element
 {
     protected $tagname = 'div';
     

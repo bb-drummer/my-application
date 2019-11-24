@@ -1,7 +1,7 @@
 <?php
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * BaseApp
  *
  * @package        [MyApplication]
@@ -13,11 +13,15 @@
  * @copyright      (c) 2016 Björn Bartels <coding@bjoernbartels.earth>
  */
 
-ini_set('error_reporting', E_ALL);
+ini_set('error_reporting', E_ALL & ~E_NOTICE & ~E_WARNING & ~E_DEPRECATED);
 //ini_set('error_log', '/path/to/your/php/or/apache/error_log');
 ini_set('log_errors', 'On');
 ini_set('display_errors', 'On');
-if (isset($_GET['phpinfo']) && ($_GET['phpinfo'] == 'true')) {
+
+#ini_set('session.save_handler', "redis");
+#ini_set('session.save_path', $_SERVER['MY_APPLICATION_APP_DEV_REDIS_MASTER_PORT_6379_TCP']."?auth=fRfhJm02OTkqgKx2zxo34QJtVcU3DhUI");
+
+if (isset($_GET['__phpinfo']) && ($_GET['__phpinfo'] == 'true')) {
     phpinfo(); die();
 }
 

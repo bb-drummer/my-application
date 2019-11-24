@@ -1,0 +1,37 @@
+##########################
+# CACHE CONFIG TEMPLATES #
+##########################
+
+.pushcache: &pushcache
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    untracked: true
+    paths:
+      # remove 'paths' to cache ALL untracked files
+      # cache JS dependencies
+      - node_modules
+      - bower_components
+      - package-lock.json
+      - yarn.lock
+      # cache PHP dependencies
+      - vendor
+      - composer.lock
+      # cache package/project stuff, non-artifacts
+      - dist
+      - public
+      - ${BUILD_LABEL_TMPFILE}
+    policy: push
+
+
+
+.pullcache: &pullcache
+  extends: .pushcache
+  cache:
+    policy: pull
+
+
+
+.pullpushcache: &pullpushcache
+  extends: .pushcache
+  cache:
+    policy: pull-push

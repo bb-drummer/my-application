@@ -1,9 +1,9 @@
 @charset "UTF-8";
 /**
  * BB's Zend Framework 2 Components
- * 
+ *
  * myApplication cascading stylesheets
- *   
+ *
  * @package      [MyApplication]
  * @subpackage   BB's Zend Framework 2 Components
  * @subpackage   myApplication cascading stylesheets
@@ -83,7 +83,9 @@ $panel-danger-heading-bg:     $state-danger-bg !default;
 /* @end */
 /* @group flag icons */
 .flag-icon-en {
-  background-image: url(vendor/flag-icon-css/flags/us.svg); }
+  /*background-image: url(vendor/flag-icon-css/flags/us.svg);*/
+  background-image: url(/themes/bootstrap/assets/css/flag-icon-css/flags/gb.svg);
+}
 
 /* @end */
 /* @end */

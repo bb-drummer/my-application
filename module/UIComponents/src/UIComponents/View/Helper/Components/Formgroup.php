@@ -20,7 +20,7 @@ namespace UIComponents\View\Helper\Components;
  * render nothing
  *
  */
-class Formgroup extends Void
+class Formgroup extends Element
 {
     protected $tagname = 'div';
     
