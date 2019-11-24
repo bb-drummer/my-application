@@ -1,5 +1,3 @@
-#!/bin/bash
-
 ###
 # sym-link resources to project dir
 #
