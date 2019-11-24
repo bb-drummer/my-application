@@ -10,23 +10,23 @@
 #ln -s /build-env/yarn.lock ${CI_PROJECT_DIR}/yarn.lock
 #ln -s /build-env/package-lock.json ${CI_PROJECT_DIR}/package-lock.json
 
-declare -x ENVIRONMENT=dev;
-declare -x HOST_NAME=${HOST_DEV};
-declare -x PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-declare -x PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+export ENVIRONMENT=dev;
+export HOST_NAME=${HOST_DEV};
+export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
 
 if [ "$CI_COMMIT_REF_SLUG" = "master" ]; then
-  declare -x ENVIRONMENT=staging;
-  declare -x HOST_NAME=${HOST_STAGING};
-  declare -x PROJECTHOSTNAME=${HOST_NAME}
+  export ENVIRONMENT=staging;
+  export HOST_NAME=${HOST_STAGING};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;
 if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then
-  declare -x ENVIRONMENT=production;
-  declare -x HOST_NAME=${HOST_PROD};
-  declare -x PROJECTHOSTNAME=${HOST_NAME}
+  export ENVIRONMENT=production;
+  export HOST_NAME=${HOST_PROD};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;
 if [ ! -z "$CI_COMMIT_TAG" ]; then
-  declare -x ENVIRONMENT=production;
-  declare -x HOST_NAME=${HOST_PROD};
-  declare -x PROJECTHOSTNAME=${HOST_NAME}
+  export ENVIRONMENT=production;
+  export HOST_NAME=${HOST_PROD};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;
