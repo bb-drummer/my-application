@@ -11,22 +11,22 @@
 #ln -s /build-env/package-lock.json ${CI_PROJECT_DIR}/package-lock.json
 
 export ENVIRONMENT=dev;
-export HOSTNAME=${HOST_DEV};
-export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+export HOST_NAME=${HOST_DEV};
+export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
 export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
 
 if [ "$CI_COMMIT_REF_SLUG" = "master" ]; then
   export ENVIRONMENT=staging;
-  export HOSTNAME=${HOST_STAGING};
-  export PROJECTHOSTNAME=${HOSTNAME}
+  export HOST_NAME=${HOST_STAGING};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;
 if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then
   export ENVIRONMENT=production;
-  export HOSTNAME=${HOST_PROD};
-  export PROJECTHOSTNAME=${HOSTNAME}
+  export HOST_NAME=${HOST_PROD};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;
 if [ ! -z "$CI_COMMIT_TAG" ]; then
   export ENVIRONMENT=production;
-  export HOSTNAME=${HOST_PROD};
-  export PROJECTHOSTNAME=${HOSTNAME}
+  export HOST_NAME=${HOST_PROD};
+  export PROJECTHOSTNAME=${HOST_NAME}
 fi;

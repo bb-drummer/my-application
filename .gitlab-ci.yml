@@ -214,12 +214,12 @@ k82-namespace:
     - tags
   script:
     - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOSTNAME}"
+    - echo "Target Hostname    = ${HOST_NAME}"
     - echo "Project Slug       = ${PROJECTSLUG}"
     - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/namespace.yaml
@@ -235,7 +235,7 @@ storage-app:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
@@ -251,7 +251,7 @@ storage-mysql:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
@@ -270,7 +270,7 @@ ingress:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
@@ -289,7 +289,7 @@ ingress-ssl-tls:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
@@ -307,7 +307,7 @@ service-mysql:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
@@ -325,7 +325,7 @@ service-phpmyadmin:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
@@ -343,7 +343,7 @@ service-redis:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
@@ -434,7 +434,7 @@ docker:
     #
     #- .ops/k8s-certs.sh
     - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     #
     - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
@@ -471,7 +471,7 @@ DEV-deploy:
     - ls -la dist/
     #
     - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # combine docker & deploy step: build docker feature image and deploy on kubernetes
     - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
@@ -559,7 +559,7 @@ SSL-TLS-activate:
       - $CI_SETUP
   script:
     - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
@@ -586,7 +586,7 @@ SSL-TLS-deactivate:
       - $CI_SETUP
   script:
     - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
@@ -617,7 +617,7 @@ DEV-cleanup:
     url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
   script:
     - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOSTNAME}
+    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
     - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
