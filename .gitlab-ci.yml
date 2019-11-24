@@ -195,7 +195,7 @@ before_script:
   # get build label
   - if [ -f ${BUILD_LABEL_TMPFILE} ]; then export BUILD_LABEL=`cat ${BUILD_LABEL_TMPFILE}`; fi
   # set env vars
-  - bin/build-env.sh
+  - .ops/build-env.sh
 
 
 ##################
