@@ -194,10 +194,7 @@ variables:
 before_script:
   - if [ -f ${BUILD_LABEL_TMPFILE} ]; then export BUILD_LABEL=`cat ${BUILD_LABEL_TMPFILE}`; fi
   # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
-  - export ENVIRONMENT=dev; \
-    if [ "$CI_COMMIT_REF_SLUG" == "master"]; then export ENVIRONMENT=staging; fi; \
-    if [ "$CI_COMMIT_REF_SLUG" == "release"]; then export ENVIRONMENT=production; fi; \
-    if [ ! -z "$CI_COMMIT_TAG" ]; then export ENVIRONMENT=production; fi;
+  - export ENVIRONMENT=dev; if [ "$CI_COMMIT_REF_SLUG" = "master" ]; then export ENVIRONMENT=staging; fi; if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then export ENVIRONMENT=production; fi; if [ ! -z "$CI_COMMIT_TAG" ]; then export ENVIRONMENT=production; fi;
 
 
 ##################
@@ -215,6 +212,7 @@ k82-namespace:
     - release
     - tags
   script:
+    - echo "Current Environment= ${ENVIRONMENT}"
     - pwd
     #
     - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_DEV}
