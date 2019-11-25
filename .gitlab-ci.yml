@@ -91,10 +91,6 @@ stages:
     name: dev
     url: http://${HOST_DEV}
   script:
-    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
-    #- .ops/k8s-certs.sh
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${HOST_DEV}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
     # run kubernetes deployment
@@ -116,10 +112,6 @@ stages:
     name: integ
     url: http://${HOST_STAGING}
   script:
-    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
-    #- .ops/k8s-certs.sh
-    - export ENVIRONMENT=staging
-    - export PROJECTHOSTNAME=${HOST_STAGING}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
     # run kubernetes deployment
@@ -166,10 +158,6 @@ stages:
     name: production
     url: http://my-application.bjoernbartels.earth
   script:
-    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
-    #- .ops/k8s-certs.sh
-    - export ENVIRONMENT=production
-    - export PROJECTHOSTNAME=${HOST_PROD}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
     # run kubernetes deployment
