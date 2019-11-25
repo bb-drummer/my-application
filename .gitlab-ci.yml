@@ -371,9 +371,12 @@ init:
     variables:
       - $CI_SETUP
   before_script:
-    - .ops/build-env.sh
     - export BUILD_LABEL=$(TZ=Europe/Berlin date +%Y%m%d.%H%M-$CI_COMMIT_REF_NAME)
   script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # save timestamp to file
     - echo $BUILD_LABEL > ${BUILD_LABEL_TMPFILE}
     - echo -e "\n\n\n\e[96mCreated new build label \e[107;30;1m $BUILD_LABEL \e[0m\n\n\n"
@@ -397,8 +400,10 @@ build-app:
     DB_CONFIG: "$DATABASE_LOCAL_CONFIG"
     BUILD_INFO_FILE: dist/public/build.txt
   script:
-    # build resources
-    #- .ops/build-env.sh
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # build the app/service
     - mkdir dist
     - php -m
@@ -437,6 +442,10 @@ docker:
     - init
     - build-app
   script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     - ls -la dist/
     #
     - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
@@ -468,6 +477,10 @@ DEV-deploy:
     name: dev
     url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
   script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     - ls -la dist/
     #
     # combine docker & deploy step: build docker feature image and deploy on kubernetes
@@ -545,9 +558,10 @@ SSL-TLS-activate:
     variables:
       - $CI_SETUP
   script:
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
@@ -567,9 +581,10 @@ SSL-TLS-deactivate:
     variables:
       - $CI_SETUP
   script:
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
@@ -591,6 +606,10 @@ cleanup:
     name: dev
     url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
   script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
