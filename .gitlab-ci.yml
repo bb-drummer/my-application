@@ -428,7 +428,7 @@ docker:
   except:
     variables:
       - $CI_SETUP
-  when: manual
+  #when: manual
   only:
     - master
     - tags
@@ -438,11 +438,6 @@ docker:
     - build-app
   script:
     - ls -la dist/
-    #
-    #- .ops/k8s-certs.sh
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     #
     - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
     # build docker image and tag with version
@@ -458,8 +453,6 @@ DEV-deploy:
   <<: [*dind-job, *pullcache]
   stage: deploy
   #when: manual
-  #only:
-  #  kubernetes: active
   except:
     refs:
       - develop
@@ -477,9 +470,6 @@ DEV-deploy:
   script:
     - ls -la dist/
     #
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # combine docker & deploy step: build docker feature image and deploy on kubernetes
     - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
     - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME} .
@@ -499,7 +489,6 @@ DEV-manual:
   <<: [ *dind-job, *deploy-dev, *pullcache ]
   when: manual
   only:
-    #kubernetes: active
     refs:
       - master
       - tags
@@ -511,7 +500,6 @@ DEV-manual:
 STAGING-auto:
   <<: [ *dind-job, *deploy-staging, *pullcache ]
   only:
-    #kubernetes: active
     refs:
       - master
   except:
@@ -521,7 +509,6 @@ STAGING-auto:
 STAGING-manual:
   <<: [ *dind-job, *deploy-staging, *pullcache ]
   only:
-    #kubernetes: active
     refs:
       - tags
       - release
@@ -533,7 +520,6 @@ STAGING-manual:
 HOTFIX-manual:
   <<: [ *dind-job, *deploy-hotfix, *pullcache ]
   only:
-    #kubernetes: active
     refs:
       - tags
       - release
@@ -545,7 +531,6 @@ HOTFIX-manual:
 PRODUCTION-manual:
   <<: [ *dind-job, *deploy-prod, *pullcache ]
   only:
-    #kubernetes: active
     refs:
       - tags
       - release
@@ -557,11 +542,6 @@ SSL-TLS-activate:
   stage: ssl-tls
   when: manual
   except:
-    refs:
-      - develop
-      - master
-      - release
-      - tags
     variables:
       - $CI_SETUP
   script:
@@ -584,11 +564,6 @@ SSL-TLS-deactivate:
   stage: ssl-tls
   when: manual
   except:
-    refs:
-      - develop
-      - master
-      - release
-      - tags
     variables:
       - $CI_SETUP
   script:
@@ -606,26 +581,16 @@ SSL-TLS-deactivate:
     - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
 
 
-DEV-cleanup:
+cleanup:
   <<: [*dind-job, *pullcache]
   stage: cleanup
   when: manual
-  #only:
-  #  kubernetes: active
-  except:
-    - develop
-    - master
-    - release
-    - tags
   dependencies:
     - DEV-deploy
   environment:
     name: dev
     url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
   script:
-    - export ENVIRONMENT=dev
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
