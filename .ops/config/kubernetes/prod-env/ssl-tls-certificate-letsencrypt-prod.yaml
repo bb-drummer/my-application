@@ -1,0 +1,35 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT-letsencrypt-certificate
+  namespace: PROJECTNAMESPACE
+spec:
+  secretName: PROJECTSLUG-ENVIRONMENT-letsencrypt-certificate
+  duration: 2160h # 90d
+  #renewBefore: 1440h # 60d
+  renewBefore: 360h # 15d
+  commonName: PROJECTHOSTNAME
+  dnsNames:
+  - my-application.net
+  - www.my-application.net
+  - adminlte.my-application.net
+  - remark.my-application.net
+  - taurus.my-application.net
+  - bootstrap.my-application.net
+  - foundation.my-application.net
+  - bootstrap-app.de
+  - www.bootstrap-app.de
+  - bootstrap-app.com
+  - www.bootstrap-app.com
+  - bootstrap-app.net
+  - www.bootstrap-app.net
+  #- www.example.com
+  #uriSANs:
+  #- spiffe://cluster.local/ns/sandbox/sa/example
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+    # We can reference ClusterIssuers by changing the kind here.
+    # The default value is Issuer (i.e. a locally namespaced Issuer)
+    #name: PROJECTSLUG-ENVIRONMENT-tls-issuer
+    #kind: Issuer

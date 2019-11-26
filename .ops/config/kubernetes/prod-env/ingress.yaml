@@ -1,0 +1,72 @@
+# Network, Routing Setup
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: PROJECTSLUG-ENVIRONMENT
+  namespace: PROJECTNAMESPACE
+  labels:
+    app: PROJECTSLUG-ENVIRONMENT
+    team: PROJECTSLUG-ENVIRONMENT
+    stage: ENVIRONMENT
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/upstream-vhost: "$host"
+    #nginx.ingress.kubernetes.io/affinity-mode: "balanced"
+    #nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.org/client-max-body-size: "1024m"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /(.*) {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+      }
+    #certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+    #certmanager.k8s.io/issuer: PROJECTSLUG-ENVIRONMENT-tls-issuer
+spec:
+  #tls:
+  #  - hosts:
+  #      - PROJECTHOSTNAME
+  #    secretName: PROJECTSLUG-ENVIRONMENT-letsencrypt-certificate
+  rules:
+    - host: my-application.net
+      http: &http_rules
+        paths:
+        - path: /(.*)
+          backend:
+            serviceName: PROJECTSLUG-ENVIRONMENT
+            servicePort: 8080
+        - path: /_pma_/(.*)
+          backend:
+            serviceName: PROJECTSLUG-ENVIRONMENT-admin-pma
+            servicePort: 80
+    - host: www.my-application.net
+      http: *http_rules
+    - host: adminlte.my-application.net
+      http: *http_rules
+    - host: remark.my-application.net
+      http: *http_rules
+    - host: taurus.my-application.net
+      http: *http_rules
+    - host: bootstrap.my-application.net
+      http: *http_rules
+    - host: foundation.my-application.net
+      http: *http_rules
+    - host: bootstrap-app.de
+      http: *http_rules
+    - host: www.bootstrap-app.de
+      http: *http_rules
+    - host: bootstrap-app.com
+      http: *http_rules
+    - host: www.bootstrap-app.com
+      http: *http_rules
+    - host: bootstrap-app.net
+      http: *http_rules
+    - host: www.bootstrap-app.net
+      http: *http_rules
