@@ -159,14 +159,14 @@ stages:
     url: http://my-application.bjoernbartels.earth
   script:
     # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/svc-app.yaml
     # run kubernetes deployment
     # delete existing harbor login secret (if exists)
     - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
     # add new login secret
     - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
     # apply configuration
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/svc-app.yaml
     # rollout image
     - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
 
@@ -555,6 +555,9 @@ SSL-TLS-activate:
   stage: ssl-tls
   when: manual
   except:
+    refs:
+      - release
+      - tags
     variables:
       - $CI_SETUP
   script:
@@ -578,6 +581,9 @@ SSL-TLS-deactivate:
   stage: ssl-tls
   when: manual
   except:
+    refs:
+      - release
+      - tags
     variables:
       - $CI_SETUP
   script:
@@ -594,6 +600,60 @@ SSL-TLS-deactivate:
     # delete k8s deployments
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
     - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
+
+
+PRODUCTION-SSL-TLS-activate:
+  <<: [*dind-job, *pullcache]
+  stage: ssl-tls
+  when: manual
+  only:
+    refs:
+      - release
+      - tags
+  except:
+    variables:
+      - $CI_SETUP
+  script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    #
+    # delete k8s deployments
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+
+
+PRODUCTION-SSL-TLS-deactivate:
+  <<: [*dind-job, *pullcache]
+  stage: ssl-tls
+  when: manual
+  only:
+    refs:
+      - release
+      - tags
+  except:
+    variables:
+      - $CI_SETUP
+  script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    #
+    # delete k8s deployments
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
 
 
 cleanup:
@@ -627,3 +687,29 @@ cleanup:
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml -f .ops/config/kubernetes/svc-pma.yaml -f .ops/config/kubernetes/svc-mysql.yaml -f .ops/config/kubernetes/svc-redis.yaml
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-app.yaml -f .ops/config/kubernetes/storage-mysql.yaml
+
+PRODUCTION-cleanup:
+  <<: [*dind-job, *pullcache]
+  stage: cleanup
+  when: manual
+  dependencies:
+    - PRODUCTION-manual
+  environment:
+    name: dev
+    url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
+  script:
+    - echo "Target Environment = ${ENVIRONMENT}"
+    - echo "Target Hostname    = ${HOST_NAME}"
+    - echo "Project Slug       = ${PROJECTSLUG}"
+    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
+    # replacements
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/svc-app.yaml
+    #
+    # delete k8s deployments
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ingress.yaml
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/svc-app.yaml
