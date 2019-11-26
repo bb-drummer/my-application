@@ -660,6 +660,10 @@ cleanup:
   <<: [*dind-job, *pullcache]
   stage: cleanup
   when: manual
+  except:
+    refs:
+      - release
+      - tags
   dependencies:
     - DEV-deploy
   environment:
@@ -692,6 +696,10 @@ PRODUCTION-cleanup:
   <<: [*dind-job, *pullcache]
   stage: cleanup
   when: manual
+  only:
+    refs:
+      - release
+      - tags
   dependencies:
     - PRODUCTION-manual
   environment:
