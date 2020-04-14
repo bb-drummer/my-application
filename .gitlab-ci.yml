@@ -185,6 +185,7 @@ before_script:
   # set env vars
   - export ENVIRONMENT=dev;
     export HOST_NAME=${HOST_DEV};
+    export ORG_PROJECTSLUG=${PROJECTSLUG};
     export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME};
     export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG};
     if [ "$CI_COMMIT_REF_SLUG" = "master" ]; then
@@ -351,7 +352,7 @@ service-redis:
     - pwd
     #
     #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    - export PROJECTSLUG=${ORG_PROJECTSLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
     #
@@ -683,9 +684,10 @@ cleanup:
     - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
     - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
     - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
     - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
     - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
+    - export PROJECTSLUG=${ORG_PROJECTSLUG}
+    - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
     #
     # delete k8s deployments
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
