@@ -191,19 +191,16 @@ before_script:
       export ENVIRONMENT=staging;
       export HOST_NAME=${HOST_STAGING};
       export PROJECTHOSTNAME=${HOST_NAME};
-      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
     if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then
       export ENVIRONMENT=production;
       export HOST_NAME=${HOST_PROD};
       export PROJECTHOSTNAME=${HOST_NAME};
-      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
     if [ ! -z "$CI_COMMIT_TAG" ]; then
       export ENVIRONMENT=production;
       export HOST_NAME=${HOST_PROD};
       export PROJECTHOSTNAME=${HOST_NAME};
-      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
 
 
