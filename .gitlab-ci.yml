@@ -549,6 +549,9 @@ PRODUCTION-manual:
     refs:
       - tags
       - release
+  except:
+    variables:
+      - $CI_SETUP
   when: manual
 
 
@@ -628,7 +631,7 @@ PRODUCTION-SSL-TLS-activate:
     #
     # delete k8s deployments
     - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
 
 
 PRODUCTION-SSL-TLS-deactivate:
@@ -654,7 +657,7 @@ PRODUCTION-SSL-TLS-deactivate:
     - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
     #
     # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
+    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
     - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
 
 
