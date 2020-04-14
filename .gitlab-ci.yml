@@ -202,6 +202,7 @@ before_script:
       export ENVIRONMENT=production;
       export HOST_NAME=${HOST_PROD};
       export PROJECTHOSTNAME=${HOST_NAME};
+      export PROJECTSLUG=${ORG_PROJECTSLUG}-release;
     fi;
 
 
