@@ -21,9 +21,9 @@ ini_set('display_errors', 'On');
 #ini_set('session.save_handler', "redis");
 #ini_set('session.save_path', $_SERVER['MY_APPLICATION_APP_DEV_REDIS_MASTER_PORT_6379_TCP']."?auth=fRfhJm02OTkqgKx2zxo34QJtVcU3DhUI");
 
-if (isset($_GET['__phpinfo']) && ($_GET['__phpinfo'] == 'true')) {
-    phpinfo(); die();
-}
+//if (isset($_GET['__phpinfo']) && ($_GET['__phpinfo'] == 'true')) {
+//    phpinfo(); die();
+//}
 
 /**
  * This makes our life easier when dealing with paths. Everything is relative
