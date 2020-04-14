@@ -626,7 +626,7 @@ PRODUCTION-SSL-TLS-activate:
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
     #
     # delete k8s deployments
@@ -653,7 +653,7 @@ PRODUCTION-SSL-TLS-deactivate:
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
     - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
+    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
     #
     # delete k8s deployments
