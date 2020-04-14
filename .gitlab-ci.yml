@@ -191,23 +191,26 @@ before_script:
       export ENVIRONMENT=staging;
       export HOST_NAME=${HOST_STAGING};
       export PROJECTHOSTNAME=${HOST_NAME};
+      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
     if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then
       export ENVIRONMENT=production;
       export HOST_NAME=${HOST_PROD};
       export PROJECTHOSTNAME=${HOST_NAME};
+      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
     if [ ! -z "$CI_COMMIT_TAG" ]; then
       export ENVIRONMENT=production;
       export HOST_NAME=${HOST_PROD};
       export PROJECTHOSTNAME=${HOST_NAME};
+      #export PROJECTSLUG=${PROJECTSLUG};
     fi;
 
 
 
-##################
-# K8S SETUP JOBS #
-##################
+######################
+# K8S SETUP JOBS DEV #
+######################
 
 k82-namespace:
   <<: [*dind-job]
@@ -242,8 +245,8 @@ storage-app:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
     #
@@ -258,8 +261,8 @@ storage-mysql:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
     #
@@ -277,8 +280,8 @@ ingress:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
     #
@@ -296,8 +299,8 @@ ingress-ssl-tls:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
     - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
@@ -314,8 +317,8 @@ service-mysql:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
     #
@@ -332,8 +335,8 @@ service-phpmyadmin:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
     #
@@ -350,8 +353,8 @@ service-redis:
   script:
     - pwd
     #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
+    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
+    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
     # replacements
     - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
     #
@@ -359,6 +362,7 @@ service-redis:
     - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-redis.yaml
     # rollout image
     - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}-redis-master
+
 
 ##############
 # BUILD JOBS #
