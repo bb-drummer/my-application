@@ -54,7 +54,6 @@ spec:
         env:
         - name: MYSQL_HOST
           value: PROJECTSLUG-ENVIRONMENT-mysql
-          #value: PROJECTSLUG-ENVIRONMENT-mysql
         - name: MYSQL_PASSWORD
           valueFrom:
             secretKeyRef:
