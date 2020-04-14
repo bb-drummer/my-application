@@ -15,7 +15,7 @@ coding_style:
     php: {  }
 build:
     environment:
-        php: '7.0'
+        php: '7.1'
         mysql: true
         memcached: true
         selenium: true
@@ -47,4 +47,3 @@ build:
                 coverage:
                     file: 'my-application.clover'
                     format: 'php-clover'
-
