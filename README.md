@@ -21,6 +21,18 @@ If you need further assistance, please do not hesitate to contact the applicatio
 * basic theming
 
 
+## Demo and themes
+
+* Foundation (basic): [https://my-application.net](https://my-application.net) ([https://foundation.my-application.net](https://foundation.my-application.net)) 
+* Bootstrap (basic): [https://bootstrap.my-application.net](https://bootstrap.my-application.net)
+
+
+* Admin LTE: [https://adminlte.my-application.net](https://adminlte.my-application.net)
+* Remark: [https://remark.my-application.net](https://remark.my-application.net)
+* Taurus: [https://taurus.my-application.net](https://taurus.my-application.net)
+
+
+
 ### TODO
 
 * finish support module
