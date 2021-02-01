@@ -1,23 +1,9 @@
-##########################
-# VARs:
-#   CI_HARBOR_USERNAME
-#   CI_HARBOR_PASSWORD
-#   KUBECONFIG : path to .kube.config file
-#
-#   PROJECTSLUG
-#   PROJECTNAMESPACE
-#   HOST_(DEV,STAGIN,HOTFIX,PROD)
-#
-##########################
-
 stages:
-  - project
-  - setup
-  - build
-  - package
-  - deploy
-  - ssl-tls
-  - cleanup
+  - build-init
+  - build-app
+  - build-image
+  - k8s-setup
+  - k8s-deploy
 
 
 ##########################
@@ -32,26 +18,20 @@ stages:
       # remove 'paths' to cache ALL untracked files
       # cache JS dependencies
       - node_modules
-      - bower_components
       - package-lock.json
-      - yarn.lock
       # cache PHP dependencies
       - vendor
-      - composer.lock
+      - composer-lock.json
       # cache package/project stuff, non-artifacts
       - dist
       - public
       - ${BUILD_LABEL_TMPFILE}
     policy: push
 
-
-
 .pullcache: &pullcache
   extends: .pushcache
   cache:
     policy: pull
-
-
 
 .pullpushcache: &pullpushcache
   extends: .pushcache
@@ -64,322 +44,110 @@ stages:
 #########################
 
 .build-env-template: &build-env-job
-  #image: bbdrummer/ubuntu-apache-php:7.3
-  image: harbor.bjoernbartels.earth:8013/my-application/my-application-build-env:latest
+  image: bbdrummer/my-application-build-env:latest
   tags:
     - docker-runner
 
 .docker-dind-template: &dind-job
-  image: harbor.bjoernbartels.earth:8013/devops/ci-docker-kubectl:latest
+  image: bbdrummer/ci-docker-kubectl:latest
+  #image: docker:stable
   services:
     - name: docker:dind
       # Zertifikate nicht verfügbar, deshalb Workaround:
-      command: ["--insecure-registry=harbor.bjoernbartels.earth:8013"]
+      #command: ["--insecure-registry=harbor.bjoernbartels.earth:8013"]
   tags:
     - docker-runner
 
+.k8s-ansible-template: &k8s-job
+  image: bbdrummer/ci-kubectl:latest
+  tags:
+    - docker-runner
+  artifacts:
+    paths:
+      - .k8s/generated
 
-########################
-# DEPLOYMENT TEMPLATES #
-########################
-
-.dev-deploy-template: &deploy-dev
-  stage: deploy
-  dependencies:
-    - init
-  environment:
-    name: dev
-    url: http://${HOST_DEV}
-  script:
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
-    # run kubernetes deployment
-    # delete existing harbor login secret (if exists)
-    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
-    # add new login secret
-    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
-    # apply configuration
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
-
-
-.staging-deploy-template: &deploy-staging
-  stage: deploy
-  dependencies:
-    - init
-  environment:
-    name: integ
-    url: http://${HOST_STAGING}
-  script:
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
-    # run kubernetes deployment
-    # delete existing harbor login secret (if exists)
-    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
-    # add new login secret
-    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
-    # apply configuration
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
-
-
-.hotfix-deploy-template: &deploy-hotfix
-  stage: deploy
-  dependencies:
-    - init
-  environment:
-    name: hotfix
-    url: http://${HOST_HOTFIX}
-  script:
-    # get k8s master-host's https/tls certificates, uses: $KUBEKONFIG, $CI_PROJECT_DIR
-    #- .ops/k8s-certs.sh
-    - export ENVIRONMENT=hotfix
-    - export PROJECTHOSTNAME=${HOST_HOTFIX}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
-    # run kubernetes deployment
-    # delete existing harbor login secret (if exists)
-    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
-    # add new login secret
-    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
-    # apply configuration
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
-
-
-.prod-deploy-template: &deploy-prod
-  stage: deploy
-  dependencies:
-    - init
-  environment:
-    name: production
-    url: http://my-application.bjoernbartels.earth
-  script:
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/svc-app.yaml
-    # run kubernetes deployment
-    # delete existing harbor login secret (if exists)
-    - kubectl delete secret ${PROJECTSLUG}-harbor-login --ignore-not-found -n ${PROJECTNAMESPACE}
-    # add new login secret
-    - kubectl create secret docker-registry ${PROJECTSLUG}-harbor-login --docker-username=$CI_HARBOR_USERNAME --docker-password=$CI_HARBOR_PASSWORD --docker-server=harbor.bjoernbartels.earth:8013 --docker-email=gitlab-pipeline@bjoernbartels.earth -n ${PROJECTNAMESPACE}
-    # apply configuration
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/svc-app.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
-
+.project-variables: &project-variables
+  before_script:
+    # get k8s config
+    - if [[ ! -z "${KUBECONFIG_DEPLOYUSER}" ]] && [[ ! -z "${KUBECONFIG}" ]] ; then echo "$(echo ${KUBECONFIG_DEPLOYUSER} | base64 -d)" > ${KUBECONFIG} ; fi
+    # normalize var values
+    - if [[ -z "${PROJECTNAME}" ]] ; then export PROJECTNAME="${CI_PROJECT_NAME}"; fi
+    - export PROJECTNAME=$(echo "${PROJECTNAME}" | sed 's/[^[:alnum:]]/-/g;s/^[-]*//;s/[-]*$//' | tr '[:upper:]' '[:lower:]')
+    #
+    - if [[ -z "${PROJECTNAMESPACE}" ]] ; then export PROJECTNAMESPACE="${CI_PROJECT_NAMESPACE}"; fi
+    - export PROJECTNAMESPACE=$(echo "${PROJECTNAMESPACE}" | sed 's/[^[:alnum:]]/-/g;s/^[-]*//;s/[-]*$//' | tr '[:upper:]' '[:lower:]')
+    #
+    - if [[ "${CI_COMMIT_REF_NAME}" == "master" ]] ; then export RELEASE="latest"; fi
+    - if [[ "${CI_COMMIT_REF_NAME}" == "release" ]] ; then export RELEASE="stable"; fi
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export RELEASE="${CI_COMMIT_TAG}"; fi
+    - if [[ -z "${RELEASE}" ]] ; then export RELEASE="${CI_COMMIT_REF_NAME}"; fi
+    - export RELEASE=$(echo "${RELEASE}" | sed 's/[^[:alnum:]\.]/-/g;s/^[-]*//;s/[-]*$//' | tr '[:upper:]' '[:lower:]')
+    #
+    - if [[ "${CI_COMMIT_REF_NAME}" == "master" ]] ; then export ENVLABEL="staging"; fi
+    - if [[ "${CI_COMMIT_REF_NAME}" == "release" ]] ; then export ENVLABEL="staging"; fi
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export ENVLABEL="production"; fi
+    - if [[ -z "${ENVLABEL}" ]] ; then export ENVLABEL="development"; fi
+    - export ENVLABEL=$(echo "${ENVLABEL}" | sed 's/[^[:alnum:]]/-/g;s/^[-]*//;s/[-]*$//' | tr '[:upper:]' '[:lower:]')
+    #
+    - if [[ -z "${TEAMLABEL}" ]] ; then export TEAMLABEL="${PROJECTNAME}-team"; fi
+    - export TEAMLABEL=$(echo "${TEAMLABEL}" | sed 's/[^[:alnum:]]/-/g;s/^[-]*//;s/[-]*$//' | tr '[:upper:]' '[:lower:]')
+    # k8s set/check context
+    - if [[ -t "kubectl version" ]] ; then kubectl config current-context; else echo -e "\e[33mNo kubectl available...!"; fi
+    - if [[ -t "kubectl version" ]] ; then kubectl version; fi
 
 #################
 # PIPELINE JOBS #
 #################
 
+k8s-setup:
+  <<: [*k8s-job, *pullpushcache, *project-variables]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -vvv -l localhost ./.k8s/plays/setup.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/service-deployment.yml; fi
+
+k8s-deploy:
+  <<: [*k8s-job, *pullpushcache, *project-variables]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -l localhost ./.k8s/plays/deploy.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/deploy/service-deployment.yml; fi
+
+k8s-cleanup:
+  <<: [*k8s-job, *pullpushcache, *project-variables]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/remove.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/setup.yml; fi
+
 variables:
   BUILD_TARGET: dist
   BUILD_LABEL_TMPFILE: TMP_BUILD_LABEL
 
-before_script:
-  # get build label
-  - if [ -f ${BUILD_LABEL_TMPFILE} ]; then export BUILD_LABEL=`cat ${BUILD_LABEL_TMPFILE}`; fi
-  # set env vars
-  - export ENVIRONMENT=dev;
-    export HOST_NAME=${HOST_DEV};
-    export ORG_PROJECTSLUG=${PROJECTSLUG};
-    export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME};
-    export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG};
-    if [ "$CI_COMMIT_REF_SLUG" = "master" ]; then
-      export ENVIRONMENT=staging;
-      export HOST_NAME=${HOST_STAGING};
-      export PROJECTHOSTNAME=${HOST_NAME};
-    fi;
-    if [ "$CI_COMMIT_REF_SLUG" = "release" ]; then
-      export ENVIRONMENT=production;
-      export HOST_NAME=${HOST_PROD};
-      export PROJECTHOSTNAME=${HOST_NAME};
-    fi;
-    if [ ! -z "$CI_COMMIT_TAG" ]; then
-      export ENVIRONMENT=production;
-      export HOST_NAME=${HOST_PROD};
-      export PROJECTHOSTNAME=${HOST_NAME};
-      export PROJECTSLUG=${ORG_PROJECTSLUG}-release;
-    fi;
-
-
-
-######################
-# K8S SETUP JOBS DEV #
-######################
-
-k82-namespace:
-  <<: [*dind-job]
-  stage: project
-  when: manual
-  only:
-    variables:
-      - $CI_SETUP
-  except:
-    - release
-    - tags
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    - pwd
-    #
-    - export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/namespace.yaml
-    #
-    # create namespace in cluster
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/namespace.yaml
-
-
-storage-app:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
-    #
-    # deploy mysql service
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-app.yaml
-
-
-storage-mysql:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
-    #
-    # deploy mysql service
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-mysql.yaml
-
-
-ingress:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  only:
-    variables:
-      - $CI_SETUP
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
-    #
-    # deploy non-SSL/TLS ingress
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
-
-
-ingress-ssl-tls:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  only:
-    variables:
-      - $CI_SETUP
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    #
-    # deploy ingress with SSL/TLS (via letsencrypt)
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-
-
-service-mysql:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
-    #
-    # deploy mysql service
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-mysql.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}-mysql
-
-
-service-phpmyadmin:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    #- export PROJECTSLUG=${PROJECTSLUG}-${CI_COMMIT_REF_SLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
-    #
-    # deploy phpMyAdmin service
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-pma.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}-admin-pma
-
-
-service-redis:
-  <<: [*dind-job, *pullcache]
-  stage: project
-  when: manual
-  script:
-    - pwd
-    #
-    #- export PROJECTHOSTNAME=${CI_COMMIT_REF_SLUG}-${HOST_NAME}
-    - export PROJECTSLUG=${ORG_PROJECTSLUG}
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
-    #
-    # deploy redis service
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-redis.yaml
-    # rollout image
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}-redis-master
-
-
-##############
-# BUILD JOBS #
-##############
 
 init:
   <<: [*build-env-job, *pushcache]
-  stage: setup
+  stage: build-init
+  #when: manual
   except:
     variables:
       - $CI_SETUP
   before_script:
+    - bin/build-env.sh
     - export BUILD_LABEL=$(TZ=Europe/Berlin date +%Y%m%d.%H%M-$CI_COMMIT_REF_NAME)
   script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
     # save timestamp to file
     - echo $BUILD_LABEL > ${BUILD_LABEL_TMPFILE}
     - echo -e "\n\n\n\e[96mCreated new build label \e[107;30;1m $BUILD_LABEL \e[0m\n\n\n"
@@ -390,8 +158,9 @@ init:
       - ${BUILD_LABEL_TMPFILE}
 
 build-app:
-  <<: [*build-env-job, *pullcache]
-  stage: build
+  <<: [*build-env-job, *pullcache, *project-variables]
+  stage: build-app
+  #when: manual
   except:
     variables:
       - $CI_SETUP
@@ -429,302 +198,53 @@ build-app:
     paths:
       - ${BUILD_TARGET}
 
+docker-release:
+  <<: [*dind-job, *pullcache, *project-variables]
+  stage: build-image
+  only:
+    - release
+    - tags
+  dependencies:
+    - build-app
+  script:
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export BUILD_LABEL="${CI_COMMIT_TAG}"; fi
+    # build docker image and tag with version
+    - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
+    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then docker image tag bbdrummer/${PROJECTNAME}:${RELEASE} bbdrummer/${PROJECTNAME}:latest ; fi
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then docker push bbdrummer/${PROJECTNAME}:latest ; fi
 
-docker:
-  <<: [*dind-job, *pullcache]
-  stage: package
-  except:
-    variables:
-      - $CI_SETUP
-  #when: manual
+docker-manual:
+  <<: [*dind-job, *pullcache, *project-variables]
+  stage: build-image
+  when: manual
   only:
     - master
-    - tags
-    - release
   dependencies:
-    - init
     - build-app
   script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    - ls -la dist/
-    #
-    - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
+    - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export BUILD_LABEL="${CI_COMMIT_TAG}"; fi
     # build docker image and tag with version
-    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME} .
-    - docker push harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME}
+    - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
+    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
 
 
-###############
-# DEPLOY JOBS #
-###############
-
-DEV-deploy:
-  <<: [*dind-job, *pullcache]
-  stage: deploy
-  #when: manual
+docker-dev:
+  <<: [*dind-job, *pullcache, *project-variables]
+  stage: build-image
   except:
+    variables:
+      - $CI_SETUP
     refs:
-      - develop
       - master
       - release
       - tags
-    variables:
-      - $CI_SETUP
   dependencies:
-    - init
     - build-app
-  environment:
-    name: dev
-    url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
   script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    - ls -la dist/
-    #
-    # combine docker & deploy step: build docker feature image and deploy on kubernetes
-    - docker login harbor.bjoernbartels.earth:8013 -u "${CI_HARBOR_USERNAME}" -p "${CI_HARBOR_PASSWORD}"
-    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME} .
-    - docker push harbor.bjoernbartels.earth:8013/${PROJECTNAMESPACE}/${PROJECTSLUG}-distributional:${CI_COMMIT_REF_NAME}
-    #
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
-    #
-    # k8s deployments
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml
-    # k8s rollout status
-    - kubectl rollout status -n ${PROJECTNAMESPACE} -w deployment/${PROJECTSLUG}-${ENVIRONMENT}
-
-
-
-DEV-manual:
-  <<: [ *dind-job, *deploy-dev, *pullcache ]
-  when: manual
-  only:
-    refs:
-      - master
-      - tags
-      - release
-  except:
-    variables:
-      - $CI_SETUP
-
-STAGING-auto:
-  <<: [ *dind-job, *deploy-staging, *pullcache ]
-  only:
-    refs:
-      - master
-  except:
-    variables:
-      - $CI_SETUP
-
-STAGING-manual:
-  <<: [ *dind-job, *deploy-staging, *pullcache ]
-  only:
-    refs:
-      - tags
-      - release
-  except:
-    variables:
-      - $CI_SETUP
-  when: manual
-
-HOTFIX-manual:
-  <<: [ *dind-job, *deploy-hotfix, *pullcache ]
-  only:
-    refs:
-      - tags
-      - release
-  except:
-    variables:
-      - $CI_SETUP
-  when: manual
-
-PRODUCTION-manual:
-  <<: [ *dind-job, *deploy-prod, *pullcache ]
-  only:
-    refs:
-      - tags
-      - release
-  except:
-    variables:
-      - $CI_SETUP
-  when: manual
-
-
-SSL-TLS-activate:
-  <<: [*dind-job, *pullcache]
-  stage: ssl-tls
-  when: manual
-  except:
-    refs:
-      - release
-      - tags
-    variables:
-      - $CI_SETUP
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-
-
-SSL-TLS-deactivate:
-  <<: [*dind-job, *pullcache]
-  stage: ssl-tls
-  when: manual
-  except:
-    refs:
-      - release
-      - tags
-    variables:
-      - $CI_SETUP
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
-
-
-PRODUCTION-SSL-TLS-activate:
-  <<: [*dind-job, *pullcache]
-  stage: ssl-tls
-  when: manual
-  only:
-    refs:
-      - release
-      - tags
-  except:
-    variables:
-      - $CI_SETUP
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-
-
-PRODUCTION-SSL-TLS-deactivate:
-  <<: [*dind-job, *pullcache]
-  stage: ssl-tls
-  when: manual
-  only:
-    refs:
-      - release
-      - tags
-  except:
-    variables:
-      - $CI_SETUP
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - kubectl apply -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress.yaml
-
-
-cleanup:
-  <<: [*dind-job, *pullcache]
-  stage: cleanup
-  when: manual
-  except:
-    refs:
-      - release
-      - tags
-  dependencies:
-    - DEV-deploy
-  environment:
-    name: dev
-    url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/svc-app.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/svc-pma.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/svc-mysql.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/storage-app.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/storage-mysql.yaml
-    - export PROJECTSLUG=${ORG_PROJECTSLUG}
-    - .ops/replacements.sh .ops/config/kubernetes/svc-redis.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress-ssl-tls.yaml -f .ops/config/kubernetes/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/ingress.yaml
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/svc-app.yaml -f .ops/config/kubernetes/svc-pma.yaml -f .ops/config/kubernetes/svc-mysql.yaml -f .ops/config/kubernetes/svc-redis.yaml
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/storage-app.yaml -f .ops/config/kubernetes/storage-mysql.yaml
-
-PRODUCTION-cleanup:
-  <<: [*dind-job, *pullcache]
-  stage: cleanup
-  when: manual
-  only:
-    refs:
-      - release
-      - tags
-  dependencies:
-    - PRODUCTION-manual
-  environment:
-    name: dev
-    url: http://${CI_COMMIT_REF_SLUG}-${HOST_DEV}
-  script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
-    # replacements
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - .ops/replacements.sh .ops/config/kubernetes/prod-env/svc-app.yaml
-    #
-    # delete k8s deployments
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ingress-ssl-tls.yaml -f .ops/config/kubernetes/prod-env/ingress.yaml
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/ssl-tls-certificate-letsencrypt-prod.yaml -f .ops/config/kubernetes/ssl-tls-issuer-letsencrypt-prod.yaml
-    - kubectl delete --ignore-not-found -n ${PROJECTNAMESPACE} -f .ops/config/kubernetes/prod-env/svc-app.yaml
+    # build docker feature image
+    - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
+    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
