@@ -1,0 +1,419 @@
+---
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ project }}-{{ app_env }}-application-env
+  namespace: {{ namespace }}
+type: Opaque
+data:
+  TZ: {{ 'Europe/Berlin' | b64encode }}
+  MYSQL_ROOT_PASSWORD: {{ database_root_password | b64encode }}
+  MYSQL_USER: {{ database_user | b64encode }}
+  MYSQL_HOST: {{ (project +'-'+ app_env +'-mysql') | b64encode }}
+  MYSQL_PASSWORD: {{ database_password | b64encode }}
+  MYSQL_DATABASE: {{ database_name | b64encode }}
+  PMA_ABSOLUTE_URI: {{ ('https://'+hostnames[app_env][0]+'/_pma_/') | b64encode }}
+  PMA_HOST: {{ (project +'-'+ app_env +'-mysql') | b64encode }}
+  PMA_PORT: {{ '3306' | b64encode }}
+
+---
+
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ project }}-{{ app_env }}-letsencrypt-certificate
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+spec:
+  secretName: {{ project }}-{{ app_env }}-letsencrypt-certificate
+  duration: 2160h # 90d
+  renewBefore: 360h # 15d
+  commonName: {{ hostnames[app_env][0] }}
+  dnsNames:
+{% for hostname in hostnames[app_env] %}
+    - {{ hostname }}
+{% endfor %}
+  #uriSANs:
+  #- spiffe://cluster.local/ns/sandbox/sa/example
+  issuerRef:
+    name: letsencrypt-cf-production
+    kind: ClusterIssuer
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ project }}-{{ app_env }}-ingress
+  namespace: {{ namespace }}
+  annotations:
+    project-url: "https://{{ hostnames[app_env][0] }}"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/affinity-mode: "balanced"
+    nginx.ingress.kubernetes.io/session-cookie-name: "_LB"
+    nginx.ingress.kubernetes.io/upstream-vhost: "$host"
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    nginx.ingress.kubernetes.io/enable-access-log: "true"
+    nginx.org/client-max-body-size: "1024m"
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location /(.*) {
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto https;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+      }
+    cert-manager.io/cluster-issuer: letsencrypt-cf-production
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+spec:
+  tls:
+    - hosts:
+{% for hostname in hostnames[app_env] %}
+        - {{ hostname }}
+{% endfor %}
+      secretName: {{ project }}-{{ app_env }}-letsencrypt-certificate
+  rules:{% for hostname in hostnames[app_env] %}
+{% if loop.first %}    
+    - host: {{ hostname }}
+      http: &http_rules
+        paths:
+{% for service in services %}
+          - path: /_pma_/(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ project }}-{{ app_env }}-admin-pma
+                port: 
+                  number: 80
+          - path: {{ service.path }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ project }}-{{ service.name }}-{{ app_env }}-service
+                port: 
+                  number: {{ service.port }}
+{% endfor %}
+{% else %}
+    - host: {{ hostname }}
+      http: *http_rules
+{% endif %}{% endfor %}
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ project }}-{{ app_env }}-pv-claim
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ project }}-{{ app_env }}-mysql-pv-claim
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ project }}-{{ app_env }}-mysql-imports-claim
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+spec:
+  accessModes:
+    - ReadWriteMany
+  volumeMode: Filesystem
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+# redis setup
+apiVersion: v1
+kind: Service        # Type of Kubernetes resource
+metadata:
+  name: {{ project }}-{{ app_env }}-redis-master # Name of the Kubernetes resource
+  namespace: {{ namespace }}
+  labels:            # Labels that will be applied to this resource
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    #role: master
+    tier: backend
+spec:
+  ports:
+    - port: 6379       # Map incoming connections on port 6379 to the target port 6379 of the Pod
+      targetPort: 6379
+  selector:          # Map any Pod with the specified labels to this service
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    #role: master
+    tier: backend
+  #clusterIP: None
+
+---
+
+apiVersion: apps/v1  # API version
+kind: Deployment
+metadata:
+  name: {{ project }}-{{ app_env }}-redis-master # Unique name for the deployment
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: backend
+spec:
+  selector:
+    matchLabels:     # This deployment applies to the Pods matching these labels
+      app: {{ project }}
+      environment: {{ app_env }}
+      team: {{ teamlabel }}
+      #role: master
+      tier: backend
+  strategy:
+    type: RollingUpdate
+  replicas: 1        # Run a single pod in the deployment
+  template:          # Template for the pods that will be created by this deployment
+    metadata:
+      labels:        # Labels to be applied to the Pods in this deployment
+        app: {{ project }}
+        environment: {{ app_env }}
+        team: {{ teamlabel }}
+        #role: master
+        tier: backend
+    spec:            # Spec for the container which will be run inside the Pod.
+      containers:
+        - name: {{ project }}-{{ app_env }}-redis-master
+          #image: redis
+          image: bbdrummer/redis-runtime-env:latest
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1Gi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 6379
+
+---
+
+# mySQL service
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ project }}-{{ app_env }}-mysql
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: database
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: database
+  clusterIP: None
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ project }}-{{ app_env }}-mysql
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: database
+spec:
+  selector:
+    matchLabels:
+      app: {{ project }}
+      environment: {{ app_env }}
+      team: {{ teamlabel }}
+      tier: database
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  progressDeadlineSeconds: 600
+  template:
+    metadata:
+      labels:
+        app: {{ project }}
+        environment: {{ app_env }}
+        team: {{ teamlabel }}
+        tier: database
+    spec:
+      containers:
+        - image: mysql:latest
+          name: {{ project }}-{{ app_env }}-mysql
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              memory: 1Gi
+          args:
+            - "--default-authentication-plugin=mysql_native_password"
+          envFrom:
+            - secretRef:
+                name: {{ project }}-{{ app_env }}-application-env
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: {{ project }}-{{ app_env }}-mysql-persistent-storage
+              mountPath: /var/lib/mysql
+            - name: {{ project }}-{{ app_env }}-mysql-imports-storage
+              mountPath: /docker-entrypoint-initdb.d/
+      volumes:
+        - name: {{ project }}-{{ app_env }}-mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ project }}-{{ app_env }}-mysql-pv-claim
+        - name: {{ project }}-{{ app_env }}-mysql-imports-storage
+          persistentVolumeClaim:
+            claimName: {{ project }}-{{ app_env }}-mysql-imports-claim
+
+---
+
+# admin-pma application
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ project }}-{{ app_env }}-admin-pma
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: admin
+spec:
+  type: LoadBalancer
+  #type: NodePort
+  ports:
+    - port: 80
+      #targetPort: 80
+  selector:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: admin
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ project }}-{{ app_env }}-admin-pma
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    environment: {{ app_env }}
+    team: {{ teamlabel }}
+    tier: admin
+spec:
+  selector:
+    matchLabels:
+      app: {{ project }}
+      environment: {{ app_env }}
+      team: {{ teamlabel }}
+      tier: admin
+  replicas: 1
+  progressDeadlineSeconds: 600
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: {{ project }}
+        environment: {{ app_env }}
+        team: {{ teamlabel }}
+        tier: admin
+    spec:
+      containers:
+        - name: {{ project }}-{{ app_env }}-admin-pma
+          image: phpmyadmin/phpmyadmin
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+          envFrom:
+            - secretRef:
+                name: {{ project }}-{{ app_env }}-application-env
+          #env:
+          #  - name: PMA_ABSOLUTE_URI
+          #    value: "http://PROJECTHOSTNAME/_pma_/"
+          #  - name: PMA_HOST
+          #    value: {{ project }}-{{ app_env }}-mysql
+          #    #value: {{ project }}-{{ app_env }}-mysql
+          #  - name: PMA_PORT
+          #    value: "3306"
+          #  - name: MYSQL_ROOT_PASSWORD
+          #    valueFrom:
+          #      secretKeyRef:
+          #        name: mysql-pass
+          #        key: password
+          ports:
+            - containerPort: 80
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 60
+            periodSeconds: 60
+            timeoutSeconds: 3
+            failureThreshold: 5
