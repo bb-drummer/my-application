@@ -1,0 +1,97 @@
+---
+
+apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+kind: Deployment
+metadata:
+  name: {{ project }}-{{ service.name }}-{{ app_env }}-deployment
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    module: {{ service.name }}
+    environment: {{ app_env }}
+    release: {{ releases[service.name] }}
+    team: {{ teamlabel }}
+  annotations:
+    project-url: "https://{{ hostnames[app_env][0] }}"
+spec:
+  selector:
+    matchLabels:
+      app: {{ project }}
+      module: {{ service.name }}
+      environment: {{ app_env }}
+      release: {{ releases[service.name] }}
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  progressDeadlineSeconds: 600
+  template:
+    metadata:
+      annotations:
+        project-url: "https://{{ hostnames[app_env][0] }}"
+      labels:
+        app: {{ project }}
+        module: {{ service.name }}
+        environment: {{ app_env }}
+        release: {{ releases[service.name] }}
+        team: {{ teamlabel }}
+    spec:
+      volumes:
+        - name: {{ project }}-{{ app_env }}-persistent-storage
+          persistentVolumeClaim:
+            claimName: {{ project }}-{{ app_env }}-pv-claim
+      imagePullSecrets:
+        - name: docker-login
+      containers:
+        - name: {{ project }}-app
+          image: bbdrummer/{{ project }}:{{ releases[service.name] }}
+          imagePullPolicy: Always
+          envFrom:
+            - secretRef:
+                name: {{ project }}-{{ app_env }}-application-env
+          ports:
+            - containerPort: {{ service.port }}
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: {{ service.port }}
+            initialDelaySeconds: 20
+            periodSeconds: 30
+            timeoutSeconds: 3
+            failureThreshold: 5
+          volumeMounts:
+            - name: {{ project }}-{{ app_env }}-persistent-storage
+              mountPath: /var/www/public/uploads
+
+---
+
+#Service Declaration
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ project }}-{{ service.name }}-{{ app_env }}-service
+  namespace: {{ namespace }}
+  labels:
+    app: {{ project }}
+    module: {{ service.name }}
+    environment: {{ app_env }}
+    release: {{ releases[service.name] }}
+    team: {{ teamlabel }}
+  annotations:
+    project-url: "https://{{ hostnames[app_env][0] }}"
+spec:
+  type: NodePort
+  ports:
+    - port: {{ service.port }}
+      targetPort: {{ service.port }}
+  selector:
+    app: {{ project }}
+    module: {{ service.name }}
+    environment: {{ app_env }}
+    release: {{ releases[service.name] }}

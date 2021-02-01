@@ -4,6 +4,7 @@
 .settings
 .buildpath
 .project
+.vault*
 
 ##
 ## ignore ZendServer files
@@ -77,3 +78,4 @@ Icon
 *.save
 *.report*
 *.vagrant
+*.old*

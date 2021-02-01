@@ -1,0 +1,49 @@
+---
+- name: 'Setup project'
+  hosts: localhost
+  connection: local
+  tasks:
+    # Create user generated folder
+    - name: Create generated folder
+      file: path=../generated/setup state=directory mode=0755
+
+    # Create temp files
+    - name: Create project yaml temp file
+      tempfile:
+        state: file
+        suffix: temp
+      register: tempfile_1
+
+    # Debug vars
+    - name: Debug vars
+      shell: echo "{{ project }} / {{ namespace }} = {{ app_env }}, {{ release }}, {{ teamlabel }}"
+      delegate_to: localhost
+
+    # Generate yaml files
+    - name: Generate project yaml file
+      template:
+        src: "setup.yml.j2"
+        dest: "{{ tempfile_1.path }}"
+        mode: '0644'
+
+    # Save yaml file
+    - name: Save backend deployment yaml file
+      copy:
+        src: "{{ tempfile_1.path }}"
+        dest: '../generated/setup/setup.yml'
+        mode: '0755'
+      delegate_to: localhost
+      when: tempfile_1.path is defined
+
+    # Deploy
+    - name: Setup project in namespace
+      shell: kubectl apply -f {{ tempfile_1.path }} -n {{ namespace }}
+      delegate_to: localhost
+      when: tempfile_1.path is defined
+
+    # Delete temp files
+    - name: Delete project yaml temp file
+      file:
+        path: "{{ tempfile_1.path }}"
+        state: absent
+      when: tempfile_1.path is defined

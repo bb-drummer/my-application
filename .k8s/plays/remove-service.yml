@@ -1,0 +1,42 @@
+---
+# Remove project module
+# Create service files
+- name: Create {{ service.name }} yaml temp file
+  tempfile:
+    state: file
+    suffix: temp
+  register: tempfile_1
+
+# Debug vars
+- name: Debug vars
+  shell: echo "{{ service.name }} / {{ project }} / {{ namespace }} = {{ app_env }}, {{ release }}, {{ teamlabel }}"
+  delegate_to: localhost
+
+# Generate yaml files
+- name: Generate {{ service.name }} yaml file
+  template:
+    src: "service-{{ service.name }}-deployment.yml.j2"
+    dest: "{{ tempfile_1.path }}"
+    mode: '0644'
+
+# Save yaml file
+- name: Save {{ service.name }} deployment yaml file
+  copy:
+    src: "{{ tempfile_1.path }}"
+    dest: '../generated/remove/service-{{ service.name }}-deployment.yml'
+    mode: '0755'
+  delegate_to: localhost
+  when: tempfile_1.path is defined
+
+# Deploy
+- name: Deploy {{ service.name }} to namespace
+  shell: kubectl delete -f {{ tempfile_1.path }} -n {{ namespace }} --ignore-not-found
+  delegate_to: localhost
+  when: tempfile_1.path is defined
+
+# Delete temp files
+- name: Delete {{ service.name }} yaml temp file
+  file:
+    path: "{{ tempfile_1.path }}"
+    state: absent
+  when: tempfile_1.path is defined
