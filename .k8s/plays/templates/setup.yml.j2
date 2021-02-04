@@ -226,8 +226,8 @@ spec:
     spec:            # Spec for the container which will be run inside the Pod.
       containers:
         - name: {{ project }}-{{ app_env }}-redis-master
-          image: redis
-          #image: harbor.bjoernbartels.earth:8013/devops/redis-runtime-env:latest
+          #image: redis
+          image: bbdrummer/redis-runtime-env:latest
           imagePullPolicy: Always
           resources:
             limits:
