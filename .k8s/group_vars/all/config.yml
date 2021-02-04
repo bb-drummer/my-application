@@ -36,11 +36,7 @@ services:
 # hostname setup per 'environment'
 hostnames:
   development:
-<<<<<<< HEAD
-    - 'ansible.my-application.net'
-=======
-    - 'update2020.my-application.net'
->>>>>>> update2020
+    - 'dev.my-application.net'
   staging:
     - 'test.my-application.net'
   production:
