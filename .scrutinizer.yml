@@ -33,12 +33,12 @@ build:
         before:
             - 'ifconfig'
             - 'curl http://ipinfo.io/ip'
-            - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
-            - 'mysql -u root dp_mydemo < sql/install.sql'
-            - 'mysql -u root dp_mydemo < sql/demo.sql'
+            - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
+            - 'mysql -u root db_myapplication < sql/install.sql'
+            - 'mysql -u root db_myapplication < sql/demo.sql'
             - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
             - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_DATABASE_/dp_mydemo/g" config/autoload/database.local.php
+            - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/database.local.php
             - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
             - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
         override:

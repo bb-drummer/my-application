@@ -1,0 +1,56 @@
+---
+# pipeline default config
+
+# values beginning and ending with an alphanumeric character ([a-z0-9A-Z]) 
+# with dashes (-), underscores (_), dots (.), and alphanumerics between
+
+# project name/identifier
+project: 'my-application'
+
+# project namespace
+namespace: 'my-application'
+
+# project environment
+app_env: 'development'
+
+# release label/tag
+release: 'latest'
+
+# team name label
+teamlabel: 'developers'
+
+# service releases
+#  <service-name>: '<release-tag>'
+releases:
+  app: 'latest'
+
+# service configs
+#  - name: <service-name>
+#    path: <URL-path>
+#    port: <servicePort>
+services:
+  - name: 'app'
+    path: '/(.*)'
+    port: 8080
+
+# hostname setup per 'environment'
+hostnames:
+  development:
+    - 'dev.my-application.net'
+  staging:
+    - 'test.my-application.net'
+  production:
+    - 'my-application.net'
+    - 'adminlte.my-application.net'
+    - 'bootstrap.my-application.net'
+    - 'foundation.my-application.net'
+    - 'remark.my-application.net'
+    - 'taurus.my-application.net'
+    - 'www.my-application.net'
+
+database_root_password:
+database_password:
+database_user: 'db_myapplication'
+database_name: 'db_myapplication'
+
+redis_url:

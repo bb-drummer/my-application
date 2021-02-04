@@ -1,0 +1,16 @@
+---
+- name: 'Deploy project'
+  hosts: localhost
+  connection: local
+  tasks:
+    # Create user generated folder
+    - name: Create generated folder
+      file: path=../generated/deploy state=directory mode=0755
+
+    # Deploy project services
+    - name: Deploy project services
+      loop: "{{ services }}"
+      vars:
+        service: "{{ item }}"
+      include_tasks: 'deploy-service.yml'
+      when: releases[item.name] is defined and releases[item.name] != "skip"

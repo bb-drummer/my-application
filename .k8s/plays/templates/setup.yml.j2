@@ -67,9 +67,13 @@ metadata:
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto https;
-        proxy_set_header X-Forwarded-Host $host;
         proxy_set_header X-Forwarded-Port $server_port;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-NginX-Proxy true;
+        proxy_intercept_errors on;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
       }
     cert-manager.io/cluster-issuer: letsencrypt-cf-production
   labels:
@@ -224,6 +228,8 @@ spec:
         #role: master
         tier: backend
     spec:            # Spec for the container which will be run inside the Pod.
+      imagePullSecrets:
+        - name: docker-login
       containers:
         - name: {{ project }}-{{ app_env }}-redis-master
           #image: redis
@@ -293,6 +299,8 @@ spec:
         team: {{ teamlabel }}
         tier: database
     spec:
+      imagePullSecrets:
+        - name: docker-login
       containers:
         - image: mysql:latest
           name: {{ project }}-{{ app_env }}-mysql
