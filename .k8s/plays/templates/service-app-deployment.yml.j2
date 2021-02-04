@@ -13,6 +13,7 @@ metadata:
     team: {{ teamlabel }}
   annotations:
     project-url: "https://{{ hostnames[app_env][0] }}"
+    epoch: "{{ ansible_date_time.iso8601 }}"
 spec:
   selector:
     matchLabels:

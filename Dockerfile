@@ -1,4 +1,4 @@
-FROM bbdrummer/my-application-runtime-php:latest
+FROM bbdrummer/my-application-runtime-php:development
 
 LABEL maintainer="Björn Bartels <coding@bjoernbartels.earth>" \
       Description="[my-application] build environment]"
@@ -11,7 +11,7 @@ RUN apk update && apk upgrade
 USER nobody
 
 # Re-configure nginx & PHP
-ADD ${ARTIFACT_DIR}/ /var/www/
+COPY --chown=nobody ${ARTIFACT_DIR}/ /var/www/
 
 # Set project root as current working directory
 WORKDIR /var/www
