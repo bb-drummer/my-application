@@ -1,19 +1,31 @@
 language: php
 
+services:
+  - mysql
+  
 php:
-  - 5.6
-  - 7.0
+  #- 5.6
+  #- 7.0
+  - 7.1
+  - 7.2
+  #- 7.3
+  #- 7.4
+  #- 8.0
 
 before_script:
-  - wget http://getcomposer.org/composer.phar
+  - phpenv config-add .ops/config/travis/myapp.ini
+  - wget http://getcomposer.org/installer -O composer-setup.php
+  - php -r "if (hash_file('sha384', 'composer-setup.php') === '756890a4488ce9024fc62c56153228907f1545c228516cbf63f885e036d37e9a59d27d63f46af1d4d07ee0f76181c7d3') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+  - php composer-setup.php --1
   - php composer.phar install
-  - 'mysql -u root -e "CREATE DATABASE dp_mydemo"'
-  - 'mysql -u root dp_mydemo < sql/install.sql'
-  - 'mysql -u root dp_mydemo < sql/demo.sql'
+  - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
+  - 'mysql -u root db_myapplication < sql/install.sql'
+  - 'mysql -u root db_myapplication < sql/demo.sql'
   - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
   - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
-  - sed -i "s/_MYSQL_DATABASE_/dp_mydemo/g" config/autoload/database.local.php
+  - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/database.local.php
   - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
   - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
+  - php composer.phar update
 
 script: php -d memomry_limit=-1 vendor/bin/phpunit -c module/Application/test/phpunit.xml
