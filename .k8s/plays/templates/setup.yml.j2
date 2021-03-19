@@ -104,7 +104,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ project }}-{{ service.name }}-{{ app_env }}-service
+                name: {{ project }}-{{ app_env }}-service-{{ service.name }}
                 port: 
                   number: {{ service.port }}
 {% endfor %}

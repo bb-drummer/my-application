@@ -1,0 +1,16 @@
+---
+- name: 'Remove project services'
+  hosts: localhost
+  connection: local
+  tasks:
+    # Create user generated folder
+    - name: Create generated folder
+      file: path=../generated/remove state=directory mode=0755
+
+    # Deploy project services
+    - name: Deploy project services
+      loop: "{{ services }}"
+      vars:
+        module: "{{ item.name }}"
+        service: "{{ item }}"
+      include_tasks: 'remove-service.yml'
