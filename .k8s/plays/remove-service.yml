@@ -7,8 +7,8 @@
     suffix: temp
   register: tempfile_1
 
-# Debug vars
-- name: Debug vars
+# Project info
+- name: Project info
   shell: echo "{{ service.name }} / {{ project }} / {{ namespace }} = {{ app_env }}, {{ release }}, {{ teamlabel }}"
   delegate_to: localhost
 
