@@ -20,7 +20,7 @@ spec:
       app: {{ project }}
       module: {{ service.name }}
       environment: {{ app_env }}
-      release: {{ releases[service.name] }}
+      team: {{ teamlabel }}
   replicas: 1
   strategy:
     type: RollingUpdate
@@ -86,6 +86,7 @@ metadata:
     team: {{ teamlabel }}
   annotations:
     project-url: "https://{{ hostnames[app_env][0] }}"
+    epoch: "{{ ansible_date_time.iso8601 }}"
 spec:
   type: NodePort
   ports:
@@ -95,7 +96,7 @@ spec:
     app: {{ project }}
     module: {{ service.name }}
     environment: {{ app_env }}
-    release: {{ releases[service.name] }}
+    team: {{ teamlabel }}
 
 ---
 
@@ -109,11 +110,11 @@ spec:
     kind: Deployment
     name: {{ project }}-{{ service.name }}-{{ app_env }}-deployment
   minReplicas: 2
-  maxReplicas: 10
+  maxReplicas: 16
   metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 50
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 50
