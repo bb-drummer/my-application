@@ -3,7 +3,7 @@
 apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
 kind: Deployment
 metadata:
-  name: {{ project }}-{{ service.name }}-{{ app_env }}-deployment
+  name: {{ project }}-{{ app_env }}-deployment-{{ service.name }}
   namespace: {{ namespace }}
   labels:
     app: {{ project }}
@@ -76,7 +76,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ project }}-{{ service.name }}-{{ app_env }}-service
+  name: {{ project }}-{{ app_env }}-service-{{ service.name }}
   namespace: {{ namespace }}
   labels:
     app: {{ project }}
@@ -103,12 +103,12 @@ spec:
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ project }}-{{ service.name }}-{{ app_env }}-autoscaler
+  name: {{ project }}-{{ app_env }}-autoscaler-{{ service.name }}
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ project }}-{{ service.name }}-{{ app_env }}-deployment
+    name: {{ project }}-{{ app_env }}-deployment-{{ service.name }}
   minReplicas: 2
   maxReplicas: 16
   metrics:

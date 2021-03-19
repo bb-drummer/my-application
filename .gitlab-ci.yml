@@ -122,6 +122,17 @@ k8s-deploy:
     - ansible-playbook -l localhost ./.k8s/plays/deploy.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
     - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/deploy/service-deployment.yml; fi
 
+k8s-undeploy:
+  <<: [*k8s-job, *pullpushcache, *project-variables]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -l localhost ./.k8s/plays/remove-deployment.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/remove-deployment.yml; fi
+
 k8s-cleanup:
   <<: [*k8s-job, *pullpushcache, *project-variables]
   stage: k8s-setup
