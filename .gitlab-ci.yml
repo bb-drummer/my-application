@@ -4,6 +4,7 @@ stages:
   - build-image
   - k8s-setup
   - k8s-deploy
+  - k8s-cronjob
 
 
 ##########################
@@ -131,6 +132,28 @@ k8s-cleanup:
     - export ANSIBLE_CONFIG="./ansible.cfg"
     - ansible-playbook -l localhost ./.k8s/plays/remove.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
     - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/setup.yml; fi
+
+cronjob-enable:
+  <<: [*k8s-job, *project-variables]
+  stage: k8s-cronjob
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_enable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
+
+cronjob-disable:
+  <<: [*k8s-job, *project-variables]
+  stage: k8s-cronjob
+  when: manual
+  environment:
+    name: $ENVLABEL
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_disable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
 
 variables:
   BUILD_TARGET: dist

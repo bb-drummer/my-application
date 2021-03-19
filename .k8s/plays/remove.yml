@@ -16,6 +16,47 @@
       include_tasks: 'remove-service.yml'
 
 
+- name: 'Remove project cronjobs'
+  hosts: localhost
+  connection: local
+  tasks:
+    # Create temp files
+    - name: Create cronjob yaml temp file
+      tempfile:
+        state: file
+        suffix: temp
+      register: tempfile_1
+
+    # Generate yaml files
+    - name: Generate cronjob yaml file
+      template:
+        src: "cronjob.yml.j2"
+        dest: "{{ tempfile_1.path }}"
+        mode: '0644'
+
+    # Save yaml file
+    - name: Save cronjob yaml file
+      copy:
+        src: "{{ tempfile_1.path }}"
+        dest: '../generated/remove/cronjob.yml'
+        mode: '0755'
+      delegate_to: localhost
+      when: tempfile_1.path is defined
+
+    # Deploy
+    - name: Remove project cronjob in namespace
+      shell: kubectl delete -f {{ tempfile_1.path }} -n {{ namespace }} --ignore-not-found
+      delegate_to: localhost
+      when: tempfile_1.path is defined
+
+    # Delete temp files
+    - name: Delete cronjob yaml temp file
+      file:
+        path: "{{ tempfile_1.path }}"
+        state: absent
+      when: tempfile_1.path is defined
+
+
 - name: 'Remove setup project'
   hosts: localhost
   connection: local
