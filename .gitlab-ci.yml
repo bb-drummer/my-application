@@ -220,6 +220,7 @@ build-app:
     # assemble distributional files
     - cp -r shell config module public vendor composer* init_autoloader.php dist/
     - cd dist; ln -s public html; cd ..;
+    - if [[ "${ENVLABEL" == "production" ]] || [[ "${ENVLABEL" == "staging" ]]; then rm -rf dist/public/_tests_; fi
     # create build info file
     - echo -e "LABEL=`cat ${BUILD_LABEL_TMPFILE}`" > ${BUILD_INFO_FILE}
     - echo -e "TAG=`git describe --always --tags`" >> ${BUILD_INFO_FILE}
