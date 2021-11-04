@@ -206,10 +206,10 @@ build-app:
     DB_CONFIG: "$DATABASE_LOCAL_CONFIG"
     BUILD_INFO_FILE: dist/public/build.txt
   script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
+    - echo "Target Environment = ${ENVLABEL}"
+    - echo "Target Release     = ${RELEASE}"
+    - echo "Project Name       = ${PROJECTNAME}"
+    - echo "Project Namespace  = ${PROJECTNAMESPACE}"
     # build the app/service
     - mkdir dist
     - php -m
@@ -220,7 +220,7 @@ build-app:
     # assemble distributional files
     - cp -r shell config module public vendor composer* init_autoloader.php dist/
     - cd dist; ln -s public html; cd ..;
-    - if [[ "${ENVLABEL}" == "production" ]] || [[ "${ENVLABEL}" == "staging" ]] ; then rm -rf dist/public/_tests_ ; fi
+    - if [[ "${ENVLABEL}" == "production" ]] || [[ "${ENVLABEL}" == "staging" ]] ; then echo -e "\n\nClean up\n\n"; rm -rf dist/public/_tests_ ; fi
     # create build info file
     - echo -e "LABEL=`cat ${BUILD_LABEL_TMPFILE}`" > ${BUILD_INFO_FILE}
     - echo -e "TAG=`git describe --always --tags`" >> ${BUILD_INFO_FILE}
