@@ -21,7 +21,7 @@ spec:
       module: {{ service.name }}
       environment: {{ app_env }}
       team: {{ teamlabel }}
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
   progressDeadlineSeconds: 600
