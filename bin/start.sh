@@ -1,7 +1,7 @@
 
 PROJECT_DIR=/workspace/my-application/
 
-cp ${PROJECT_DIR}.ops/config/.env ${PROJECT_DIR}.env
+cp ${PROJECT_DIR}.ops/config/env.txt ${PROJECT_DIR}.env
 
 composer install --ignore-platform-reqs
 
