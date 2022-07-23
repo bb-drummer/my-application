@@ -1,0 +1,5 @@
+tasks:
+  - init: |
+      /workspace/my-application/bin/start.sh
+    command: |
+      echo 'Start app...'
