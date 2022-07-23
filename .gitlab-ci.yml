@@ -206,10 +206,10 @@ build-app:
     DB_CONFIG: "$DATABASE_LOCAL_CONFIG"
     BUILD_INFO_FILE: dist/public/build.txt
   script:
-    - echo "Target Environment = ${ENVIRONMENT}"
-    - echo "Target Hostname    = ${HOST_NAME}"
-    - echo "Project Slug       = ${PROJECTSLUG}"
-    - echo "Project Hostname   = ${PROJECTHOSTNAME}"
+    - echo "Target Environment = ${ENVLABEL}"
+    - echo "Target Release     = ${RELEASE}"
+    - echo "Project Name       = ${PROJECTNAME}"
+    - echo "Project Namespace  = ${PROJECTNAMESPACE}"
     # build the app/service
     - mkdir dist
     - php -m
@@ -218,6 +218,7 @@ build-app:
     - echo "${APP_CONFIG}" > config/autoload/app.local.php
     - echo "${DB_CONFIG}" > config/autoload/database.local.php
     # assemble distributional files
+    - if [[ "${ENVLABEL}" == "production" ]] || [[ "${ENVLABEL}" == "staging" ]] ; then echo -e "\n\nClean up\n\n"; rm -rf public/_tests_ ; fi
     - cp -r shell config module public vendor composer* init_autoloader.php dist/
     - cd dist; ln -s public html; cd ..;
     # create build info file
@@ -228,6 +229,7 @@ build-app:
     # print debug-info
     - cat ${BUILD_INFO_FILE}
     - ls -la dist/
+    - ls -la dist/public/
   artifacts:
     paths:
       - ${BUILD_TARGET}
