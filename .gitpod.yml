@@ -1,5 +1,7 @@
 tasks:
   - init: |
-      /workspace/my-application/bin/start.sh
+      source /workspace/my-application/.ops/config/gitpod/env.sh
+      composer install --ignore-platform-reqs
+      start
     command: |
-      echo 'Start app...'
+      source /workspace/my-application/.ops/config/gitpod/env.sh
