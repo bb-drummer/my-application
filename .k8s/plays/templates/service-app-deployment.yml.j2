@@ -1,6 +1,7 @@
 ---
 
-apiVersion: apps/v1 # for versions before 1.9.0 use apps/v1beta2
+# App deployment
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ project }}-{{ app_env }}-deployment-{{ service.name }}
@@ -72,7 +73,7 @@ spec:
 
 ---
 
-#Service Declaration
+# Service Declaration
 apiVersion: v1
 kind: Service
 metadata:
@@ -100,7 +101,8 @@ spec:
 
 ---
 
-apiVersion: autoscaling/v2beta2
+# HA autoscaler
+apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ project }}-{{ app_env }}-autoscaler-{{ service.name }}

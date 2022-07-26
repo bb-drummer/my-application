@@ -155,8 +155,8 @@ CREATE TABLE IF NOT EXISTS `user_provider` (
 --
 
 INSERT INTO `aclresource` (`aclresources_id`, `resourceslug`, `resourcename`, `application_id`, `client_id`, `created`, `modified`) VALUES
-(1, 'mvc:nouser', 'kein Benutzer', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'mvc:user', 'Benutzer', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(1, 'mvc:nouser', 'Ohne', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+(2, 'mvc:user', 'Benutzerseiten', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'mvc:admin', 'Administration', 0, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 --

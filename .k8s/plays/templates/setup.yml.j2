@@ -19,7 +19,7 @@ data:
 
 ---
 
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: {{ project }}-{{ app_env }}-letsencrypt-certificate
@@ -93,6 +93,7 @@ spec:
       http: &http_rules
         paths:
 {% for service in services %}
+{% if app_env == 'development' %}
           - path: /_pma_/(.*)
             pathType: Prefix
             backend:
@@ -100,6 +101,7 @@ spec:
                 name: {{ project }}-{{ app_env }}-admin-pma
                 port: 
                   number: 80
+{% endif %}
           - path: {{ service.path }}
             pathType: Prefix
             backend:
@@ -346,8 +348,7 @@ metadata:
     team: {{ teamlabel }}
     tier: admin
 spec:
-  type: LoadBalancer
-  #type: NodePort
+  type: NodePort
   ports:
     - port: 80
       #targetPort: 80
@@ -359,6 +360,8 @@ spec:
 
 ---
 
+{% if app_env == 'development' %}
+# phpMyAdmin
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -425,3 +428,4 @@ spec:
             periodSeconds: 60
             timeoutSeconds: 3
             failureThreshold: 5
+{% endif %}

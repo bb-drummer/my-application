@@ -29,6 +29,7 @@ module/module-*
 /extras*
 /components*
 .ops/config/kubernetes/save
+.env
 
 ##
 ## backups

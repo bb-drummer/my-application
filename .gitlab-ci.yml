@@ -100,76 +100,9 @@ stages:
 # PIPELINE JOBS #
 #################
 
-k8s-setup:
-  <<: [*k8s-job, *pullpushcache, *project-variables]
-  stage: k8s-setup
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg";
-    - ansible-playbook -vvv -l localhost ./.k8s/plays/setup.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/service-deployment.yml; fi
-
-k8s-deploy:
-  <<: [*k8s-job, *pullpushcache, *project-variables]
-  stage: k8s-deploy
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg";
-    - ansible-playbook -l localhost ./.k8s/plays/deploy.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/deploy/service-deployment.yml; fi
-
-k8s-undeploy:
-  <<: [*k8s-job, *pullpushcache, *project-variables]
-  stage: k8s-deploy
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg";
-    - ansible-playbook -l localhost ./.k8s/plays/remove-deployment.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/remove-deployment.yml; fi
-
-k8s-cleanup:
-  <<: [*k8s-job, *pullpushcache, *project-variables]
-  stage: k8s-setup
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg"
-    - ansible-playbook -l localhost ./.k8s/plays/remove.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/setup.yml; fi
-
-cronjob-enable:
-  <<: [*k8s-job, *project-variables]
-  stage: k8s-cronjob
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg"
-    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_enable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
-
-cronjob-disable:
-  <<: [*k8s-job, *project-variables]
-  stage: k8s-cronjob
-  when: manual
-  environment:
-    name: $ENVLABEL
-  script:
-    - export ANSIBLE_CONFIG="./ansible.cfg"
-    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_disable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
-    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
-
 variables:
   BUILD_TARGET: dist
   BUILD_LABEL_TMPFILE: TMP_BUILD_LABEL
-
 
 init:
   <<: [*build-env-job, *pushcache]
@@ -215,8 +148,8 @@ build-app:
     - php -m
     - composer install --no-progress --no-suggest
     # apply application config
-    - echo "${APP_CONFIG}" > config/autoload/app.local.php
-    - echo "${DB_CONFIG}" > config/autoload/database.local.php
+    - echo "${APP_CONFIG}" | base64 -d > config/autoload/app.local.php
+    - echo "${DB_CONFIG}" | base64 -d > config/autoload/database.local.php
     # assemble distributional files
     - if [[ "${ENVLABEL}" == "production" ]] || [[ "${ENVLABEL}" == "staging" ]] ; then echo -e "\n\nClean up\n\n"; rm -rf public/_tests_ ; fi
     - cp -r shell config module public vendor composer* init_autoloader.php dist/
@@ -246,7 +179,7 @@ docker-release:
     - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export BUILD_LABEL="${CI_COMMIT_TAG}"; fi
     # build docker image and tag with version
     - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
-    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker build --build-arg ARTIFACT_DIR=${BUILD_TARGET} --no-cache -t bbdrummer/${PROJECTNAME}:${RELEASE} .
     - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
     - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then docker image tag bbdrummer/${PROJECTNAME}:${RELEASE} bbdrummer/${PROJECTNAME}:latest ; fi
     - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then docker push bbdrummer/${PROJECTNAME}:latest ; fi
@@ -263,7 +196,7 @@ docker-manual:
     - if [[ ! -z "${CI_COMMIT_TAG}" ]] ; then export BUILD_LABEL="${CI_COMMIT_TAG}"; fi
     # build docker image and tag with version
     - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
-    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker build --build-arg ARTIFACT_DIR=${BUILD_TARGET} --no-cache -t bbdrummer/${PROJECTNAME}:${RELEASE} .
     - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
 
 
@@ -271,8 +204,6 @@ docker-dev:
   <<: [*dind-job, *pullcache, *project-variables]
   stage: build-image
   except:
-    variables:
-      - $CI_SETUP
     refs:
       - master
       - release
@@ -282,5 +213,204 @@ docker-dev:
   script:
     # build docker feature image
     - docker login -u "${CI_DOCKER_USERNAME}" -p "${CI_DOCKER_TOKEN}"
-    - docker build --no-cache --build-arg ARTIFACT_DIR=${BUILD_TARGET} -t bbdrummer/${PROJECTNAME}:${RELEASE} .
+    - docker build --build-arg ARTIFACT_DIR=${BUILD_TARGET} --no-cache -t bbdrummer/${PROJECTNAME}:${RELEASE} .
     - docker push bbdrummer/${PROJECTNAME}:${RELEASE}
+
+
+
+############
+# k8s JOBS #
+############
+
+.k8s-setup: &k8s-setup
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -vvv -l localhost ./.k8s/plays/setup.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/service-deployment.yml; fi
+
+.k8s-deploy: &k8s-deploy
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -l localhost ./.k8s/plays/deploy.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/deploy/service-deployment.yml; fi
+
+.k8s-undeploy: &k8s-undeploy
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg";
+    - ansible-playbook -l localhost ./.k8s/plays/remove-deployment.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" -e "{\"releases\":{\"app\":\"${RELEASE}\"}}" -vvv
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/remove-deployment.yml; fi
+
+.k8s-cleanup: &k8s-cleanup
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/remove.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH}" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/remove/setup.yml; fi
+
+# dev
+k8s-setup-dev:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-setup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: development
+    url: https://dev.my-application.net
+  except:
+    refs:
+      - master
+      - release
+      - tags
+
+k8s-deploy-dev:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-deploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: development
+    url: https://dev.my-application.net
+  except:
+    refs:
+      - master
+      - release
+      - tags
+
+k8s-undeploy-dev:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-undeploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: development
+    url: https://dev.my-application.net
+  except:
+    refs:
+      - master
+      - release
+      - tags
+
+k8s-cleanup-dev:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-cleanup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: development
+    url: https://dev.my-application.net
+  except:
+    refs:
+      - master
+      - release
+      - tags
+
+# staging
+k8s-setup-staging:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-setup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: staging
+    url: https://test.my-application.net
+  only:
+    refs:
+      - master
+      - release
+
+k8s-deploy-staging:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-deploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: staging
+    url: https://test.my-application.net
+  only:
+    refs:
+      - master
+      - release
+
+k8s-undeploy-staging:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-undeploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: staging
+    url: https://test.my-application.net
+  only:
+    refs:
+      - master
+      - release
+
+k8s-cleanup-staging:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-cleanup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: staging
+    url: https://test.my-application.net
+  only:
+    refs:
+      - master
+      - release
+
+# production
+k8s-setup-prod:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-setup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: production
+    url: https://my-application.net
+  only:
+    refs:
+      - tags
+
+k8s-deploy-prod:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-deploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: production
+    url: https://my-application.net
+  only:
+    refs:
+      - tags
+
+k8s-undeploy-prod:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-undeploy]
+  stage: k8s-deploy
+  when: manual
+  environment:
+    name: production
+    url: https://my-application.net
+  only:
+    refs:
+      - tags
+
+k8s-cleanup-prod:
+  <<: [*k8s-job, *pullpushcache, *project-variables, *k8s-cleanup]
+  stage: k8s-setup
+  when: manual
+  environment:
+    name: production
+    url: https://my-application.net
+  only:
+    refs:
+      - tags
+
+
+############
+# CRONJOBS #
+############
+cronjob-enable:
+  <<: [*k8s-job, *project-variables]
+  stage: k8s-cronjob
+  when: manual
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_enable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
+
+cronjob-disable:
+  <<: [*k8s-job, *project-variables]
+  stage: k8s-cronjob
+  when: manual
+  script:
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_disable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
+    - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi

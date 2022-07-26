@@ -4,14 +4,17 @@ LABEL maintainer="Björn Bartels <coding@bjoernbartels.earth>" \
       Description="[my-application] build environment]"
 
 ARG ARTIFACT_DIR
+ARG REDIS_DSN
 
 # updates
 USER root
 RUN apk update && apk upgrade
-USER nobody
 
-# Re-configure nginx & PHP
+# redis
+RUN if [[ ! -z "${REDIS_DSN}" ]]; then \
+      echo "session.save_path=\"${REDIS_DSN}\"" > /usr/local/etc/php/conf.d/redis.ini; \
+    fi
+
 COPY --chown=nobody ${ARTIFACT_DIR}/ /var/www/
 
-# Set project root as current working directory
-WORKDIR /var/www
+USER nobody
