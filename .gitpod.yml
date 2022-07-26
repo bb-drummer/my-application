@@ -1,0 +1,36 @@
+---
+# mee2v2 .gitpod.yml
+# multi-repo
+
+image: bbdrummer/my-application-workspace
+
+#additionalRepositories:
+#  - url: https://bitbucket.org/fleetpool/mee2v2_fe
+#    checkoutLocation: mee2v2_fe
+
+tasks:
+  - init: |
+      source /workspace/my-application/.ops/config/gitpod/env.sh
+      composer install --ignore-platform-reqs --no-interaction
+      bin/start.sh
+    command: |
+      source /workspace/my-application/.ops/config/gitpod/env.sh
+
+ports:
+  - name: my-application-web
+    port: 8000
+    visibility: private
+    onOpen: ignore
+  - name: phpMyAdmin
+    port: 8001
+    visibility: private
+    onOpen: ignore
+
+workspaceLocation: my-application/gitpod.code-workspace
+
+vscode:
+  extensions:
+    - octref.vetur
+    - ms-azuretools.vscode-docker
+    - felixfbecker.php-debug
+    - bmewburn.vscode-intelephense-client

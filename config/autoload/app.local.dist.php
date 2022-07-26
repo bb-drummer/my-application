@@ -18,10 +18,10 @@ return array(
 	 **/
 	'db' => array( 
 			'driver'	=> 'PdoMysql',
-			'hostname'  => 'database.host', // with some system configurations try IP instead of a hostname
-			'database'  => 'dbname',
-			'username'  => 'dbuser',
-			'password'  => 'dbpassword',
+			'hostname'  => $_ENV['MYSQL_HOST'], // with some system configurations try IP instead of a hostname
+			'database'  => $_ENV['MYSQL_DATABASE'],
+			'username'  => $_ENV['MYSQL_USER'],
+			'password'  => $_ENV['MYSQL_PASS'],
 	),
 	'service_manager' => array(
 		'factories' => array(

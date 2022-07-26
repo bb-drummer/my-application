@@ -65,5 +65,11 @@
       "Admin" : [ "./module/Admin/src/" ]
     },
     "classmap" : [ "./module/" ]
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/installers": true,
+      "robloach/component-installer": true
+    }
   }
 }
