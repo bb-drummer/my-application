@@ -1,5 +1,6 @@
 ---
 
+# Secrets
 apiVersion: v1
 kind: Secret
 metadata:
@@ -19,6 +20,7 @@ data:
 
 ---
 
+# Demo SQL
 kind: ConfigMap
 apiVersion: v1
 metadata:
@@ -213,7 +215,8 @@ data:
 
 ---
 
-apiVersion: batch/v1beta1
+# CronJob
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ project }}-{{ app_env }}-demodb-reset
