@@ -51,7 +51,7 @@
     "pre-install-cmd" : [ "curl http://ipinfo.io/ip", "ifconfig", "wget http://ipinfo.io/ip -qO -" ]
   },
   "type" : "project",
-  "homepage" : "http://my-application.net/",
+  "homepage" : "https://my-application.net/",
   "authors" : [ {
     "name" : "Björn Bartels",
     "email" : "coding@bjoernbartels.earth",
@@ -64,7 +64,9 @@
       "UIComponents" : [ "./module/UIComponents/src/" ],
       "Admin" : [ "./module/Admin/src/" ]
     },
-    "classmap" : [ "./module/" ]
+    "classmap" : [ "./module/" ],
+    "exclude-from-classmap": ["vendor/zendframework/zend-hydrator/src/AbstractHydrator.php"],
+    "files": ["module/ZendHydrator/src/AbstractHydrator.php"]
   },
   "config": {
     "allow-plugins": {
