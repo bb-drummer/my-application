@@ -1,4 +1,4 @@
-FROM bbdrummer/my-application-runtime-php:8-0
+FROM bbdrummer/my-application-runtime-php:development
 
 LABEL maintainer="Björn Bartels <coding@bjoernbartels.earth>" \
       Description="[my-application] build environment]"
