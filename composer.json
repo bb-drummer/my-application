@@ -3,8 +3,8 @@
   "description" : "ZendFramework2 -ready to go- application base '[my-application]'",
   "version" : "0.0.4",
   "require" : {
-    "composer/installers": "~1.0",
-    "php" : "^5.5 || ^7.0",
+    "oomphinc/composer-installers-extender": "^1.1",
+    "php" : "^5.5 || ^7 || ^8",
     "zendframework/zendframework" : ">=2.5",
     "zendframework/zendservice-recaptcha": "*",
     "phpunit/phpunit" : ">=5.1.4",
@@ -47,9 +47,6 @@
 			]
 		}
 	},
-  "scripts" : {
-    "pre-install-cmd" : [ "curl http://ipinfo.io/ip", "ifconfig", "wget http://ipinfo.io/ip -qO -" ]
-  },
   "type" : "project",
   "homepage" : "http://my-application.net/",
   "authors" : [ {

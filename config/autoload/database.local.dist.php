@@ -1,7 +1,7 @@
 <?php
 return array(
 		'db' => array( // global database setup
-				'driver'    => 'PdoMysql',
+				'driver'    => 'pdo_mysql',
 				'hostname'  => '_MYSQL_HOST_',
 				'database'  => '_MYSQL_DATABASE_',
 				'username'  => '_MYSQL_USER_',
@@ -13,3 +13,11 @@ return array(
 				),
 		),
 );
+/*
+
+            'driver'   => 'pdo_mysql',
+            'host'     => $_ENV['MYSQL_HOST'],
+            'user'     => $_ENV['MYSQL_USER'],
+            'password' => base64_decode($_ENV['MYSQL_PASSWORD']),
+            'dbname'   => $_ENV['ORM_DB_NAME'],
+*/
