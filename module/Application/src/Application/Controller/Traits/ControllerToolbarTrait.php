@@ -73,7 +73,7 @@ trait ControllerToolbarTrait {
         $this->defineToolbarItems();
         
         $action = $oEvent->getRouteMatch()->getParam('action');
-        $this->layout()->setVariable("title", $this->getActionTitle($action));
+        //$this->layout()->setVariable("title", $this->getActionTitle($action));
 
         $toolbarItems = $this->getToolbarItem($action);
         if ($toolbarItems) {

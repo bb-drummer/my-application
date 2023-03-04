@@ -58,6 +58,9 @@
                             ->setMinDepth(0)
                             ->setMaxDepth(3)
                             ->setIconPrefixClass('fa fa-')
+                            ->setAttributes([
+                                'data-test' => 'cta-main-navigation'
+                            ])
                         ;
                         echo $oNavBar->render();
                     ?>
@@ -65,6 +68,9 @@
                         $oLocaleMenu = $oComponents->Languagemenu()
                             ->setUlClass('nav navbar-nav navbar-right')
                             ->setIconPrefixClass('flag-icon flag-icon-')
+                            ->setAttributes([
+                                'data-test' => 'cta-lang-selelction'
+                            ])
                         ;
                         echo $oLocaleMenu->render(); 
                     ?>
@@ -76,6 +82,9 @@
                 $oBreadcrumbs = $oComponents->Breadcrumbs('navigation')
                     ->setHeader( $this->translate('you are here :') )
                     ->setMinDepth(0)
+                    ->setAttributes([
+                        'data-test' => 'cta-breadcrumbs'
+                    ])
                 ;
                 echo $oBreadcrumbs->render(); 
             ?>
@@ -87,12 +96,15 @@
             ?>
             <?php 
                 $panelLayout = $oComponents->Panel()
-                    ->setHeader( (isset($this->title) ? $this->title : "") )
+                    ->setHeader( 'x' . (isset($this->title) ? $this->title : "") )
                     ->setContent(
                         array(
                                 'tagname' => 'div',
                                 'classnames' => 'panel-body alert-wrap',
                                 'content' => $this->content,
+                                'attr' => [
+                                    'data-test' => 'layout-panel-main-content'
+                                ]
                         )
                     )
                 ;

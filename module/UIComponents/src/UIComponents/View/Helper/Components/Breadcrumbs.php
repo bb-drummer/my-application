@@ -18,12 +18,14 @@ namespace UIComponents\View\Helper\Components;
 use Zend\Navigation\AbstractContainer;
 use Zend\Navigation\Page\AbstractPage;
 use Zend\View;
+use UIComponents\View\Helper\Traits\ComponentAttributesTrait;
 
 /**
  * Helper for printing breadcrumbs
  */
 class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
-{
+{ 
+    use ComponentAttributesTrait;
     
     /**
      * default CSS class to use for Ol elements
@@ -110,15 +112,15 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
         /** @var \Zend\View\Helper\EscapeHtml $escaper */
         $escaper = $this->view->plugin('escapeHtml');
         
-        $listHtmlOpen = '<ol class="'.$this->getOlClass().'">' . PHP_EOL;
+        $listHtmlOpen = '<ol class="'.$this->getOlClass().'" data-test="layout-breadcrumbs">' . PHP_EOL;
         if ( !empty($this->getHeader()) ) {
-            $listHtmlOpen .= '<li class="' . $escaper($this->getHeaderClass()) . '">' . $escaper($this->getHeader()) . '</li>' . PHP_EOL;
+            $listHtmlOpen .= '<li class="' . $escaper($this->getHeaderClass()) . '" data-test="layout-breadcrumbs-header">' . $escaper($this->getHeader()) . '</li>' . PHP_EOL;
         }
         // put the deepest active page last in breadcrumbs
         if ($this->getLinkLast()) {
-            $html = '<li class="active">' . $this->htmlify($active) . '</li>' . PHP_EOL;
+            $html = '<li class="active" data-test="layout-breadcrumbs-current">' . $this->htmlify($active) . '</li>' . PHP_EOL;
         } else {
-            $html    = '<li class="active">' . $escaper(
+            $html = '<li class="active" data-test="layout-breadcrumbs-current">' . $escaper(
                 $this->translate($active->getLabel()) //, $active->getTextDomain())
             ) . '</li>' . PHP_EOL;
         }
@@ -127,7 +129,7 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
         while ($parent = $active->getParent()) {
             if ($parent instanceof AbstractPage) {
                 // prepend crumb to html
-                $html = '<li>' . $this->htmlify($parent) . '</li>' . PHP_EOL
+                $html = '<li data-test="layout-breadcrumbs-parent'.$parent->getLabel().'">' . $this->htmlify($parent) . '</li>' . PHP_EOL
                     //. $this->getSeparator()
                     . $html;
             }
@@ -143,6 +145,34 @@ class Breadcrumbs extends \Zend\View\Helper\Navigation\Breadcrumbs
         $listHtmlClose = '</ol>' . PHP_EOL;
         
         return strlen($html) ? $listHtmlOpen . $this->getIndent() . $html . $listHtmlClose : '';
+    }
+
+    /**
+     * Returns an HTML string containing an 'a' element for the given page
+     *
+     * @param  AbstractPage $page  page to generate HTML for
+     * @return string              HTML string (<a href="…">Label</a>)
+     */
+    public function htmlify(AbstractPage $page)
+    {
+        $label = $this->translate($page->getLabel(), $page->getTextDomain());
+        $title = $this->translate($page->getTitle(), $page->getTextDomain());
+
+        // get attribs for anchor element
+        $attribs = [
+            'id'     => $page->getId(),
+            'title'  => $title,
+            'class'  => $page->getClass(),
+            'href'   => $page->getHref(),
+            'target' => $page->getTarget(),
+            'data-test' => 'cta-breadcrumbs-' . $this->slugify($page->getLabel())
+        ];
+
+        /** @var \Zend\View\Helper\EscapeHtml $escaper */
+        $escaper = $this->view->plugin('escapeHtml');
+        $label   = $escaper($label);
+
+        return '<a' . $this->htmlAttribs($attribs) . '>' . $label . '</a>';
     }
     
     /**

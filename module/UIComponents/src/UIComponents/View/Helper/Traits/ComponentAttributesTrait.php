@@ -133,6 +133,23 @@ trait ComponentAttributesTrait {
         return $xhtml;
     }
 
+    public function slugify ($text) {
+        $rules = <<<'RULES'
+            :: Any-Latin;
+            :: NFD;
+            :: [:Nonspacing Mark:] Remove;
+            :: NFC;
+            :: [^-[:^Punctuation:]] Remove;
+            :: Lower();
+            [:^L:] { [-] > ;
+            [-] } [:^L:] > ;
+            [-[:Separator:]]+ > '-';
+        RULES;
+
+        return \Transliterator::createFromRules($rules)
+            ->transliterate( $text );
+    }
+
 }
 
 ?>

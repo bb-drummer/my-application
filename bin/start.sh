@@ -1,5 +1,5 @@
 
-PROJECT_DIR=/workspace/my-application/
+PROJECT_DIR=${PROJECT_DIR:-/workspace/my-application/}
 
 if [[ ! -f ${PROJECT_DIR}.env ]]; then
   cp ${PROJECT_DIR}.ops/config/env.txt ${PROJECT_DIR}.env

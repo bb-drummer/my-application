@@ -162,7 +162,7 @@ class AclController extends BaseActionController
             )
         );
         $this->setActionTitles(
-            array(
+            /*array(
                 'index' => $this->translate("manage permissions"),
                 'roles' => $this->translate("manage roles"),
                 'resources' => $this->translate("manage resources"),
@@ -176,7 +176,22 @@ class AclController extends BaseActionController
                 'deleterole' => $this->translate("delete role"),
                 'deleteresource' => $this->translate("delete resource"),
             )
-        );
+        );*/
+        array(
+            'index' => ("manage permissions"),
+            'roles' => ("manage roles"),
+            'resources' => ("manage resources"),
+            'addacl' => ("add permission"),
+            'addrole' => ("add role"),
+            'addresource' => ("add resource"),
+            'editacl' => ("edit acl"),
+            'editrole' => ("edit role"),
+            'editresource' => ("edit resource"),
+            'deleteacl' => ("delete acl"),
+            'deleterole' => ("delete role"),
+            'deleteresource' => ("delete resource"),
+        )
+    );
         return parent::onDispatch($e);
     }
 

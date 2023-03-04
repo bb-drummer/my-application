@@ -57,6 +57,9 @@
 							->setMinDepth(0)
 							->setMaxDepth(3)
 							->setIconPrefixClass('fa fa-')
+							->setAttributes([
+									'data-test' => 'layout-main-navigation'
+							])
 						;
 						echo $oNavBar->render();
 					?>
@@ -65,6 +68,9 @@
 						$oLocaleMenu = $oComponents->Languagemenu()
 							->setUlClass('nav navbar-nav navbar-right')
 							->setIconPrefixClass('flag-icon flag-icon-')
+							->setAttributes([
+									'data-test' => 'layout-lang-selection'
+							])
 						;
 						echo $oLocaleMenu->render(); 
 					?>
@@ -76,6 +82,9 @@
 				$oBreadcrumbs = $oComponents->Breadcrumbs()
 					->setHeader( $this->translate('you are here :') )
 					->setMinDepth(0)
+					->setAttributes([
+							'data-test' => 'layout-breadcrumbs'
+					])
 				;
 				echo $oBreadcrumbs->render(); 
 			?>
@@ -97,7 +106,9 @@
 					$toolbarPanel = $oComponents->Panel()
 						->setContent( $oToolbarNav->render() )
 					;
-					echo $toolbarPanel;
+					echo $toolbarPanel
+						->setAttribute('data-test','layout-toolbar')
+						->render();
 				}
 			?>
 
@@ -110,6 +121,7 @@
 			
 			<?php
 				$panelLayout = $oComponents->Panel()
+					->setAttribute('data-test','layout-main-content')
 					->setHeader( (isset($this->title) ? $this->title : "") )
 					->setContent(
 						array(
@@ -138,23 +150,23 @@
         </div> <!-- /container -->
         
         <!-- Scripts -->
-		<?php 
-        	$this->inlineScript()
-				->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-				->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
-				->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
-				->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.min.js'))
-				
-				->appendFile($this->basePath('application-assets/dist/myapplication.js'))
-			;
-			$jsfiles = $oUtilities->Config()->get('app')->get('js');
-			if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
-			    $this->inlineScript()->appendFile($this->basePath($file));
-			}
-        ?>
-		<?php echo $this->headScript() ?>
+				<?php 
+							$this->inlineScript()
+						->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+						->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
+						->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
+						->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
+						->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
+						->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.min.js'))
+						
+						->appendFile($this->basePath('application-assets/dist/myapplication.js'))
+					;
+					$jsfiles = $oUtilities->Config()->get('app')->get('js');
+					if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
+							$this->inlineScript()->appendFile($this->basePath($file));
+					}
+						?>
+				<?php echo $this->headScript() ?>
         <?php echo $this->inlineScript() ?>
     </body>
 </html>

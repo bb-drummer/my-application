@@ -19,6 +19,8 @@ use \RecursiveIteratorIterator;
 use \Zend\Navigation\AbstractContainer;
 use \Zend\Navigation\Page\AbstractPage;
 use \Zend\View\Exception;
+use \UIComponents\View\Helper\Traits\ComponentClassnamesTrait;
+use \UIComponents\View\Helper\Traits\ComponentAttributesTrait;
 
 /**
  *
@@ -27,8 +29,8 @@ use \Zend\View\Exception;
  */
 class Menu extends \Zend\View\Helper\Navigation\Menu
 {
-	use \UIComponents\View\Helper\Traits\ComponentClassnamesTrait;
-	use \UIComponents\View\Helper\Traits\ComponentAttributesTrait;
+	use ComponentClassnamesTrait;
+	use ComponentAttributesTrait;
 
     /**
      * default CSS class to use for li elements
@@ -378,6 +380,7 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
         $attribs = [
                 'id'     => $page->getId(),
                 'title'    => $this->translate($page->getTitle(), $page->getTextDomain()),
+                'data-test'    => 'cta-nav-' . $this->slugify($page->getLabel()),
         ];
         $classnames = array();
         if ( $addClassToListItem === false ) {

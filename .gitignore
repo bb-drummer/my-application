@@ -30,6 +30,12 @@ module/module-*
 /components*
 .ops/config/kubernetes/save
 .env
+hostnames.json
+report/
+reports/
+public/application-assets/_build
+public/application-assets/foundation-docs
+public/application-assets/node_modules
 
 ##
 ## backups
@@ -47,8 +53,10 @@ composer.lock
 composer.phar
 
 ##
+##
 ## ignore nodeJS stuff
 ##
+.npm
 node_modules/
 build/
 build-js/

@@ -33,18 +33,23 @@
   }, {
     "type" : "git",
     "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-taurus.git"
+  }, {
+    "type" : "git",
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/application-assets.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
   "extra" : {
     "branch-alias" : {
       "master" : "master-dev",
+      "update" : "update-dev",
       "0.0.1" : "1.0.x-dev"
     },
 		"installer-paths" : {
 			"public/themes/{$name}/" : [
 				"type:zend-extra"
-			]
+			],
+    	"public/{$name}" : ["my-application/application-assets"]
 		}
 	},
   "scripts" : {
