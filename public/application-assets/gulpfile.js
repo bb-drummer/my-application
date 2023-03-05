@@ -32,8 +32,16 @@ gulp.task('prepare', function (cb) {
 });
 
 // Builds the documentation and framework files
+gulp.task('completed', function (cb) {
+  console.log('build completed at ' + (new Date).toString() + '...');
+  //cb();
+});
+
 gulp.task('build', function (cb) {
-	sequence('sass', 'javascript', 'deploy', /*'devcopy',*/ cb);
+	sequence('sass', 'javascript', 'deploy', function () {
+    console.log('build completed at ' + (new Date).toString() + '...');
+    cb();
+  });
 });
 
 // Starts a BrowerSync instance
@@ -43,7 +51,7 @@ gulp.task('serve', ['prepare', 'build'], function(){
 });
 
 //Runs all of the above tasks and then waits for files to change
-gulp.task('default', ['serve', 'watch']);
+gulp.task('default', ['prepare', 'build', 'watch']);
 
 gulp.task('watch', function() {
   console.log('watching...');
