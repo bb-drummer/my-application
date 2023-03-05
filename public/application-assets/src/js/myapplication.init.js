@@ -28,13 +28,8 @@ if (!jQuery) {
 	$doc.ready(function () {
 
 		$doc.myapplication();
+		MyApplication.debugDataTestAttributes();
 		
-		console.log('data-test attributes:');
-		document
-			.querySelectorAll('*[data-test]')
-			.forEach(
-				function (e) { console.log(e.tagName, e.getAttribute('data-test')) }
-			);
 	});
 
 })(jQuery, document, window, MyApplication);

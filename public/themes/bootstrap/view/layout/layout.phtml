@@ -50,34 +50,34 @@
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath($assetPath.$oUtilities->AppLogo()) ?>" alt="<?php echo $oUtilities->AppTitle(); ?>" />&nbsp;<?php echo $this->translate($oUtilities->AppTitle()) ?></a>
                 </div>
-				<div class="collapse navbar-collapse">
-					<?php
-						$oNavBar = $oComponents->Topbar()
-							->setUlClass('nav navbar-nav')
-							->setMinDepth(0)
-							->setMaxDepth(3)
-							->setIconPrefixClass('fa fa-')
-							->setAttributes([
-									'data-test' => 'layout-main-navigation'
-							])
-						;
-						echo $oNavBar->render();
-					?>
-					
-					<?php 
-						$oLocaleMenu = $oComponents->Languagemenu()
-							->setUlClass('nav navbar-nav navbar-right')
-							->setIconPrefixClass('flag-icon flag-icon-')
-							->setAttributes([
-									'data-test' => 'layout-lang-selection'
-							])
-						;
-						echo $oLocaleMenu->render(); 
-					?>
-				</div> 
+								<div class="collapse navbar-collapse">
+									<?php
+										$oNavBar = $oComponents->Topbar()
+											->setUlClass('nav navbar-nav')
+											->setMinDepth(0)
+											->setMaxDepth(3)
+											->setIconPrefixClass('fa fa-')
+											->setAttributes([
+													'data-test' => 'layout-main-navigation'
+											])
+										;
+										echo $oNavBar->render();
+									?>
+									
+									<?php 
+										$oLocaleMenu = $oComponents->Languagemenu()
+											->setUlClass('nav navbar-nav navbar-right')
+											->setIconPrefixClass('flag-icon flag-icon-')
+											->setAttributes([
+													'data-test' => 'layout-lang-selection'
+											])
+										;
+										echo $oLocaleMenu->render(); 
+									?>
+								</div> 
             </div>
         </nav>
-        <div class="container-fluid">
+        <div class="container-fluid" data-test="page-<?php echo $oUtilities->requestSlug() ?>">
 			<?php 
 				$oBreadcrumbs = $oComponents->Breadcrumbs()
 					->setHeader( $this->translate('you are here :') )

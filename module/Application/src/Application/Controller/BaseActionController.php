@@ -100,24 +100,11 @@ class BaseActionController extends AbstractActionController implements Dispatcha
      */
     public function onDispatch(MvcEvent $e)
     {
-        $oEvent = $this->applyTitleOnDispatch($e);
+        
         $oEvent = $this->applyToolbarOnDispatch($e);
         $result = parent::onDispatch($oEvent);
+        
         return $result;
-    }
-    
-    /**
-     * apply toolbar configuration on controller dispatch
-     * 
-     * @param \Zend\Mvc\MvcEvent $oEvent dispatch event
-     * @return \Zend\Mvc\MvcEvent
-     */
-    public function applyTitleOnDispatch(\Zend\Mvc\MvcEvent $oEvent) 
-    {
-        $action = $oEvent->getRouteMatch()->getParam('action');
-        $this->layout()->setVariable("title", $this->translate($this->getActionTitle($action)));
-
-        return $oEvent;
     }
     
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator)

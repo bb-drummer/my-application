@@ -47,6 +47,9 @@
 		oEvent.preventDefault();
 		oEvent.stopPropagation();
 		oEvent.stopImmediatePropagation();
+
+		MyApplication.debugDataTestAttributes();
+		
 		return (false);
 		
 	}; 
@@ -90,6 +93,9 @@
 		oEvent.preventDefault();
 		oEvent.stopPropagation();
 		oEvent.stopImmediatePropagation();
+
+		MyApplication.debugDataTestAttributes();
+
 		return (false);
 	};
 

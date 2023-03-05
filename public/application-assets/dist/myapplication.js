@@ -229,7 +229,9 @@
                 });
             });
         },
+        
         getFnName: functionName,
+
         transitionend: function($elem){
             var transitions = {
                 'transition': 'transitionend',
@@ -253,7 +255,18 @@
                 }, 1);
                 return 'transitionend';
             }
-        }
+        },
+        
+        debugDataTestAttributes: function () {
+            setTimeout(function () {
+                console.log('data-test attributes:');
+                document
+                    .querySelectorAll('*[data-test]')
+                    .forEach(
+                        function (e) { console.log(e.tagName, e.getAttribute('data-test')) }
+                    );
+            }, 500);
+		}
     };
     
     
@@ -1202,6 +1215,9 @@ function parseStyleToObject(str) {
 		oEvent.preventDefault();
 		oEvent.stopPropagation();
 		oEvent.stopImmediatePropagation();
+
+		MyApplication.debugDataTestAttributes();
+		
 		return (false);
 		
 	}; 
@@ -1245,6 +1261,9 @@ function parseStyleToObject(str) {
 		oEvent.preventDefault();
 		oEvent.stopPropagation();
 		oEvent.stopImmediatePropagation();
+
+		MyApplication.debugDataTestAttributes();
+
 		return (false);
 	};
 
@@ -1307,13 +1326,8 @@ if (!jQuery) {
 	$doc.ready(function () {
 
 		$doc.myapplication();
+		MyApplication.debugDataTestAttributes();
 		
-		console.log('data-test attributes:');
-		document
-			.querySelectorAll('*[data-test]')
-			.forEach(
-				function (e) { console.log(e.tagName, e.getAttribute('data-test')) }
-			);
 	});
 
 })(jQuery, document, window, MyApplication);

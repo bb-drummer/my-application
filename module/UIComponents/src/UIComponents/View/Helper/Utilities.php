@@ -57,4 +57,53 @@ class Utilities extends AbstractProxyHelper
 
         return $this->plugins;
     }
+
+    public function requestInfo($param = null)
+    {
+        $sm = $this->getServiceLocator()->getServiceLocator();
+
+        $router = $sm->get('router');
+        $request = $sm->get('request');
+        $matchedRoute = $router->match($request);
+
+        $params = $matchedRoute->getParams();
+
+        $controller = $params['controller'];
+        if (isset($params['__NAMESPACE__'])) {
+            $controller = $params['__NAMESPACE__'] . '\\' . $params['controller'];
+        }
+        $action = $params['action'];
+
+        $module_array = explode('\\', $controller);
+        $module = array_pop($module_array);
+
+        $route = $matchedRoute->getMatchedRouteName();
+
+        $info = array(
+            'module' => $module,
+            'module' => array_shift(explode('\\', $controller)),
+            'controller' => $controller,
+            'controller' => array_pop(explode('\\', $controller)),
+            'action' => $action,
+            'route' => $route,
+            'module_array' => $module_array,
+            'params' => $params,
+        );
+
+        if ($param === null) {
+            return $info;
+        }
+        return $info[$param];
+    }
+
+    public function requestSlug()
+    {
+        $info = $this->requestInfo();
+        
+        $slug = strtolower($info['module']) . '-' . 
+            strtolower($info['controller']) . '-' . 
+            strtolower($info['action']);
+
+        return $slug;
+    }
 }

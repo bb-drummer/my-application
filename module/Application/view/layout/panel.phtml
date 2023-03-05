@@ -14,7 +14,7 @@ $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromCont
 
 $panelLayout = $oComponents->Panel()
     ->setHeader( (isset($this->title) ? $this->title : "") )
-    ->setAttribute('data-test', 'layout-'. $oComponents->Panel()->slugify($this->title))
+    ->setAttribute('data-test', 'layout-'. $oUtilities->requestSlug())
     ->setContent(
         array(
             'tagname' => 'div',

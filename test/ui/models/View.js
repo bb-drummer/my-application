@@ -1,4 +1,16 @@
 let {until, By} = require('selenium-webdriver')
+
+global.ViewSetup = {
+  theme: ViewSetup?.theme 
+    ? ViewSetup.theme 
+    : (process.env?.TEST_THEME ? process.env?.TEST_THEME : 'bootstrap'),
+  lang: ViewSetup?.lang 
+    ? ViewSetup.lang 
+    : (process.env?.TEST_LANG ? process.env?.TEST_LANG : 'de'),
+  lang: ViewSetup?.browser 
+    ? ViewSetup.browser 
+    : (process.env?.TEST_CLIENT ? process.env?.TEST_CLIENT : 'chrome')
+}
 class View {
 
   constructor(driver) {
@@ -7,10 +19,23 @@ class View {
 
   }
 
-  /* getter methodd */
   get by() { return by }
 
   get elements() { return { } }
+
+  get language() { return ViewSetup.lang }
+
+  get theme() { return ViewSetup.theme }
+
+  get browser() { return ViewSetup.browser }
+
+  get basePath() {
+    const host = shared.data.hostnames[0];
+    if (String(host).startsWith('http')) {
+      return host + "/" + this.language + "/";
+    }
+    return 'https://' + host + "/" + this.language + "/";
+  }
 
   /* check if the page is the current page
    * TO BE OVERRIDED

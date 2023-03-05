@@ -8,6 +8,12 @@ class Page extends View {
 
   get url() { return '' }
 
+  get elements() {
+    return {
+      ...this.commonElements
+    }
+  }
+
   get commonElements() { 
     return {
       header: by.css('header'),
@@ -44,13 +50,9 @@ class Page extends View {
   get screenshotFilepath() { return driver.processCwd + '/report/images' }
 
   screenshot (filename, pagename) {
-    const imageFilename = this.screenshotFilepath + '/' + pagename + '_' + filename + '.png';
+    const imageFilename = this.screenshotFilepath + '/'+ pagename + '_' + filename + '_' + this.browser;
 
-    return driver.takeScreenshot().then(
-      function(image) {
-          fs.writeFileSync(imageFilename, image, 'base64');
-      }
-    );
+    return this.snapShot(imageFilename);
   }
 
 }

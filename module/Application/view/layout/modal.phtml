@@ -14,14 +14,14 @@ $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromCont
 
 $modalLayout = $oComponents->Modal()
     ->setHeader( (isset($this->title) ? $this->title : "") )
-    ->setAttribute('data-test', 'modal-'. $oComponents->Modal()->slugify($this->title))
+    ->setAttribute('data-test', 'modal-'. $oUtilities->requestSlug())
     ->setContent(
         array(
             'tagname' => 'div',
             'classnames' => 'modal-body panel-wrap',
             'content' => $messages . $this->content,
             'attr' => [
-                'data-test' => 'modal-body-'. $oComponents->Modal()->slugify($this->title)
+                'data-test' => 'modal-body'
             ]
         )
     )

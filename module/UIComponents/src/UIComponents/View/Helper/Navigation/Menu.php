@@ -370,18 +370,19 @@ class Menu extends \Zend\View\Helper\Navigation\Menu
      * @param    bool         $addClassToListItem Whether or not to add the page class to the list item
      * @return string
      */
-    public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false)
+    public function htmlify(AbstractPage $page, $escapeLabel = true, $addClassToListItem = false, $extraAttributes = [] )
     {
         $partial = $this->getHtmlifyPartial();
         if ($partial) {
             return $this->renderHtmlifyPartial($page, $escapeLabel, $addClassToListItem, $partial);
         }
         // get attribs for element
-        $attribs = [
+        $attribs = array_merge([
                 'id'     => $page->getId(),
                 'title'    => $this->translate($page->getTitle(), $page->getTextDomain()),
                 'data-test'    => 'cta-nav-' . $this->slugify($page->getLabel()),
-        ];
+        ], $extraAttributes);
+        
         $classnames = array();
         if ( $addClassToListItem === false ) {
             $class = $page->getClass();

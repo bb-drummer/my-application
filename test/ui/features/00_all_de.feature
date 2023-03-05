@@ -5,161 +5,82 @@
 Funktionalität: Zeige alle Seiten
   Alle Seiten sollen nacheinander angezeigt werden.
 
-  @development
+
+  @local @development @staging @production
   Szenario: Homepage anzeigen
-    Wenn ich die URL "https://dev.bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird der "legal" Link gezeigt
-    Dann wird der "mailto" Link gezeigt
-    Dann wird der "twitter" Link gezeigt
-    Dann wird der "youtube" Link gezeigt
-    Dann wird der "linkedin" Link gezeigt
-    Dann wird der "xing" Link gezeigt
-    Dann wird der "gitlab" Link gezeigt
-    Dann wird das Analytics Script generiert
+    Wenn die Seite "homepage" aufgerufen wird
+    Dann wird die Seite "homepage" angezeigt
+    Dann wird das Element "header" auf der Seite "homepage" angezeigt
+    Dann wird das Element "footer" auf der Seite "homepage" angezeigt
+    Dann wird das Element "background" auf der Seite "homepage" angezeigt
+    Dann wird das Element "analytics" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "mailto" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "twitter" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "youtube" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "linkedin" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "xing" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "gitlab" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "legal" auf der Seite "homepage" angezeigt
+    Dann wird der CTA "derbongen" auf der Seite "homepage" angezeigt
+    Dann wird ein Screenshot "test" von der Seite "homepage" gespeichert
 
-  @development
+
+  @local @development @staging @production
   Szenario: Impressum anzeigen
-    Wenn ich die URL "https://dev.bjoernbartels.earth/legal.html" öffne
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
+    Wenn die Seite "homepage" aufgerufen wird
+    Wenn der CTA "legal" auf der Seite "homepage" ausgelösst wird 
+    Dann wird die Seite "imprint" angezeigt
+    Dann wird das Element "footer" auf der Seite "imprint" angezeigt
+    Dann wird das Element "background" auf der Seite "imprint" angezeigt
+    Dann wird das Element "analytics" auf der Seite "imprint" angezeigt
+    Dann wird das Element "navigation" auf der Seite "imprint" angezeigt
+    Dann wird die Sprachauswahl "DE" auf der Seite "imprint" angezeigt
+    Dann wird die Sprachauswahl "EN" auf der Seite "imprint" angezeigt
+    Dann wird die Sprachauswahl "FR" auf der Seite "imprint" angezeigt
+    Dann wird der CTA "back" auf der Seite "homepage" angezeigt
+    Dann wird ein Screenshot "test" von der Seite "imprint" gespeichert
+    Wenn die Sprache "DE" auf der Seite "imprint" ausgewählt wird
+    Dann wird die Sprache "DE" auf der Seite "imprint" angezeigt
+    Dann wird ein Screenshot "test-de" von der Seite "imprint" gespeichert
+    Wenn die Sprache "EN" auf der Seite "imprint" ausgewählt wird
+    Dann wird die Sprache "EN" auf der Seite "imprint" angezeigt
+    Dann wird ein Screenshot "test-en" von der Seite "imprint" gespeichert
+    Wenn die Sprache "FR" auf der Seite "imprint" ausgewählt wird
+    Dann wird die Sprache "FR" auf der Seite "imprint" angezeigt
+    Dann wird ein Screenshot "test-fr" von der Seite "imprint" gespeichert
+    Wenn der CTA "back" auf der Seite "imprint" ausgelösst wird 
+    Dann wird die Seite "homepage" angezeigt
 
-  @development  
-  Szenario: Impressum navigieren
-    Wenn ich die URL "https://dev.bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Wenn ich den "legal" Link öffne 
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird die Navigation auf der Impressumseite gezeigt
-    Dann wird der "back" Link gezeigt
-    Dann wird die "DE" Sprachauswahl gezeigt
-    Dann wird die "EN" Sprachauswahl gezeigt
-    Dann wird die "FR" Sprachauswahl gezeigt
-    Wenn ich die Sprache "DE" wähle
-    Dann wird die Sprache "DE" gezeigt
-    Wenn ich die Sprache "EN" wähle
-    Dann wird die Sprache "EN" gezeigt
-    Wenn ich die Sprache "FR" wähle
-    Dann wird die Sprache "FR" gezeigt
-    Wenn ich den "back" Link öffne
-    Dann bin ich auf der Startseite
 
-  @development
-  Szenario: Fehlerseite anzeigen
-    Wenn ich die URL "https://dev.bjoernbartels.earth/some-error" öffne
-    Dann bin ich auf der Fehlerseite
-    Dann wird kaputtes Glas gezeigt (1)
-    Dann wird kaputtes Glas gezeigt (2)
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
+  @local @development @staging @production
+  Szenario: Fehlerseite 404 anzeigen
+    Wenn die Seite "errorpage-404" aufgerufen wird
+    Dann wird die Seite "errorpage-404" angezeigt
+    Dann wird das Element "header" auf der Seite "homepage" angezeigt
+    Dann wird das Element "footer" auf der Seite "errorpage-404" angezeigt
+    Dann wird das Element "background" auf der Seite "errorpage-404" angezeigt
+    Dann wird das Element "broken glas" auf der Seite "errorpage-404" angezeigt
+    Dann wird das Element "analytics" auf der Seite "errorpage-404" angezeigt
+    Dann wird ein Screenshot "test" von der Seite "errorpage-404" gespeichert
 
-  @staging
-  Szenario: Homepage anzeigen
-    Wenn ich die URL "https://beta.bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird der "legal" Link gezeigt
-    Dann wird der "mailto" Link gezeigt
-    Dann wird der "twitter" Link gezeigt
-    Dann wird der "youtube" Link gezeigt
-    Dann wird der "linkedin" Link gezeigt
-    Dann wird der "xing" Link gezeigt
-    Dann wird der "gitlab" Link gezeigt
-    Dann wird das Analytics Script generiert
+  @local @development @staging @production
+  Szenario: Fehlerseite 50x anzeigen
+    Wenn die Seite "errorpage-50x" aufgerufen wird
+    Dann wird die Seite "errorpage-50x" angezeigt
+    Dann wird das Element "header" auf der Seite "homepage" angezeigt
+    Dann wird das Element "footer" auf der Seite "errorpage-50x" angezeigt
+    Dann wird das Element "background" auf der Seite "errorpage-50x" angezeigt
+    Dann wird das Element "broken glas" auf der Seite "errorpage-50x" angezeigt
+    Dann wird das Element "analytics" auf der Seite "errorpage-50x" angezeigt
+    Dann wird ein Screenshot "test" von der Seite "errorpage-50x" gespeichert
 
-  @staging
-  Szenario: Impressum anzeigen
-    Wenn ich die URL "https://beta.bjoernbartels.earth/legal.html" öffne
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-
-  @staging  
-  Szenario: Impressum navigieren
-    Wenn ich die URL "https://beta.bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Wenn ich den "legal" Link öffne 
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird die Navigation auf der Impressumseite gezeigt
-    Dann wird der "back" Link gezeigt
-    Dann wird die "DE" Sprachauswahl gezeigt
-    Dann wird die "EN" Sprachauswahl gezeigt
-    Dann wird die "FR" Sprachauswahl gezeigt
-    Wenn ich die Sprache "DE" wähle
-    Dann wird die Sprache "DE" gezeigt
-    Wenn ich die Sprache "EN" wähle
-    Dann wird die Sprache "EN" gezeigt
-    Wenn ich die Sprache "FR" wähle
-    Dann wird die Sprache "FR" gezeigt
-    Wenn ich den "back" Link öffne
-    Dann bin ich auf der Startseite
-
-  @staging
-  Szenario: Fehlerseite anzeigen
-    Wenn ich die URL "https://beta.bjoernbartels.earth/some-error" öffne
-    Dann bin ich auf der Fehlerseite
-    Dann wird kaputtes Glas gezeigt (1)
-    Dann wird kaputtes Glas gezeigt (2)
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-
-  @production
-  Szenario: Homepage anzeigen
-    Wenn ich die URL "https://bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird der "legal" Link gezeigt
-    Dann wird der "mailto" Link gezeigt
-    Dann wird der "twitter" Link gezeigt
-    Dann wird der "youtube" Link gezeigt
-    Dann wird der "linkedin" Link gezeigt
-    Dann wird der "xing" Link gezeigt
-    Dann wird der "gitlab" Link gezeigt
-    Dann wird das Analytics Script generiert
-
-  @production
-  Szenario: Impressum anzeigen
-    Wenn ich die URL "https://bjoernbartels.earth/legal.html" öffne
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-
-  @production  
-  Szenario: Impressum navigieren
-    Wenn ich die URL "https://bjoernbartels.earth/" öffne
-    Dann bin ich auf der Startseite
-    Wenn ich den "legal" Link öffne 
-    Dann bin ich auf der Impressumseite
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
-    Dann wird die Navigation auf der Impressumseite gezeigt
-    Dann wird der "back" Link gezeigt
-    Dann wird die "DE" Sprachauswahl gezeigt
-    Dann wird die "EN" Sprachauswahl gezeigt
-    Dann wird die "FR" Sprachauswahl gezeigt
-    Wenn ich die Sprache "DE" wähle
-    Dann wird die Sprache "DE" gezeigt
-    Wenn ich die Sprache "EN" wähle
-    Dann wird die Sprache "EN" gezeigt
-    Wenn ich die Sprache "FR" wähle
-    Dann wird die Sprache "FR" gezeigt
-    Wenn ich den "back" Link öffne
-    Dann bin ich auf der Startseite
-
-  @production
-  Szenario: Fehlerseite anzeigen
-    Wenn ich die URL "https://bjoernbartels.earth/some-error" öffne
-    Dann bin ich auf der Fehlerseite
-    Dann wird kaputtes Glas gezeigt (1)
-    Dann wird kaputtes Glas gezeigt (2)
-    Dann wird der Footer gezeigt
-    Dann wird der Hintergrund gezeigt
+  @development @staging @production
+  Szenario: generische Fehlerseite anzeigen
+    Wenn die Seite "errorpage" aufgerufen wird
+    Dann wird die Seite "errorpage" angezeigt
+    Dann wird das Element "header" auf der Seite "homepage" angezeigt
+    Dann wird das Element "footer" auf der Seite "errorpage" angezeigt
+    Dann wird das Element "background" auf der Seite "errorpage" angezeigt
+    Dann wird das Element "broken glas" auf der Seite "errorpage" angezeigt
+    Dann wird das Element "analytics" auf der Seite "errorpage" angezeigt
+    Dann wird ein Screenshot "test" von der Seite "errorpage" gespeichert
