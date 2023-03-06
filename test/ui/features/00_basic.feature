@@ -42,3 +42,7 @@ Feature: Show all pages
     And the element "appinfo" on page "errorpage-404" has been displayed
     Then the element "navigation" on page "errorpage-404" has been displayed
     Then take a screenshot "test" of page "errorpage-404"
+
+    Examples:
+      | test |
+      | -- |

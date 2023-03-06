@@ -16,8 +16,8 @@ Feature: users logging in
     Then the page "user-profile" has been displayed
 
     Examples:
-      | title | user | test |
-      | -- | -- | -- |
+      | test |
+      | -- |
 
 
   @login @private @user @errors
@@ -29,8 +29,8 @@ Feature: users logging in
     Then the page "homepage" has been displayed
 
     Examples:
-      | title | user | test |
-      | -- | -- | -- |
+      | test |
+      | -- |
 
 
   @login @public @user @errors
