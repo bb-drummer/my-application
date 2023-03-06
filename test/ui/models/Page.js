@@ -1,23 +1,52 @@
-let {until, By} = require('selenium-webdriver')
-
-let View = require('./View.js')
-
+const {until, By} = require('selenium-webdriver')
 const fs = require('fs')
+const View = require('./View.js')
 
 class Page extends View {
 
+  //
+  // per page inherit the properties
+  // 'url', 'name', 'elements' and 
+  // extend to your needs
+  //
+
+  /**
+   * page's site URL
+   * 
+   * @returns {string}
+   */
   get url() { return '' }
 
+  /**
+   * page name
+   * 
+   * @returns {string}
+   */
   get name() { return '' }
 
+  /**
+   * collection of page element identifiers
+   * 
+   * @returns {object}
+   */
   get elements() {
     return {
       ...this.commonElements
     }
   }
 
+  //
+  // ------
+  //
+
+  /**
+   * common elements
+   * 
+   * @returns {object}
+   */
   get commonElements() { 
     return {
+      identifier: this.by.css('body'),
       header: this.by.css('[data-test=layout-main-navigation]'),
       content: this.by.css('[data-test=layout-main-content]'),
       footer: this.by.css('[data-test=layout-main-footer]'),
@@ -43,6 +72,11 @@ class Page extends View {
     }
   }
 
+  /**
+   * navigation elements
+   * 
+   * @returns {object}
+   */
   get navigation() { 
     return {
       container: this.by.css('[data-test=layout-main-navigation]'),
@@ -60,7 +94,15 @@ class Page extends View {
     }
   }
 
-  navigate (navpath, pagename, idx) {
+  /**
+   * navigate to page by following navigation-path
+   *
+   * @param {string} navpath navigation path
+   * @param {string} pagename name of target page
+   * 
+   * @returns {object} a promise 
+   */
+  navigate(navpath, pagename, idx) {
     const path = String(navpath).split('/');
     idx = (idx > 0 ? idx : 0);
     const $page = this;
@@ -75,9 +117,8 @@ class Page extends View {
       })
       .join('');
 
-    let $result = this.driver.findElement(this.by.css(querySelector))
+    const $result = this.driver.findElement(this.by.css(querySelector))
       .then(function (element) {
-        //return $page.driver.executeScript("$('"+querySelector+"').trigger('mouseover')");
         return $page.driver.executeScript("document.querySelector('"+querySelector+"').dispatchEvent(new Event('mouseover'))");
       })
       .then(function (element) {
@@ -95,16 +136,14 @@ class Page extends View {
     } 
 
     return $result;
-      
   }
 
-  /*
+  /**
    * go to this page
    *
-   * @return {obj} a promise 
+   * @returns {object} a promise 
    */
-
-  go () {
+  go() {
     const pageUrl = String(this.url).replace(/\/\//g, '/');
     this.log('url:', pageUrl);
 

@@ -259,12 +259,13 @@
         
         debugDataTestAttributes: function () {
             setTimeout(function () {
-                console.log('data-test elements:');
+                console.groupCollapsed('data-test elements');
                 document
                     .querySelectorAll('*[data-test]')
                     .forEach(
                         function (e) { console.log(e, e.getAttribute('data-test')) }
                     );
+                console.groupEnd('data-test elements')
             }, 500);
 		}
     };
