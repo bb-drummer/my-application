@@ -6,10 +6,14 @@ $oComponents = $this->Components();
 /** @var \Admin\Entity\User $oUser **/
 $oUser = $this->zfcUserIdentity();
 
-$messages = $this->flashMessenger()->renderCurrent('error', array('error panel panel-body panel-error'));
-$messages .= $this->flashMessenger()->renderCurrent('warning', array('warning panel panel-body panel-warning'));
-$messages .= $this->flashMessenger()->renderCurrent('success', array('success panel panel-body panel-success'));
-$messages .= $this->flashMessenger()->renderCurrent('info', array('info panel panel-body panel-info'));
+$messages = $this->flashMessenger()
+    ->renderCurrent('error', array('error panel panel-body panel-error'));
+$messages .= $this->flashMessenger()
+    ->renderCurrents('warning', array('warning panel panel-body panel-warning'));
+$messages .= $this->flashMessenger()
+    ->renderCurrents('success', array('success panel panel-body panel-success'));
+$messages .= $this->flashMessenger()
+    ->renderCurrents('info', array('info panel panel-body panel-info'));
 $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromContainer();
 
 $modalLayout = $oComponents->Modal()
@@ -18,7 +22,7 @@ $modalLayout = $oComponents->Modal()
     ->setContent(
         array(
             'tagname' => 'div',
-            'classnames' => 'modal-body panel-wrap',
+            'classnames' => 'modal-body panel-wrap panel-' . $oUtilities->requestSlug(),
             'content' => $messages . $this->content,
             'attr' => [
                 'data-test' => 'modal-body'

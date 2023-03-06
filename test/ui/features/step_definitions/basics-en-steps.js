@@ -27,11 +27,11 @@ module.exports = function () {
 */
     // ------
 
-    this.When(/^the URL "([^"]*)" has been opened$/, function (pageurl) {
+    this.When(/the URL "([^"]*)" has been opened$/, function (pageurl) {
         return driver.get(pageurl);
     });
 
-    this.When(/^the page "([^"]*)" has been opened$/, function (pagename) {
+    this.When(/the page "([^"]*)" has been opened$/, function (pagename) {
         return page[pagename].go();
     });
 
@@ -45,7 +45,7 @@ module.exports = function () {
 
     // ------
 
-    this.When(/^the CTA "([^"]*)" on page "([^"]*)" has been triggered$/, function (cta, pagename) {
+    this.When(/the CTA "([^"]*)" on page "([^"]*)" has been triggered$/, function (cta, pagename) {
         return driver.findElement(
             (page[pagename]?.elements?.cta && page[pagename]?.elements?.cta[cta]) 
                 ? page[pagename].elements?.cta[cta] 
@@ -55,7 +55,7 @@ module.exports = function () {
         })
     });
 
-    this.Then(/^the CTA "([^"]*)" on page "([^"]*)" has been displayed$/, function (cta, pagename) {
+    this.Then(/the CTA "([^"]*)" on page "([^"]*)" has been displayed$/, function (cta, pagename) {
         return driver.findElement(
             (page[pagename]?.elements?.cta && page[pagename]?.elements?.cta[cta]) 
                 ? page[pagename].elements?.cta[cta] 
@@ -67,7 +67,7 @@ module.exports = function () {
 
     // ------
 
-    this.Then(/^the language selector "([^"]*)" on page "([^"]*)" has been displayed$/, function (language, pagename) {
+    this.Then(/the language selector "([^"]*)" on page "([^"]*)" has been displayed$/, function (language, pagename) {
         return driver.findElement(
             page[pagename]?.elements?.lang[String(language).toLowerCase()].selector
         ).then(function (el) {
@@ -75,7 +75,7 @@ module.exports = function () {
         })
     });
 
-    this.When(/^the language "([^"]*)" on page "([^"]*)" has been selected$/, function (language, pagename) {
+    this.When(/the language "([^"]*)" on page "([^"]*)" has been selected$/, function (language, pagename) {
         return driver.findElement(
             page[pagename]?.elements?.lang[String(language).toLowerCase()].selector
         ).then(function (el) {
@@ -83,7 +83,7 @@ module.exports = function () {
         })
     });
 
-    this.Then(/^the language "([^"]*)" on page "([^"]*)" has been displayed$/, function (language, pagename) {
+    this.Then(/the language "([^"]*)" on page "([^"]*)" has been displayed$/, function (language, pagename) {
         return driver.findElement(
             page[pagename]?.elements?.lang[String(language).toLowerCase()].target
         ).isDisplayed()
@@ -91,7 +91,7 @@ module.exports = function () {
 
     // ------
 
-    this.Then(/^the element "([^"]*)" on page "([^"]*)" has been displayed$/, function (elementname, pagename) {
+    this.Then(/the element "([^"]*)" on page "([^"]*)" has been displayed$/, function (elementname, pagename) {
         return driver.findElement(
             page[pagename]?.elements[elementname]
         ).then(function (el) {
@@ -99,8 +99,24 @@ module.exports = function () {
         })
     });
 
-    this.Then(/^take a screenshot "([^"]*)" of page "([^"]*)"$/, function (filename, pagename) {
-        return page[pagename]?.screenshot(filename, pagename);
+    this.Then(/take a screenshot "([^"]*)" of page "([^"]*)"$/, function (filename, pagename, done) {
+        page[pagename].screenshot(filename, pagename);
+        done();
     });
+
+    // ------
+
+    this.Given(/the user navigates via "([^"]*)" to the "([^"]*)" page$/, function (navpath, pagename, done) {
+        page['homepage'].go();
+        page['homepage'].navigate(navpath, pagename);
+        page[pagename].waitAndLocate(page[pagename].elements.identifier);
+        
+        page[pagename]?.screenshot(
+            (String(navpath).replace(/\//g, '_')), pagename
+        );
+        driver.findElement(page[pagename].elements.identifier).isDisplayed();
+
+        done();
+    })
 
 };

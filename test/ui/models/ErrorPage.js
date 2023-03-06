@@ -2,16 +2,17 @@ let Page = require('./Page.js')
 
 class ErrorPage extends Page {
 
+  get name() { return 'error-50x' }
+
   get elements() {
     return {
       ...this.commonElements,
-      identifier : by.css(".errorpage"),
-      'broken glas' : by.css("div[class*=shatter]")
+      identifier : by.css("[data-test=page-error-50x]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/some-error";
+    return this.basePath + "/some-error";
   }
 
 }

@@ -2,15 +2,17 @@ let Page = require('./Page.js')
 
 class UserProfilePage extends Page {
 
+  get name() { return 'user-profile' }
+
   get elements() {
     return {
       ...this.commonElements,
-      identifier : this.by.css("[datatest=page-zfcuser-zfcuser-index]")
+      identifier : this.by.css("[data-test=page-zfcuser-zfcuser-index]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/user";
+    return this.basePath + "/user";
   }
 
 }

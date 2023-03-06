@@ -1,18 +1,20 @@
 let Page = require('./Page.js')
 
-class HomePage extends Page {
+class ComponentsTestPage extends Page {
+
+  get name() { return 'component-test' }
 
   get elements() {
     return {
       ...this.commonElements,
-      identifier : this.by.css("[datatest=page-uicomponents-components-index]")
+      identifier : this.by.css("[data-test=page-uicomponents-components-index]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/" + this.language + "/";
+    return this.basePath + '/uicomponents-testpages';
   }
 
 }
 
-module.exports = HomePage
+module.exports = ComponentsTestPage

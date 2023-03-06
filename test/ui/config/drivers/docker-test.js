@@ -14,7 +14,9 @@ const server = {
  */
 module.exports = function() {
 
-    console.log('browser', process.env?.TEST_CLIENT);
+    if (process.env?.TEST_DEBUG == 'true') {
+        console.log('[ browser driver:', process.env?.TEST_CLIENT, ']');
+    }
 
     var driver = new selenium
         .Builder()

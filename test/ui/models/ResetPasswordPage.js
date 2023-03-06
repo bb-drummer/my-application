@@ -2,17 +2,19 @@ let Page = require('./Page.js')
 
 class ResetPasswordPage extends Page {
 
+  get name() { return 'reset-password' }
+
   get elements() {
     return {
       ...this.commonElements,
-      identifier : this.by.css("[datatest=page-zfc-zfcuser-requestpasswordreset]")
+      identifier : this.by.css("[data-test=page-zfcuser-zfcuser-requestpasswordreset]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/requestpasswordreset";
+    return this.basePath + "/requestpasswordreset";
   }
 
 }
 
-module.exports = HomePage
+module.exports = ResetPasswordPage

@@ -14,11 +14,11 @@ $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromCont
 
 $panelLayout = $oComponents->Panel()
     ->setHeader( (isset($this->title) ? $this->title : "") )
-    ->setAttribute('data-test', 'layout-'. $oUtilities->requestSlug())
+    ->setAttribute('data-test', 'layout-' . $oUtilities->requestSlug())
     ->setContent(
         array(
             'tagname' => 'div',
-            'classnames' => 'panel-body alert-wrap',
+            'classnames' => 'panel-body alert-wrap panel-' . $oUtilities->requestSlug(),
             'content' => $messages . $this->content
         )
     )

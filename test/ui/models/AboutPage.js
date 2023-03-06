@@ -2,15 +2,17 @@ let Page = require('./Page.js')
 
 class AboutPage extends Page {
 
+  get name() { return 'about' }
+
   get elements() {
     return {
       ...this.commonElements,
-      identifier : this.by.css("[datatest=page-application-index-about]")
+      identifier : this.by.css("[data-test=page-application-index-about]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/application/index/about";
+    return this.basePath + "/application/index/about";
   }
 
 }

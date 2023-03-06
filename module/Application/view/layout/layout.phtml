@@ -59,7 +59,7 @@
                             ->setMaxDepth(3)
                             ->setIconPrefixClass('fa fa-')
                             ->setAttributes([
-                                'data-test' => 'cta-main-navigation'
+                                'data-test' => 'layout-main-navigation'
                             ])
                         ;
                         echo $oNavBar->render();
@@ -69,7 +69,7 @@
                             ->setUlClass('nav navbar-nav navbar-right')
                             ->setIconPrefixClass('flag-icon flag-icon-')
                             ->setAttributes([
-                                'data-test' => 'cta-lang-selelction'
+                                'data-test' => 'layout-lang-selelction'
                             ])
                         ;
                         echo $oLocaleMenu->render(); 
@@ -83,27 +83,32 @@
                     ->setHeader( $this->translate('you are here :') )
                     ->setMinDepth(0)
                     ->setAttributes([
-                        'data-test' => 'cta-breadcrumbs'
+                        'data-test' => 'layout-breadcrumbs'
                     ])
                 ;
                 echo $oBreadcrumbs->render(); 
             ?>
             <?php
-                echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
-                echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
-                echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
-                echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('error', array('error alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('warning', array('warning alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('success', array('success alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('info', array('info alert flashmessages'));
             ?>
             <?php 
                 $panelLayout = $oComponents->Panel()
-                    ->setHeader( 'x' . (isset($this->title) ? $this->title : "") )
+                    ->setAttribute('data-test','layout-main-content')
+                    ->setHeader( (isset($this->title) ? $this->title : "") )
                     ->setContent(
                         array(
                                 'tagname' => 'div',
-                                'classnames' => 'panel-body alert-wrap',
+                                'classnames' => 'panel-body alert-wrap panel-' . $oUtilities->requestSlug(),
                                 'content' => $this->content,
                                 'attr' => [
-                                    'data-test' => 'layout-panel-main-content'
+                                    'data-test' => 'layout-main-content-panel'
                                 ]
                         )
                     )
@@ -112,16 +117,16 @@
                 echo $panelLayout;
             ?>
             <hr>
-            <footer>
+            <footer data-test="layout-main-footer">
                 <p>
-                    <span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//dragon-projects.net" target="_blank">[dragon-projects.net]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
-                    <span class="pull-right poweredby">
-                        <?php echo $this->translate('Powered by') ?> &nbsp;
-                        <a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
-                        <a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
-                        <a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
-                        <a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($themePath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
-                    </span>
+                	<span class="pull-left copyright" data-test="layout-main-footer-copyright">&copy; <?php echo date('Y') ?> by <a href="//bjoernbartels.earth" target="_blank">[Bj&ouml;rn Bartels]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
+                	<span class="pull-right poweredby" data-test="layout-main-footer-appinfo">
+                		<?php echo $this->translate('Powered by') ?> &nbsp;
+                		<a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
+                		<a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
+                		<a href="http://www.w3.org/html/" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/html5-badge-h-solo.png') ?>" height="16" alt="HTML5" /></a> &nbsp;
+                		<a href="http://jquery.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/jquery-logo.png') ?>" height="16" alt="jQuery" /></a>
+                	</span>
                </p>
             </footer>
         </div> <!-- /container -->

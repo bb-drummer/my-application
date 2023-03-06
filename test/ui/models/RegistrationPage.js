@@ -2,15 +2,17 @@ let Page = require('./Page.js')
 
 class RegistrationPage extends Page {
 
+  get name() { return 'register' }
+
   get elements() {
     return {
       ...this.commonElements,
-      identifier : this.by.css("[datatest=page-zfuser-zfuser-register]")
+      identifier : this.by.css("[data-test=page-zfcuser-zfcuser-register]")
     }
   }
 
   get url() {
-    return 'https://' + shared.data.hostnames[0] + "/user/register";
+    return this.basePath + "/user/register";
   }
 
 }
