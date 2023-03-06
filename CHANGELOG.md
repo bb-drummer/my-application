@@ -2,6 +2,8 @@
 ----------------------
 
 ## [Current]
+ * upd/add ui tests, upd test setup
+ * upd assets gulpfile
  * upd data-test attributes
  * upd test setup, upd/add data-test attributes
  * add assets sub project, upd ui test setup
