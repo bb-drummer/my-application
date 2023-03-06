@@ -5,6 +5,8 @@ stages:
   - k8s-setup
   - k8s-deploy
   - k8s-cronjob
+  - ui-test-setup
+  - ui-test-run
 
 
 ##########################
@@ -67,6 +69,11 @@ stages:
     paths:
       - .k8s/generated
 
+.ui-test-template: &ui-test-job
+  image: bbdrummer/cucumber-base:latest
+  tags:
+    - docker-runner
+
 .project-variables: &project-variables
   before_script:
     # get k8s config
@@ -103,6 +110,8 @@ stages:
 variables:
   BUILD_TARGET: dist
   BUILD_LABEL_TMPFILE: TMP_BUILD_LABEL
+  TEST_CLIENT: chrome
+  TEST_SERVER: 127.0.0.1
 
 init:
   <<: [*build-env-job, *pushcache]
@@ -414,3 +423,95 @@ cronjob-disable:
     - export ANSIBLE_CONFIG="./ansible.cfg"
     - ansible-playbook -l localhost ./.k8s/plays/cronjob.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} database_root_password=${MYSQL_ROOT_PASSWORD} database_password=${MYSQL_PASSWORD} redis_url=${REDIS_DSN_NOAUTH} cronjob_disable=true" --extra-vars "{\"releases\":{\"app\":\"${RELEASE}\"}}" -v
     - if [[ ! -z "$DEBUG" ]] ; then cat .k8s/generated/setup/cronjob.yml; fi
+
+
+
+############
+# ui tests #
+############
+ui-test-setup:
+  <<: [*k8s-job, *project-variables]
+  stage: ui-test-setup
+  needs: 
+    - job: "k8s-deploy-dev"
+      optional: true
+    - job: "k8s-deploy-staging"
+      optional: true
+    - job: "k8s-deploy-prod"
+      optional: true
+  script:
+    # setup test hostnames
+    - export ANSIBLE_CONFIG="./ansible.cfg"
+    - ansible-playbook -l localhost ./.k8s/plays/test.yml --extra-vars "namespace=${PROJECTNAMESPACE} project=${PROJECTNAME} release=${RELEASE} teamlabel=${TEAMLABEL} app_env=${ENVLABEL} replicas=${REPLICAS}" -v
+  only:
+    refs:
+      - branches
+      - master
+      - release
+      - tags
+  artifacts:
+    paths:
+      - hostnames.json
+
+.ui-test-run: &ui-test-run
+  <<: [*ui-test-job, *project-variables]
+  stage: ui-test-run
+  dependencies:
+    - ui-test-setup
+  needs: 
+    - job: "ui-test-setup"
+      optional: false
+  script:
+    # setup dirs
+    - cp -r /cucumber/report /cucumber/config /cucumber/node_modules /cucumber/package* /cucumber/generate* .
+    - mkdir -p ./test/ui/report/images ./report/images
+    - declare -gx REPORT_DIR=`date +"%Y-%m-%d_%H-%M-%S"`
+    - declare -gx PROJECTREPORTDIR="./${PROJECTNAME}/${ENVLABEL}/${TEST_CLIENT}/${REPORT_DIR}"
+    - mkdir -p ${PROJECTREPORTDIR}/images
+    - chmod -R +rw ./test/ui/report ./report ${PROJECTREPORTDIR}
+    # forward selenium
+    - if [[ ! -z "${KUBECONFIG_DEPLOYUSER}" ]] && [[ ! -z "${KUBECONFIG}" ]] ; then echo "$(echo ${KUBECONFIG_DEPLOYUSER} | base64 -d)" > ./test-kubeconfig ; fi
+    - export KUBECONFIG=./test-kubeconfig
+    - export PODNAME=`kubectl get pods -n selenium --selector="app=selenium-hub" --output=template --template="{{with index .items 0}}{{.metadata.name}}{{end}}"`
+    - kubectl -n selenium port-forward $PODNAME 4444:4444 &
+    - PROXY_PID=$!
+    # run tests
+    - wait-for-it ${TEST_SERVER:-127.0.0.1}:4444 -- echo "Selenium Hub connection available"
+    - npm run test-docker -- -r ./test/ui/report/ -t @${ENVLABEL} -x 60000 || true
+    - kill ${PROXY_PID}
+    # save reports
+    - cp -r ./report/images/* ./test/ui/report/images/
+    - mv ./test/ui/report/* ${PROJECTREPORTDIR}/
+    - export REPORTPODNAME=`kubectl get pods -n selenium -l "app=test-reports" --output=template --template="{{with index .items 0}}{{.metadata.name}}{{end}}"`
+    - kubectl -n selenium cp ./${PROJECTNAME} ${REPORTPODNAME}:/usr/share/nginx/html/
+  only:
+    refs:
+      - branches
+      - master
+      - release
+      - tags
+  artifacts:
+    paths:
+      - ./test/ui/reports
+      - ${PROJECTREPORTDIR}
+
+ui-test-chrome:
+  <<: [*ui-test-run]
+  stage: ui-test-run
+  variables:
+    TEST_CLIENT: chrome
+    TEST_SERVER: 127.0.0.1
+
+ui-test-firefox:
+  <<: [*ui-test-run]
+  stage: ui-test-run
+  variables:
+    TEST_CLIENT: firefox
+    TEST_SERVER: 127.0.0.1
+
+ui-test-edge:
+  <<: [*ui-test-run]
+  stage: ui-test-run
+  variables:
+    TEST_CLIENT: MicrosoftEdge
+    TEST_SERVER: 127.0.0.1

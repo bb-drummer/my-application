@@ -1,0 +1,9 @@
+{
+    "steps": "./test/ui/features/step_definitions",
+    "pageObjects": "./test/ui/features/page-objects",
+    "sharedObjects": "./test/ui/features/shared-objects",
+    "reports": "./test/ui/report",
+    "browserTeardownStrategy": "clear",
+    "browser": "chrome",
+    "timeout": 50000
+}

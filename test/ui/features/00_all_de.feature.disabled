@@ -1,0 +1,11 @@
+# language: de
+# encoding: utf-8
+# ./features/00_all_de.feature
+
+Funktionalität: Zeige alle Seiten
+  Alle Seiten sollen nacheinander angezeigt werden.
+
+  @local @development @staging @production
+  Szenario: Homepage anzeigen
+    Wenn die Seite "homepage" aufgerufen wird
+    Dann wird die Seite "homepage" angezeigt

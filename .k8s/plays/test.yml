@@ -1,0 +1,9 @@
+---
+- name: 'Setup testing'
+  hosts: localhost
+  connection: local
+  tasks:
+    # create hostnames file
+    - copy:
+        dest: ../../hostnames.json
+        content: "{{ hostnames[app_env]|to_json(indent=4, sort_keys=True) }}" 

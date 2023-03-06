@@ -1,0 +1,24 @@
+// MyApplication application base assets collection
+// my-application.net
+// Apache License, Version 2.0
+
+////
+/// @group overrides/foundation
+////
+
+@mixin myapplication-foundation-overrides {
+
+	.foundation {
+	
+		// button margins
+		.button,
+		.button-group {
+			margin-bottom: 0;
+		}
+		
+		// modal/'reveal'
+		.reveal{
+			margin: 0 auto 0;
+		}
+	}
+}

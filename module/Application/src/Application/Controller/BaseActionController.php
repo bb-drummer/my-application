@@ -100,8 +100,10 @@ class BaseActionController extends AbstractActionController implements Dispatcha
      */
     public function onDispatch(MvcEvent $e)
     {
+        
         $oEvent = $this->applyToolbarOnDispatch($e);
         $result = parent::onDispatch($oEvent);
+        
         return $result;
     }
     
