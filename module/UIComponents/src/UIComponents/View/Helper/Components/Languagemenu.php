@@ -17,10 +17,12 @@ namespace UIComponents\View\Helper\Components;
 
 use Zend\View\HelperPluginManager;
 use Locale;
+use \UIComponents\View\Helper\Traits\ComponentAttributesTrait;
 
 class Languagemenu extends \UIComponents\View\Helper\AbstractHelper
 
 {
+    use ComponentAttributesTrait;
     
     /**
      * @var Detector $detector
@@ -461,10 +463,11 @@ class Languagemenu extends \UIComponents\View\Helper\AbstractHelper
             $displayName = $this->getLocaleProperty('displayName', $locale, $labelLocale);
 
             $item = sprintf(
-                '<li><a href="%s" title="%s"%s>%s</a></li>' . "\n",
+                '<li><a href="%s" title="%s"%s %s>%s</a></li>' . "\n",
                 $url,
                 $displayName,
                 ($current === $locale) ? ' class="active"' : '',
+                'data-test="cta-lang-'.$this->slugify($label).'"',
                 (($iconprefixclass) ? '<span class="' . $iconprefixclass . $primary . '"></span> ' : '') . $label
             );
 
@@ -474,7 +477,14 @@ class Languagemenu extends \UIComponents\View\Helper\AbstractHelper
         $html  = 
             '<ul'.(($class) ? sprintf(' class="%s"', $class) : '').' '.($this->htmlAttribs($attributes)).'>'.
                 '<li'.(($liclass) ? sprintf(' class="%s"', $liclass) : '').'>'.
-                    '<a href="" class="'.(($liclass) ? $liclass.'-toggle' : '').'" data-toggle="'.(($liclass) ? $liclass : '').'" role="button" aria-haspopup="true" aria-expanded="false" title="'.Locale::getDisplayName(null).'">'.
+                    '<a href="" '.
+                        'class="'.(($liclass) ? $liclass.'-toggle' : '').'" '.
+                        'data-toggle="'.(($liclass) ? $liclass : '').'" '.
+                        'role="button" aria-haspopup="true" '.
+                        'aria-expanded="false" '.
+                        'title="'.Locale::getDisplayName(null).'"'.
+                        'data-test="cta-lang-selector cta-lang-selected-'.$this->slugify(Locale::getDisplayLanguage(null)).'"'.
+                    '>'.
                         '<span class="'.(($iconprefixclass) ? $iconprefixclass : '').Locale::getPrimaryLanguage(null).'"></span> '.
                         ''.Locale::getDisplayLanguage(null). // ' - '.Locale::getDefault().' - '.Locale::getPrimaryLanguage(null).''.
                         '<span class="caret"></span>'.

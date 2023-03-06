@@ -11,7 +11,10 @@ networks:
 
 services:
   web-php:
-    env_file: .env
+    env_file: 
+      - .env
+    environment:
+      - PROJECT_THEME=${PROJECT_THEME}
     restart: unless-stopped
     container_name: ${PROJECT}-web
     build:

@@ -42,7 +42,103 @@ If you need further assistance, please do not hesitate to contact the applicatio
 
 
 
-## Installation
+## Run development environments
+
+### Run in GitPod
+
+Provided you have a GitPod account, just fork/clone this repository to your GitHub account. Start the GitPod workspace with that repository, either direclty from GitHub's GitPod Button or GitPod UI.
+
+### Run with Docker
+
+requirements: Docker, composer/php
+
+- install composer dependencies...
+  ```
+  $> composer install --ignore-platform-reqs --no-interaction
+  ```
+- build docker images...
+  ```
+  $> PROJECT=my-application PROJECT_DIR=$(pwd)/ docker-compose -f ./.gitpod.compose.yml build --pull
+  ```
+- start docker containers...
+  ```
+  $> PROJECT=my-application PROJECT_DIR=$(pwd)/ bin/start.sh
+  ```
+- stop docker containers...
+  ```
+  $> PROJECT=my-application PROJECT_DIR=$(pwd)/ bin/stop.sh
+  ```
+- show log of running containers...
+  ```
+  $> PROJECT=my-application PROJECT_DIR=$(pwd)/ docker-compose -f ./.gitpod.compose.yml logs -f
+  ```
+
+### Run frontend dev 
+
+requirements: node-js v10
+
+change to directory `public/application-assets/`
+
+- use node v10...
+  ```
+  $> nvm use
+  ```
+- install node dependencies...
+  ```
+  $> npm install
+  ```
+- start javascript $ sass watcher...
+  ```
+  $> npx gulp
+  ```
+- run build...
+  ```
+  $> npx gulp build
+  ```
+- run tests...
+  ```
+  $> npx gulp test
+  ```
+
+### Run ui tests
+
+requirements: selenium hub or standalone
+
+- in one terminal start selenium...
+  ```
+  $> docker run --rm -it \
+       -p 4444:4444 \
+       -p 7900:7900 \
+       --shm-size 2g \
+       selenium/standalone-chrome
+  ```
+
+- in another terminal run cucumber ui tests
+  ```
+  $> TEST_CLIENT=chrome \
+     TEST_SERVER=host.docker.internal \
+     docker run --rm \
+       --env TEST_SERVER=${TEST_SERVER} \
+       --env TEST_CLIENT=${TEST_CLIENT} \
+       -v $(pwd)/test:/build/test \
+       -v $(pwd)/report:/build/report \
+       -v $(pwd)/hostnames.json:/build/hostnames.json \
+       bbdrummer/cucumber-base \
+       npm run test-docker -- -r ./report/ <extra selenium-cucumber-js options>
+  ```
+
+- create html report
+  ```
+  $> docker run --rm \
+       -v $(pwd)/test:/build/test \
+       -v $(pwd)/report:/build/report \
+       bbdrummer/cucumber-base \
+       node generate-report.js
+  ```
+
+
+
+## Manual installation
 
 ### Using Composer (recommended)
 
@@ -52,8 +148,8 @@ and use `composer` to install dependencies:
     curl -s https://getcomposer.org/installer | php --
     
     cd my/project/dir
-    git clone https://gitlab.bjoernbartels.earth/zf2/application-base.git
-    cd application-base
+    git clone https://gitlab.bjoernbartels.earth/zf2/my-application.git
+    cd my-application
     php composer.phar self-update
     php composer.phar install
 
@@ -64,7 +160,7 @@ Another alternative for downloading the project is to grab it via `curl`, and
 then pass it to `tar`:
 
     cd my/project/dir
-    curl -#L https://gitlab.bjoernbartels.earth/zf2/application-base/repository/archive.tar.gz?ref=master | tar xz --strip-components=1
+    curl -#L https://gitlab.bjoernbartels.earth/zf2/my-application/repository/archive.tar.gz?ref=master | tar xz --strip-components=1
 
 You would then invoke `composer` to install dependencies per the previous
 example.

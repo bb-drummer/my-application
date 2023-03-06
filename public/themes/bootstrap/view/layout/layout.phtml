@@ -50,32 +50,41 @@
                     </button>
                     <a class="navbar-brand" href="<?php echo $this->url('home') ?>"><img src="<?php echo $this->basePath($assetPath.$oUtilities->AppLogo()) ?>" alt="<?php echo $oUtilities->AppTitle(); ?>" />&nbsp;<?php echo $this->translate($oUtilities->AppTitle()) ?></a>
                 </div>
-				<div class="collapse navbar-collapse">
-					<?php
-						$oNavBar = $oComponents->Topbar()
-							->setUlClass('nav navbar-nav')
-							->setMinDepth(0)
-							->setMaxDepth(3)
-							->setIconPrefixClass('fa fa-')
-						;
-						echo $oNavBar->render();
-					?>
-					
-					<?php 
-						$oLocaleMenu = $oComponents->Languagemenu()
-							->setUlClass('nav navbar-nav navbar-right')
-							->setIconPrefixClass('flag-icon flag-icon-')
-						;
-						echo $oLocaleMenu->render(); 
-					?>
-				</div> 
+								<div class="collapse navbar-collapse">
+									<?php
+										$oNavBar = $oComponents->Topbar()
+											->setUlClass('nav navbar-nav')
+											->setMinDepth(0)
+											->setMaxDepth(3)
+											->setIconPrefixClass('fa fa-')
+											->setAttributes([
+													'data-test' => 'layout-main-navigation'
+											])
+										;
+										echo $oNavBar->render();
+									?>
+									
+									<?php 
+										$oLocaleMenu = $oComponents->Languagemenu()
+											->setUlClass('nav navbar-nav navbar-right')
+											->setIconPrefixClass('flag-icon flag-icon-')
+											->setAttributes([
+													'data-test' => 'layout-lang-selection'
+											])
+										;
+										echo $oLocaleMenu->render(); 
+									?>
+								</div> 
             </div>
         </nav>
-        <div class="container-fluid">
+        <div class="container-fluid" data-test="page-<?php echo $oUtilities->requestSlug() ?>">
 			<?php 
 				$oBreadcrumbs = $oComponents->Breadcrumbs()
 					->setHeader( $this->translate('you are here :') )
 					->setMinDepth(0)
+					->setAttributes([
+							'data-test' => 'layout-breadcrumbs'
+					])
 				;
 				echo $oBreadcrumbs->render(); 
 			?>
@@ -97,19 +106,26 @@
 					$toolbarPanel = $oComponents->Panel()
 						->setContent( $oToolbarNav->render() )
 					;
-					echo $toolbarPanel;
+					echo $toolbarPanel
+						->setAttribute('data-test','layout-toolbar')
+						->render();
 				}
 			?>
 
-            <?php
-				echo $this->flashMessenger()->render('error', array('error alert flashmessages'));
-				echo $this->flashMessenger()->render('warning', array('warning alert flashmessages'));
-				echo $this->flashMessenger()->render('success', array('success alert flashmessages'));
-				echo $this->flashMessenger()->render('info', array('info alert flashmessages'));
+      <?php
+				echo $this->flashMessenger()
+					->render('error', array('error alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('warning', array('warning alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('success', array('success alert flashmessages'));
+				echo $this->flashMessenger()
+					->render('info', array('info alert flashmessages'));
 			?>
 			
 			<?php
 				$panelLayout = $oComponents->Panel()
+					->setAttribute('data-test','layout-main-content')
 					->setHeader( (isset($this->title) ? $this->title : "") )
 					->setContent(
 						array(
@@ -123,10 +139,10 @@
 			?>
 			
             <hr>
-            <footer>
+            <footer data-test="layout-main-footer">
                 <p>
-                	<span class="pull-left copyright">&copy; <?php echo date('Y') ?> by <a href="//bjoernbartels.earth" target="_blank">[Bj&ouml;rn Bartels]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
-                	<span class="pull-right poweredby">
+                	<span class="pull-left copyright" data-test="layout-main-footer-copyright">&copy; <?php echo date('Y') ?> by <a href="//bjoernbartels.earth" target="_blank">[Bj&ouml;rn Bartels]</a> - <?php echo $this->translate('All rights reserved.') ?></span>
+                	<span class="pull-right poweredby" data-test="layout-main-footer-appinfo">
                 		<?php echo $this->translate('Powered by') ?> &nbsp;
                 		<a href="http://php.net" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/php-logo.gif') ?>" height="20" alt="php" /></a> &nbsp;
                 		<a href="http://framework.zend.com" target="_blank"><img src="<?php echo $this->basePath($assetPath.'img/zf2-logo.png') ?>" height="16" alt="ZendFramework 2" /></a> &nbsp;
@@ -138,23 +154,23 @@
         </div> <!-- /container -->
         
         <!-- Scripts -->
-		<?php 
-        	$this->inlineScript()
-				->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
-				->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
-				->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
-				->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
-				->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.min.js'))
-				
-				->appendFile($this->basePath('application-assets/dist/myapplication.js'))
-			;
-			$jsfiles = $oUtilities->Config()->get('app')->get('js');
-			if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
-			    $this->inlineScript()->appendFile($this->basePath($file));
-			}
-        ?>
-		<?php echo $this->headScript() ?>
+				<?php 
+							$this->inlineScript()
+						->appendFile($this->basePath($themePath . 'js/respond.min.js'), 'text/javascript', array('conditional' => 'lt IE 9',))
+						->appendFile($this->basePath($themePath . 'js/modernizr/modernizr.js'))
+						->appendFile($this->basePath($themePath . 'js/jquery/jquery.min.js'))
+						->appendFile($this->basePath($themePath . 'js/bootstrap/bootstrap.min.js'))
+						->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
+						->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.min.js'))
+						
+						->appendFile($this->basePath('application-assets/dist/myapplication.js'))
+					;
+					$jsfiles = $oUtilities->Config()->get('app')->get('js');
+					if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {
+							$this->inlineScript()->appendFile($this->basePath($file));
+					}
+						?>
+				<?php echo $this->headScript() ?>
         <?php echo $this->inlineScript() ?>
     </body>
 </html>

@@ -55,10 +55,10 @@ spec:
           resources:
             limits:
               memory: "256Mi"
-              cpu: "1000m"
+              cpu: "250m"
             requests:
               memory: "128Mi"
-              cpu: "500m"
+              cpu: "125m"
           readinessProbe:
             httpGet:
               path: /
@@ -119,4 +119,4 @@ spec:
         name: cpu
         target:
           type: Utilization
-          averageUtilization: 50
+          averageUtilization: 75

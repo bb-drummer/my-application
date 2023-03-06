@@ -117,7 +117,7 @@
 					->setMinDepth(0)
 				;
 				$breadcrumb = $oBreadcrumbs->render(); 
-				$breadcrumb = str_replace('<ol class="breadcrumb nav-breadcrumb">', '<ul class="breadcrumbs">', $breadcrumb);
+				$breadcrumb = str_replace('<ol class="breadcrumb nav-breadcrumb"', '<ul class="breadcrumbs"', $breadcrumb);
 				$breadcrumb = str_replace('</ol>', '</ul>', $breadcrumb);
 				echo $breadcrumb;
 			?>
