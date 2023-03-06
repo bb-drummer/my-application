@@ -15,6 +15,10 @@ Feature: users logging in
     Then take a screenshot "after-login" of page "login"
     Then the page "user-profile" has been displayed
 
+    Examples:
+      | title | user | test |
+      | -- | -- | -- |
+
 
   @login @private @user @errors
   Scenario Outline: user is logging out successfully
@@ -23,6 +27,10 @@ Feature: users logging in
     Then the user navigates via "account/logout" to the "homepage" page
     Then take a screenshot "after-logout" of page "login"
     Then the page "homepage" has been displayed
+
+    Examples:
+      | title | user | test |
+      | -- | -- | -- |
 
 
   @login @public @user @errors
