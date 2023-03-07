@@ -1,7 +1,7 @@
 {
   "name" : "my-application/my-application",
   "description" : "ZendFramework2 -ready to go- application base '[my-application]'",
-  "version" : "0.0.4",
+  "version" : "0.0.12",
   "require" : {
     "composer/installers": "~1.0",
     "php" : "^5.5 || ^7.0",
