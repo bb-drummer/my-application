@@ -2,6 +2,8 @@
 ----------------------
 
 ## [Current]
+
+## [v0.0.12]
  * upd/add ui tests, upd test setup
  * upd assets gulpfile
  * upd data-test attributes
