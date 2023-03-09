@@ -7,9 +7,9 @@
 ////
 $breadcrumbs-caret-color: #ccc;
 $breadcrumbs-background-color: rgba(255, 255, 255, 0.1);
-$breadcrumbs-border-radius: rem-calc(6);
+$breadcrumbs-border-radius: 0.375em;
 $breadcrumbs-border-color: rgba(0,0,0,.3);
-$breadcrumbs-border-width: rem-calc(1);
+$breadcrumbs-border-width: 1px;
 
 
 @mixin myapplication-breadcrumbs {

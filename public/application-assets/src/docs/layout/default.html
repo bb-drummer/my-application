@@ -8,7 +8,7 @@
     <meta name="description" content="{{description}}">
     <link rel="icon" href="assets/img/icons/favicon.ico" type="image/x-icon">
     <title>[NyApplication] Docs{{#unlesspage 'index'}} | {{title}}{{/unlesspage}}</title>
-    <link href="assets/css/docs.css" rel="stylesheet" />
+    <link href="{{root}}assets/css/docs.css" rel="stylesheet" />
     <!-- <link rel="stylesheet" href="./node_modules/motion-ui/dist/motion-ui.css" /> -->
   </head>
   <body>
@@ -53,8 +53,8 @@
       })();
     </script>
 
-    <script src="assets/js/vendor.js"></script>
-    <script src="assets/js/foundation.js"></script>
-    <script src="assets/js/docs.js"></script>
+    <script src="{{root}}assets/js/vendor.js"></script>
+    <script src="{{root}}assets/js/foundation.js"></script>
+    <script src="{{root}}assets/js/docs.js"></script>
   </body>
 </html>

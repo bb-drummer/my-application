@@ -75,29 +75,29 @@ requirements: Docker, composer/php
 
 ### Run frontend dev 
 
-requirements: node-js v10
+requirements: node-js v18
 
 change to directory `public/application-assets/`
 
-- use node v10...
+- use node v18.15.0...
   ```
   $> nvm use
   ```
 - install node dependencies...
   ```
-  $> npm install
+  $> yarn
   ```
 - start javascript $ sass watcher...
   ```
-  $> npx gulp
+  $> yarn start
   ```
 - run build...
   ```
-  $> npx gulp build
+  $> yarn build
   ```
 - run tests...
   ```
-  $> npx gulp test
+  $> yarn test
   ```
 
 ### Run ui tests

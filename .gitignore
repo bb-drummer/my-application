@@ -61,6 +61,7 @@ node_modules/
 build/
 build-js/
 merge/
+yarn-error.log
 
 ##
 ## ignore some apple stuff
