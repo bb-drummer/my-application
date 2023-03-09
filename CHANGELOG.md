@@ -2,6 +2,14 @@
 ----------------------
 
 ## [Current]
+ * dependabot updates, upd application assets
+ * Bump lodash, gulp, gulp-prompt, gulp-scss-lint, inquirer, parker and pretty-print
+ * Bump minimatch, gulp, gulp-mocha, gulp-scss-lint and mocha
+ * Bump debug, gulp-mocha and mocha in /public/application-assets
+ * Bump ms, gulp-mocha and mocha in /public/application-assets
+ * Bump node-sass, gulp-sass and sass-true in /public/application-assets
+ * upd version
+ * upd ci cfg
 
 ## [v0.0.12]
  * upd/add ui tests, upd test setup

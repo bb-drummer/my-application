@@ -15,9 +15,10 @@ var DOCFILES = [
 ];
 
 // Copies static assets
-gulp.task('copy', function() {
+gulp.task('copy', function(cb) {
   gulp.src(MYFILES)
     .pipe(gulp.dest('dist'));
   gulp.src(DOCFILES)
     .pipe(gulp.dest('_build/assets'));
+  cb();
 });

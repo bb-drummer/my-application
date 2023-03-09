@@ -8,9 +8,6 @@ var PATHS = [
   '!src/scss/components_old/**/*.scss'
 ];
 
-// Lints Sass and JavaScript files for formatting issues
-gulp.task('lint', ['lint:sass', 'lint:javascript']);
-
 gulp.task('lint:sass', function() {
   return gulp.src(PATHS)
     .pipe(scssLint({
@@ -25,3 +22,6 @@ gulp.task('lint:javascript', function() {
     .pipe(jshint('./config/.jshintConfig'))
     .pipe(jshint.reporter('default'));
 });
+
+// Lints Sass and JavaScript files for formatting issues
+gulp.task('lint', gulp.series('lint:sass', 'lint:javascript'));

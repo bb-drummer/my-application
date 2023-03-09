@@ -23,7 +23,7 @@ supercollider
   .adapter('js');
 
 var MYDOCSPATHS = [
-  'src/mydocs/pages/**/*',
+  'src/docs/pages/**/*',
   // 'src/docs/pages/**/*' // foundation docs ;)
 ];
 
@@ -36,7 +36,7 @@ gulp.task('docs', function() {
     }))
     .pipe(supercollider.init())
     .pipe(panini(PANINI_CONFIG))
-    .pipe(cacheBust())
+    //.pipe(cacheBust())
     .pipe(gulp.dest('_build'))
     .on('finish', buildSearch);
 });
@@ -47,7 +47,7 @@ gulp.task('docs:all', function() {
   return gulp.src(MYDOCSPATHS)
     .pipe(supercollider.init())
     .pipe(panini(PANINI_CONFIG))
-    .pipe(cacheBust())
+    //.pipe(cacheBust())
     .pipe(gulp.dest('_build'))
     .on('finish', buildSearch);
 });
@@ -56,7 +56,7 @@ function buildSearch() {
   //foundationDocs.buildSearch(supercollider.tree);
 }
 
-gulp.task('docs:debug', ['docs'], function(cb) {
+gulp.task('docs:debug', gulp.series('docs', function(cb) {
   var output = JSON.stringify(supercollider.tree, null, '  ');
   require('fs').writeFile('./_debug.json', output, cb);
-});
+}));

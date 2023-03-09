@@ -23,9 +23,6 @@ var DOCS = [
   'src/docs/assets/js/docs.js'
 ];
 
-// Compiles JavaScript into a single file
-gulp.task('javascript', ['javascript:myapplication', 'javascript:deps', 'javascript:docs']);
-
 gulp.task('javascript:myapplication', function() {
   return gulp.src(MYAPPLICATION)
     .pipe(concat('myapplication.js'))
@@ -43,3 +40,5 @@ gulp.task('javascript:docs', function() {
     .pipe(concat('docs.js'))
     .pipe(gulp.dest('_build/assets/js'));
 });
+
+gulp.task('javascript', gulp.series('javascript:myapplication', 'javascript:deps', 'javascript:docs', /*'deploy:commit',*/));

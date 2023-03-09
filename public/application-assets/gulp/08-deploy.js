@@ -3,21 +3,14 @@ var filter = require('gulp-filter');
 var cssnano = require('gulp-cssnano');
 var rename = require('gulp-rename');
 var uglify = require('gulp-uglify');
-var confirm = require('gulp-prompt').confirm;
 var prompt = require('gulp-prompt').prompt;
 var rsync = require('gulp-rsync');
 var replace = require('gulp-replace');
-var git = require('gitty')(process.cwd() + '/');
 var octophant = require('octophant');
 var sequence = require('run-sequence');
-var inquirer = require('inquirer');
 var exec = require('child_process').execSync;
 
 var VERSIONED_FILES = [
-  'bower.json',
-  'composer.json',
-  'meteor-README.md',
-  'package.js',
   'package.json',
   'src/scss/myapplication.scss',
   'src/docs/pages/installation.md',
@@ -25,28 +18,17 @@ var VERSIONED_FILES = [
 ];
 
 var DIST_FILES = [
+  './_build/assets/css/myapplication.css.map',
   './_build/assets/css/myapplication.css',
-  './_build/assets/js/myapplication.js'
+  './_build/assets/js/myapplication*.js'
 ];
 
 var CURRENT_VERSION = require('../package.json').version;
 var NEXT_VERSION;
 
-gulp.task('deploy', function(cb) {
-  sequence('deploy:settings', 'deploy:prompt', 'deploy:version', 'deploy:dist', /*'deploy:commit',*/ cb);
-});
-
 gulp.task('deploy:prompt', function(cb) {
   NEXT_VERSION = CURRENT_VERSION;
   cb();
-  /*inquirer.prompt([{
-    type: 'input',
-    name: 'version',
-    message: 'What version are we moving to? (Current version is ' + CURRENT_VERSION + ')'
-  }], function(res) {
-    NEXT_VERSION = res.version;
-    cb();
-  });*/
 });
 
 // Bumps the version number in any file that has one
@@ -57,23 +39,32 @@ gulp.task('deploy:version', function() {
 });
 
 // Generates compiled CSS and JS files and puts them in the dist/ folder
-gulp.task('deploy:dist', ['sass:myapplication', 'javascript:myapplication'], function() {
+gulp.task('deploy:dist', gulp.series('sass:myapplication', 'javascript:myapplication', function() {
+  var mapFilter = filter(['*.map'], { restore: true });
   var cssFilter = filter(['*.css'], { restore: true });
   var jsFilter  = filter(['*.js'], { restore: true });
 
   return gulp.src(DIST_FILES)
+    .pipe(mapFilter)
+      .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./dist/css'))
+    .pipe(mapFilter.restore)
     .pipe(cssFilter)
       .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./dist/css'))
       .pipe(cssnano())
       .pipe(rename({ suffix: '.min' }))
       .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./dist/css'))
     .pipe(cssFilter.restore)
     .pipe(jsFilter)
       .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./dist/js'))
       .pipe(uglify())
       .pipe(rename({ suffix: '.min' }))
-      .pipe(gulp.dest('./dist'));
-});
+      .pipe(gulp.dest('./dist'))
+      .pipe(gulp.dest('./dist/js'));
+}));
 
 // Generates a settings file
 gulp.task('deploy:settings', function(cb) {
@@ -112,7 +103,7 @@ gulp.task('deploy:commit', function(cb) {
 });
 
 // Uploads the documentation to the live server
-gulp.task('deploy:docs', ['build'], function() {
+gulp.task('deploy:docs', gulp.series(function() {
   return gulp.src('./_build/**')
     /* .pipe(confirm('Make sure everything looks right before you deploy.'))
     .pipe(rsync({
@@ -120,10 +111,10 @@ gulp.task('deploy:docs', ['build'], function() {
       hostname: 'deployer@72.32.134.77',
       destination: '/home/deployer/sites/myapplication-docs'
     }))*/;
-});
+}));
 
 // The Customizer runs this function to generate files it needs
-gulp.task('deploy:custom', ['sass:myapplication', 'javascript:myapplication'], function() {
+gulp.task('deploy:custom', gulp.series('sass:myapplication', 'javascript:myapplication', function() {
   gulp.src('./_build/assets/css/myapplication.css')
       .pipe(minifyCss())
       .pipe(rename('myapplication.min.css'))
@@ -133,4 +124,6 @@ gulp.task('deploy:custom', ['sass:myapplication', 'javascript:myapplication'], f
       .pipe(uglify())
       .pipe(rename('myapplication.min.js'))
       .pipe(gulp.dest('./_build/assets/js'));
-});
+}));
+
+gulp.task('deploy', gulp.series('deploy:settings', /*'deploy:prompt', 'deploy:version',*/ 'deploy:dist', /*'deploy:commit',*/));
