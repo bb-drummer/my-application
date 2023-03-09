@@ -15,7 +15,7 @@
 "use strict";
 
     
-    var MYAPPLICATION_VERSION = '';
+    var MYAPPLICATION_VERSION = '0.0.12';
     
     // Global [MyApplication] object
     // This is attached to the window, or used as a module for AMD/Browserify

@@ -16,7 +16,12 @@ $global-font-size: 100% !default;
 ///
 /// @returns {Number} The same number, sans unit.
 @function strip-unit($num) {
-  @return $num / ($num * 0 + 1);
+  // @return calc($num / ($num * 0 + 1));
+  @if type-of($num) == 'number' and not unitless($num) {
+    @return ($num / 1px);
+  }
+
+  @return $num;
 }
 
 /// Converts one or more pixel values into matching rem values.
@@ -78,7 +83,7 @@ $global-font-size: 100% !default;
 
   // Calculate rem if units for $value is not rem
   @if unit($value) != 'rem' {
-    $value: strip-unit($value) / strip-unit($base) * 1rem;
+    $value: strip-unit($value) / strip-unit($base) * 1;
   }
 
   // Turn 0rem into 0

@@ -30,7 +30,7 @@
 				->appendStylesheet($this->basePath($themePath . 'js/datatables/css/dataTables.bootstrap.min.css'))
 				->appendStylesheet($this->basePath($themePath . 'css/flag-icon-css/flag-icon.min.css'))
 				
-				->appendStylesheet($this->basePath($assetPath . 'myapplication.css'))
+				->appendStylesheet($this->basePath($assetPath . 'css/myapplication.min.css'))
         	;
             $cssfiles = $oUtilities->Config()->get('app')->get('css');
             if (is_array($cssfiles) || ($cssfiles instanceof \Zend\Config\Config)) foreach ($cssfiles as $key => $file) {
@@ -163,7 +163,7 @@
 						->appendFile($this->basePath($themePath . 'js/datatables/js/jquery.dataTables.min.js'))
 						->appendFile($this->basePath($themePath . 'js/datatables/js/dataTables.bootstrap.min.js'))
 						
-						->appendFile($this->basePath('application-assets/dist/myapplication.js'))
+						->appendFile($this->basePath('application-assets/dist/js/myapplication.min.js'))
 					;
 					$jsfiles = $oUtilities->Config()->get('app')->get('js');
 					if (is_array($jsfiles) || ($jsfiles instanceof \Zend\Config\Config)) foreach ($jsfiles as $key => $file) {

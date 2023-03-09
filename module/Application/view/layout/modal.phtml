@@ -9,11 +9,11 @@ $oUser = $this->zfcUserIdentity();
 $messages = $this->flashMessenger()
     ->renderCurrent('error', array('error panel panel-body panel-error'));
 $messages .= $this->flashMessenger()
-    ->renderCurrents('warning', array('warning panel panel-body panel-warning'));
+    ->renderCurrent('warning', array('warning panel panel-body panel-warning'));
 $messages .= $this->flashMessenger()
-    ->renderCurrents('success', array('success panel panel-body panel-success'));
+    ->renderCurrent('success', array('success panel panel-body panel-success'));
 $messages .= $this->flashMessenger()
-    ->renderCurrents('info', array('info panel panel-body panel-info'));
+    ->renderCurrent('info', array('info panel panel-body panel-info'));
 $this->flashMessenger()->getPluginFlashMessenger()->clearCurrentMessagesFromContainer();
 
 $modalLayout = $oComponents->Modal()

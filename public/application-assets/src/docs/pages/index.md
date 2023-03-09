@@ -1,6 +1,6 @@
 ---
-title: [MyApplication] documentation
-description: [MyApplication] documentation comes here...
+title: '[MyApplication] documentation'
+description: '[MyApplication] documentation comes here...'
 tags:
   - index
   - home

@@ -8,12 +8,12 @@
 $panel-font-size: 14px;
 $panel-text-color: $body-font-color;
 $panel-background-color: $body-background;
-$panel-border-radius: rem-calc(6);
+$panel-border-radius: 0.375em;
 $panel-border-color: $global-border-color;
-$panel-border-width: rem-calc(1);
+$panel-border-width: 1px;
 
-$panel-margin-top: rem-calc(0);
-$panel-margin-bottom: rem-calc(10);
+$panel-margin-top: 0;
+$panel-margin-bottom: 0.675rem;
 
 $panel-toolbar-font-size: $panel-font-size;
 $panel-toolbar-border-radius: $panel-border-radius;
@@ -23,8 +23,8 @@ $panel-toolbar-border-width: $panel-border-width;
 $panel-toolbar-text-color: $panel-text-color;
 $panel-toolbar-background-color: $secondary-color;
 
-$panel-toolbar-margin-top: rem-calc(0);
-$panel-toolbar-margin-bottom: rem-calc(10);
+$panel-toolbar-margin-top: 0;
+$panel-toolbar-margin-bottom: 0.675rem;
 
 //== Panels
 //
