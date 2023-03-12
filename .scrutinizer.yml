@@ -51,6 +51,7 @@ build:
             - sed -i "s/_MYSQL_USER_/root/g" config/autoload/local.php
             - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/local.php
         override:
+            - php-scrutinizer-run
             -
                 command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
                 coverage:
