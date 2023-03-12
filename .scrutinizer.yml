@@ -45,6 +45,11 @@ build:
             - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
             - 'mysql -u root db_myapplication < sql/install.sql'
             - 'mysql -u root db_myapplication < sql/demo.sql'
+            - 'cp config/autoload/database.local.dist.php config/autoload/local.php'
+            - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_USER_/root/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/local.php
         override:
             -
                 command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
