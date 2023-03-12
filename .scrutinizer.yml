@@ -38,7 +38,7 @@ build:
                     web_root: 'public/'
                     host: 'myapplication.test'
     services:
-        mariabdb: 10
+        mariadb: 10
 
     tests:
         before:
