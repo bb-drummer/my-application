@@ -23,19 +23,19 @@
   },
   "repositories" : [ {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/SlmLocale.git"
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/SlmLocale.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/theme-adminlte.git"
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-adminlte.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/theme-remark.git"
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-remark.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/theme-taurus.git"
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/theme-taurus.git"
   }, {
     "type" : "git",
-    "url" : "https://gitlab.bjoernbartels.earth/zf2/application-assets.git"
+    "url" : "https://gitlab.com/my-application.bjoernbartels.earth/application-assets.git"
   } ],
   "license" : "Apache2.0",
   "keywords" : [ "my-application", "application", "base", "zend", "framework", "zf2" ],
