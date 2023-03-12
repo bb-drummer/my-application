@@ -25,9 +25,8 @@ build:
           MYSQL_USER: 'root'
           MYSQL_PASS: ''
         php: '8.1'
-        mysql: true
+        mariadb: 10
         memcached: true
-        selenium: true
         timezone: 'Europe/Berlin'
         hosts:
             myapplication.test: '127.0.0.1'
