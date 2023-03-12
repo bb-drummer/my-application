@@ -24,7 +24,12 @@ build:
           MYSQL_DATABASE: 'db_myapplication'
           MYSQL_USER: 'root'
           MYSQL_PASS: ''
-        php: '7.1'
+        php: 
+            version: '7.1'
+            pecl_extensions:
+              - xdebug
+            ini: 
+                xdebug.mode: 'coverage'
         mysql: true
         memcached: true
         timezone: 'Europe/Berlin'
