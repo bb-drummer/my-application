@@ -25,7 +25,7 @@ build:
           MYSQL_USER: 'root'
           MYSQL_PASS: ''
         php: '8.1'
-        mariadb: 10
+        mysql: true
         memcached: true
         timezone: 'Europe/Berlin'
         hosts:
@@ -37,6 +37,9 @@ build:
                 my-application:
                     web_root: 'public/'
                     host: 'myapplication.test'
+    services:
+        mariabdb: 10.6
+
     tests:
         before:
             - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
