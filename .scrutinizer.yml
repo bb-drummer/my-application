@@ -1,3 +1,7 @@
+before_commands:
+    - 'apt-get install git git-core'
+
+# language: php
 checks:
     php: true
     javascript: true
@@ -15,7 +19,12 @@ coding_style:
     php: {  }
 build:
     environment:
-        php: '7.1'
+        variables:
+          MYSQL_HOST: '127.0.0.1'
+          MYSQL_DATABASE: 'db_myapplication'
+          MYSQL_USER: 'root'
+          MYSQL_PASS: ''
+        php: '8.1'
         mysql: true
         memcached: true
         selenium: true
@@ -31,16 +40,9 @@ build:
                     host: 'myapplication.test'
     tests:
         before:
-            - 'ifconfig'
-            - 'curl http://ipinfo.io/ip'
             - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
             - 'mysql -u root db_myapplication < sql/install.sql'
             - 'mysql -u root db_myapplication < sql/demo.sql'
-            - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
-            - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
         override:
             -
                 command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
