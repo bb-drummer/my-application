@@ -40,6 +40,7 @@
 		<whitelist processUncoveredFilesFromWhitelist="true">
 			<directory suffix=".php">../src/</directory>
 			<directory suffix=".php">../../Admin/src/</directory>
+			<directory suffix=".php">../../ZendHydrator/src/</directory>
 			<exclude>
 				<directory suffix=".php">../src/Examples/</directory>
 				<directory suffix=".php">./ApplicationTest/Framework/</directory>
