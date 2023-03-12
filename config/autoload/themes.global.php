@@ -1,7 +1,7 @@
 <?php
 return array(
 	'ze_theme' => array(
-		'default_theme' => $_ENV['PROJECT_THEME'] ?: "bootstrap",
+		'default_theme' => isset($_ENV['PROJECT_THEME']) ? $_ENV['PROJECT_THEME'] : "bootstrap",
 		'custom_theme_path' => true,
 		'theme_paths' => array(
 			__DIR__ . "/../../public/themes/{theme}/",
