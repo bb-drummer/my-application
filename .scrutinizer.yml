@@ -24,7 +24,7 @@ build:
           MYSQL_DATABASE: 'db_myapplication'
           MYSQL_USER: 'root'
           MYSQL_PASS: ''
-        php: '8.1'
+        php: '7.1'
         mysql: true
         memcached: true
         timezone: 'Europe/Berlin'
