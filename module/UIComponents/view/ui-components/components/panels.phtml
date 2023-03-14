@@ -8,7 +8,7 @@
 ?>
 <h4>Element</h4>
 <div class="clearfix"><?php
-    $body = $oComponents()->Element(array(
+    $body = $oUtilities()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'callout well',
     ))->setContent('some content...');
@@ -18,9 +18,9 @@
 
 <hr />
 <h4>Block</h4>
-<div class="clearfix"><?php echo ($block = $oComponents->Block()
-    ->setHeader("Here come the header...")
-    ->setFooter("Here come the footer...")
+<div class="clearfix"><?php echo ($block = $oUtilities->Block()
+    ->setHeader("Here comes the header...")
+    ->setFooter("Here comes the footer...")
     ->render()
 ); ?></div>
 
@@ -28,46 +28,46 @@
 <h4>Panel</h4>
 <div class="clearfix"><?php 
 
-    $body = $oComponents()->Element(array(
+    $body = $oUtilities()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'panel-body',
-    ))->setContent("<em>content, content, content...</em>");
+    ))->setContent("<em>content, content, content and more...</em>");
     
-    $header = $oComponents()->Element(
+    $header = $oUtilities()->Element(
         array(
             'tagname'        => 'div',
             'classnames'    => 'panel-heading',
             'content'        => array(
                 'tagname'        => 'h3',
                 'classnames'    => 'panel-title',
-                'content'        => 'my header...'
+                'content'        => 'the header...'
             )
         )
     );
-    $panel = $oComponents()->Panel()
+    $panel = $oUtilities()->Panel()
         ->setHeader( $header
         )
         ->setContent( array(
             array(
                 'tagname'        => 'div',
                 'classnames'    => 'panel-body',
-                'content'        => 'here comes the widget content...'
+                'content'        => 'here comes some widget content...'
             ),
             array(
                 'tagname'        => 'div',
                 'classnames'    => 'panel-body',
                 'content'        => array(
-                    '<p>here comes more content...</p>',
-                    '<p>here comes more content...</p>',
+                    '<p>here comes other content...</p>',
+                    '<p>here comes other content...</p>',
                     '<p>',
                         '<a id="xhrtest" ' .
-                            'class="fancybox.ajax btn-cta-xhr cta-xhr-modal" ' .
+                            'class="btn-cta-xhr cta-xhr-modal" ' .
                             'href="' . $this->url('application/default', array(
                                 'controller' => 'index',
                                 'action' => 'xhrtest'
                             )) . '"' .
                         '>',
-                            'AJAX/XMLHTTPRequest test',
+                            'AJAX/XMLHTTPRequest test request',
                         '</a>',
                     '</p>',
                     $someContent
@@ -78,7 +78,7 @@
         ->setFooter( array(
             'tagname'        => 'div',
             'classnames'    => 'panel-footer',
-            'content'        => 'footer content...'
+            'content'        => 'footer content here...'
         ) )
     ;
     
