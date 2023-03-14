@@ -1,8 +1,8 @@
 <?php
 return array(
 	'ze_theme' => array(
-		'default_theme' => (isset($_ENV['PROJECT_THEME']) && !empty($_ENV['PROJECT_THEME'])) 
-			? $_ENV['PROJECT_THEME'] 
+		'default_theme' => (isset($_ENV['PROJECT_THEME']) && !empty($_ENV['PROJECT_THEME']))
+			? $_ENV['PROJECT_THEME']
 			: "bootstrap",
 		'custom_theme_path' => true,
 		'theme_paths' => array(

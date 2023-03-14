@@ -26,6 +26,9 @@ use UIComponents\View\Helper\AbstractPluginManager;
  */
 class PluginManager extends AbstractPluginManager
 {
+    /** @var string */
+    protected const COMPONENT_CLASS_PATH = 'UIComponents\\View\\Helper\Components\\';
+
     /**
      * Default set of helpers
      *
@@ -35,62 +38,62 @@ class PluginManager extends AbstractPluginManager
 
     	// panels
     	//
-        'element'              => 'UIComponents\View\Helper\Components\Element',
-        'block'             => 'UIComponents\View\Helper\Components\Block',
-        //'well'              => 'UIComponents\View\Helper\Components\Well',
-        //'jumbotron'         => 'UIComponents\View\Helper\Components\Jumbotron',
-        'panel'             => 'UIComponents\View\Helper\Components\Panel',
-        'widget'            => 'UIComponents\View\Helper\Components\Widget',
-        'dashboard'         => 'UIComponents\View\Helper\Components\Dashboard',
+        'element'           => self::COMPONENT_CLASS_PATH . 'Element',
+        'block'             => self::COMPONENT_CLASS_PATH . 'Block',
+        //'well'              => self::COMPONENT_CLASS_PATH . 'Well',
+        //'jumbotron'         => self::COMPONENT_CLASS_PATH . 'Jumbotron',
+        'panel'             => self::COMPONENT_CLASS_PATH . 'Panel',
+        'widget'            => self::COMPONENT_CLASS_PATH . 'Widget',
+        'dashboard'         => self::COMPONENT_CLASS_PATH . 'Dashboard',
 
     	// page components
     	//
-        'nav'               => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
-        'navbar'            => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
-        'topbar'            => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
-        'breadcrumbs'       => 'UIComponents\View\Helper\Components\Breadcrumbs',
-        'languagemenu'      => 'UIComponents\View\Helper\Components\Languagemenu',
-    	'toolbar'           => 'UIComponents\View\Helper\Components\Toolbar',
+        'nav'               => self::COMPONENT_CLASS_PATH . 'Navbar',
+        //'navbar'            => self::COMPONENT_CLASS_PATH . 'Navbar',
+        'topbar'            => self::COMPONENT_CLASS_PATH . 'Navbar',
+        'breadcrumbs'       => self::COMPONENT_CLASS_PATH . 'Breadcrumbs',
+        'languagemenu'      => self::COMPONENT_CLASS_PATH . 'Languagemenu',
+    	'toolbar'           => self::COMPONENT_CLASS_PATH . 'Toolbar',
 
         // controls
         //
-        'button'            => 'UIComponents\View\Helper\Components\Button', // default, drop-down/up, splitted
-        'buttongroup'       => 'UIComponents\View\Helper\Components\Buttongroup',
-    	//'inputgroup'        => 'UIComponents\View\Helper\Components\Inputgroup',
-        //'progressbar'       => 'UIComponents\View\Helper\Components\Progressbar',
+        'button'            => self::COMPONENT_CLASS_PATH . 'Button',
+        'buttongroup'       => self::COMPONENT_CLASS_PATH . 'Buttongroup',
+    	//'inputgroup'        => self::COMPONENT_CLASS_PATH . 'Inputgroup',
+        //'progressbar'       => self::COMPONENT_CLASS_PATH . 'Progressbar',
 
     	// forms
     	//
-        'formgroup'         => 'UIComponents\View\Helper\Components\Formgroup',
+        'formgroup'         => self::COMPONENT_CLASS_PATH . 'Formgroup',
 
     	// lists/tables
     	//
-        //'listgroup'         => 'UIComponents\View\Helper\Components\Listgroup',
-        'table'         	=> 'UIComponents\View\Helper\Components\Listgroup',
-    	//'pagination'        => 'UIComponents\View\Helper\Components\Pagination',
+        //'listgroup'         => self::COMPONENT_CLASS_PATH . 'Listgroup',
+        'table'         	=> self::COMPONENT_CLASS_PATH . 'Listgroup',
+    	//'pagination'        => self::COMPONENT_CLASS_PATH . 'Pagination',
 
     	// widgets
     	//
-        //'label'             => 'UIComponents\View\Helper\Components\Label',
-        //'badge'             => 'UIComponents\View\Helper\Components\Badge',
-        //'pageheader'        => 'UIComponents\View\Helper\Components\Pageheader',
-        //'thumbnail'         => 'UIComponents\View\Helper\Components\Thumbnail',
+        //'label'             => self::COMPONENT_CLASS_PATH . 'Label',
+        //'badge'             => self::COMPONENT_CLASS_PATH . 'Badge',
+        //'pageheader'        => self::COMPONENT_CLASS_PATH . 'Pageheader',
+        //'thumbnail'         => self::COMPONENT_CLASS_PATH . 'Thumbnail',
 
-        //'mediaobject'       => 'UIComponents\View\Helper\Components\Mediaobject',
-        //'embed'             => 'UIComponents\View\Helper\Components\Embed',
+        //'mediaobject'       => self::COMPONENT_CLASS_PATH . 'Mediaobject',
+        //'embed'             => self::COMPONENT_CLASS_PATH . 'Embed',
 
         // javascript components
         //
-        //'datatable'         => 'UIComponents\View\Helper\Components\Datatable',
-        'modal'             => 'UIComponents\View\Helper\Components\Modal',
-        //'dropdown'          => 'UIComponents\View\Helper\Components\Dropdown',
-        //'tab'               => 'UIComponents\View\Helper\Components\Tab',
-        //'tooltip'           => 'UIComponents\View\Helper\Components\Tooltip',
-        //'popover'           => 'UIComponents\View\Helper\Components\Popover',
-        //'alert'             => 'UIComponents\View\Helper\Components\Alert',
-        //'button'            => 'UIComponents\View\Helper\Components\Button',
-        //'collapse'          => 'UIComponents\View\Helper\Components\Collapse',
-        //'carousel'          => 'UIComponents\View\Helper\Components\Carousel',
+        //'datatable'         => self::COMPONENT_CLASS_PATH . 'Datatable',
+        'modal'             => self::COMPONENT_CLASS_PATH . 'Modal',
+        //'dropdown'          => self::COMPONENT_CLASS_PATH . 'Dropdown',
+        //'tab'               => self::COMPONENT_CLASS_PATH . 'Tab',
+        //'tooltip'           => self::COMPONENT_CLASS_PATH . 'Tooltip',
+        //'popover'           => self::COMPONENT_CLASS_PATH . 'Popover',
+        //'alert'             => self::COMPONENT_CLASS_PATH . 'Alert',
+        //'button'            => self::COMPONENT_CLASS_PATH . 'Button',
+        //'collapse'          => self::COMPONENT_CLASS_PATH . 'Collapse',
+        //'carousel'          => self::COMPONENT_CLASS_PATH . 'Carousel',
     ];
 
 }
