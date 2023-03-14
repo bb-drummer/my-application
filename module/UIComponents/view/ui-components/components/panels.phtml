@@ -7,7 +7,7 @@
     $oUser = $this->zfcUserIdentity();
 ?>
 <h4>Element</h4>
-<div class="clearfix"><?php 
+<div class="clearfix"><?php
     $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'callout well',
@@ -33,7 +33,7 @@
             'classnames'=> 'panel-body',
     ))->setContent("<em>content, content, content...</em>");
     
-    $header = $oComponents()->Element( 
+    $header = $oComponents()->Element(
         array(
             'tagname'        => 'div',
             'classnames'    => 'panel-heading',
@@ -42,7 +42,7 @@
                 'classnames'    => 'panel-title',
                 'content'        => 'my header...'
             )
-        ) 
+        )
     );
     $panel = $oComponents()->Panel()
         ->setHeader( $header
@@ -59,7 +59,17 @@
                 'content'        => array(
                     '<p>here comes more content...</p>',
                     '<p>here comes more content...</p>',
-                    '<p><a id="xhrtest" class="fancybox.ajax btn-cta-xhr cta-xhr-modal" href="'.$this->url('application/default', array('controller' => 'index', 'action' => 'xhrtest', )).'">AJAX/XMLHTTPRequest test</a></p>',
+                    '<p>',
+                        '<a id="xhrtest" ' .
+                            'class="fancybox.ajax btn-cta-xhr cta-xhr-modal" ' .
+                            'href="' . $this->url('application/default', array(
+                                'controller' => 'index',
+                                'action' => 'xhrtest'
+                            )) . '"' .
+                        '>',
+                            'AJAX/XMLHTTPRequest test',
+                        '</a>',
+                    '</p>',
                     $someContent
                 )
             ),

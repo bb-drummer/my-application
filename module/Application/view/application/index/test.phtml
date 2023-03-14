@@ -1,8 +1,4 @@
 <?php
-    /** @var \UIComponents\View\Helper\Bootstrap $oBootstrap **/
-    //$oBootstrap = $this->Bootstrap();
-    /** @var \UIComponents\View\Helper\Utilities $oUtilities **/
-    //$oUtilities = $this->Utilities();
     /** @var \UIComponents\View\Helper\Components $oComponents **/
     $oComponents = $this->Components();
     /** @var \Admin\Entity\User $oUser **/
@@ -53,7 +49,7 @@
 
 ?></div>
 
-<div class="clearfix"><?php echo $oComponents->Toolbar() //->setContent("the toolbar content..."); ?></div>
+<div class="clearfix"><?php echo $oComponents->Toolbar(); ?></div>
 
 <div class="clearfix"><?php echo $oComponents->Dashboard(); ?></div>
 
@@ -100,7 +96,17 @@
                 'content'        => array(
                     '<p>here comes more content...</p>',
                     '<p>here comes more content...</p>',
-                    '<p><a id="xhrtest" class="fancybox.ajax btn-cta-xhr cta-xhr-modal" href="'.$this->url('application/default', array('controller' => 'index', 'action' => 'xhrtest', )).'">AJAX/XMLHTTPRequest test</a></p>',
+                    '<p>',
+                        '<a id="xhrtest" ' .
+                            'class="fancybox.ajax btn-cta-xhr cta-xhr-modal" ' .
+                            'href="' . $this->url('application/default', array(
+                                'controller' => 'index',
+                                'action' => 'xhrtest'
+                            )) . '"' .
+                        '>',
+                            'AJAX/XMLHTTPRequest test',
+                        '</a>',
+                    '</p>',
                     $someContent
                 )
             ),
@@ -143,6 +149,3 @@ echo $oComponents->ButtonGroup(array(
         $oComponents->Button(array('label' => 'button 3', 'block' => true)),
     )
 )); ?></div>
-
-
-<?php //echo $oComponents->Element(); /* this really does nothing, it is just a view helper plugin default :D */ ?>
