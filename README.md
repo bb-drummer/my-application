@@ -11,6 +11,9 @@ Please, take a look into the application's User Help section to get some guidanc
 
 If you need further assistance, please do not hesitate to contact the applications support channel.
 
+
+---
+
 ## Features
 
 * public user registration with optional email verification and activation
@@ -20,6 +23,8 @@ If you need further assistance, please do not hesitate to contact the applicatio
 * prepared help, support and about section
 * basic theming
 
+
+---
 
 ## Demo and themes
 
@@ -33,7 +38,9 @@ If you need further assistance, please do not hesitate to contact the applicatio
 
 
 
-### TODO
+---
+
+### ToDo's
 
 * finish support module
 * finish backup module
@@ -41,6 +48,8 @@ If you need further assistance, please do not hesitate to contact the applicatio
 * clean up the language mix :D
 
 
+
+---
 
 ## Run development environments
 
@@ -50,28 +59,48 @@ Provided you have a GitPod account, just fork/clone this repository to your GitH
 
 ### Run with Docker
 
-requirements: Docker, composer/php
+requirements: Docker, composer (v1)/php
 
-- install composer dependencies...
+- create/copy env file...
+  ```bash
+  $> cp .env.example .env
   ```
+- install composer dependencies...
+  ```bash
   $> composer install --ignore-platform-reqs --no-interaction
   ```
 - build docker images...
-  ```
+  ```bash
   $> PROJECT=my-application PROJECT_DIR=$(pwd)/ docker-compose -f ./.gitpod.compose.yml build --pull
   ```
 - start docker containers...
-  ```
+  ```bash
   $> PROJECT=my-application PROJECT_DIR=$(pwd)/ bin/start.sh
   ```
 - stop docker containers...
-  ```
+  ```bash
   $> PROJECT=my-application PROJECT_DIR=$(pwd)/ bin/stop.sh
   ```
 - show log of running containers...
-  ```
+  ```bash
   $> PROJECT=my-application PROJECT_DIR=$(pwd)/ docker-compose -f ./.gitpod.compose.yml logs -f
   ```
+
+### Themes
+
+- start with specific theme...
+  ```bash
+  $> PROJECT=my-application PROJECT_DIR=$(pwd)/ PROJECT_THEME=foundation bin/start.sh
+  ```
+
+  themes available:
+
+  - bootstrap
+  - foundation
+  - adminlte
+  - remark
+  - taurus
+
 
 ### Run frontend dev 
 
@@ -80,32 +109,32 @@ requirements: node-js v18
 change to directory `public/application-assets/`
 
 - use node v18.15.0...
-  ```
+  ```bash
   $> nvm use
   ```
 - install node dependencies...
-  ```
+  ```bash
   $> yarn
   ```
 - start javascript $ sass watcher...
-  ```
+  ```bash
   $> yarn start
   ```
 - run build...
-  ```
+  ```bash
   $> yarn build
   ```
 - run tests...
-  ```
+  ```bash
   $> yarn test
   ```
 
-### Run ui tests
+### Run UI tests
 
 requirements: selenium hub or standalone
 
 - in one terminal start selenium...
-  ```
+  ```bash
   $> docker run --rm -it \
        -p 4444:4444 \
        -p 7900:7900 \
@@ -114,7 +143,7 @@ requirements: selenium hub or standalone
   ```
 
 - in another terminal run cucumber ui tests
-  ```
+  ```bash
   $> TEST_CLIENT=chrome \
      TEST_SERVER=host.docker.internal \
      docker run --rm \
@@ -127,8 +156,12 @@ requirements: selenium hub or standalone
        npm run test-docker -- -r ./report/ <extra selenium-cucumber-js options>
   ```
 
+  `TEST_SERVER`: your selenium (hub) instance, ex: `127.0.0.1` or `host.docker.internal`
+
+  `TEST_CLIENT`: one of `chrome`, `firefox` or `MicrosoftEdge`
+
 - create html report
-  ```
+  ```bash
   $> docker run --rm \
        -v $(pwd)/test:/build/test \
        -v $(pwd)/report:/build/report \
@@ -137,17 +170,30 @@ requirements: selenium hub or standalone
   ```
 
 
+### Create own new project
+
+you can create an entire new project from this repository with composer (v1): 
+```bash
+$> composer create-project my-application/my-application <your-project-dir> "<your-desired-version>"  --repository="{\"url\": \"https://github.com/bb-drummer/my-application.git\", \"type\": \"vcs\"}" --remove-vcs
+```
+
+after that follow the instructions to run with docker
+
+for available versions see the [tag list](https://github.com/bb-drummer/my-application/tags)
+
+
+---
+
 
 ## Manual installation
 
-### Using Composer (recommended)
+### Using Composer v1
+
+To get composer, visit the [composer website](https://getcomposer.org/download/) and follow the instructions to install "composer v1"
 
 The recommended way to get a working copy of this project is to clone the repository
 and use `composer` to install dependencies:
 
-    curl -s https://getcomposer.org/installer | php --
-    
-    cd my/project/dir
     git clone https://gitlab.bjoernbartels.earth/zf2/my-application.git
     cd my-application
     php composer.phar self-update
@@ -159,7 +205,6 @@ available.)
 Another alternative for downloading the project is to grab it via `curl`, and
 then pass it to `tar`:
 
-    cd my/project/dir
     curl -#L https://gitlab.bjoernbartels.earth/zf2/my-application/repository/archive.tar.gz?ref=master | tar xz --strip-components=1
 
 You would then invoke `composer` to install dependencies per the previous
@@ -215,9 +260,11 @@ project and you should be ready to go! It should look something like below:
 
 
 
+---
+
 ## Status
 
-[![build status](https://gitlab.com/my-application.bjoernbartels.earth/my-application/badges/master/build.svg)](https://gitlab.com/my-application.bjoernbartels.earth/my-application/commits/master)
+[![build status](https://gitlab.bjoernbartels.earth/zf2/my-application/badges/master/pipeline.svg)](https://gitlab.bjoernbartels.earth/zf2/my-application/commits/master)
 
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/bb-drummer/my-application/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/bb-drummer/my-application/?branch=master)
 
