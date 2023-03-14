@@ -46,6 +46,7 @@ class PluginManager extends AbstractPluginManager
     	// page components
     	//
         'nav'               => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
+        'navbar'            => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
         'topbar'            => 'UIComponents\View\Helper\Components\Navbar', // set 'alias to' or combine with 'Navbars' !
         'breadcrumbs'       => 'UIComponents\View\Helper\Components\Breadcrumbs',
         'languagemenu'      => 'UIComponents\View\Helper\Components\Languagemenu',
