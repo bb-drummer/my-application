@@ -8,7 +8,7 @@
 ?>
 <h4>Element</h4>
 <div class="clearfix"><?php
-    $body = $oUtilities()->Element(array(
+    $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'callout well',
     ))->setContent('some content...');
@@ -18,7 +18,7 @@
 
 <hr />
 <h4>Block</h4>
-<div class="clearfix"><?php echo ($block = $oUtilities->Block()
+<div class="clearfix"><?php echo ($block = $oComponents->Block()
     ->setHeader("Here comes the header...")
     ->setFooter("Here comes the footer...")
     ->render()
@@ -28,12 +28,12 @@
 <h4>Panel</h4>
 <div class="clearfix"><?php 
 
-    $body = $oUtilities()->Element(array(
+    $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'panel-body',
     ))->setContent("<em>content, content, content and more...</em>");
     
-    $header = $oUtilities()->Element(
+    $header = $oComponents()->Element(
         array(
             'tagname'        => 'div',
             'classnames'    => 'panel-heading',
@@ -44,7 +44,7 @@
             )
         )
     );
-    $panel = $oUtilities()->Panel()
+    $panel = $oComponents()->Panel()
         ->setHeader( $header
         )
         ->setContent( array(

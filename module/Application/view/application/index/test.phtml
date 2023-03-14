@@ -59,70 +59,11 @@
     ->render()
 ); ?></div>
 
-<div class="clearfix"><?php echo $someContent = $oComponents()->Element(array(
-    'tagname'     => 'div',
-    'class' => 'panel',
-))->setContent("here comes some content..."); ?></div>
-<div class="clearfix"><?php
+<div class="clearfix">
+    <?php echo getcwd(); ?>
+    <?php require('module/UIComponents/view/ui-components/components/panels.phtml'); ?>
+</div>
 
-    $body = $oComponents()->Element(array(
-            'tagname'    => 'div',
-            'classnames'=> 'panel-body',
-    ))->setContent("<em>content, content, content...</em>");
-
-    $header = $oComponents()->Element(
-        array(
-            'tagname'        => 'div',
-            'classnames'    => 'panel-heading',
-            'content'        => array(
-                'tagname'        => 'h3',
-                'classnames'    => 'panel-title',
-                'content'        => 'my header...'
-            )
-        )
-    );
-    $panel = $oComponents()->Panel()
-        ->setHeader( $header
-        )
-        ->setContent( array(
-            array(
-                'tagname'        => 'div',
-                'classnames'    => 'panel-body',
-                'content'        => 'here comes the widget content...'
-            ),
-            array(
-                'tagname'        => 'div',
-                'classnames'    => 'panel-body',
-                'content'        => array(
-                    '<p>here comes more content...</p>',
-                    '<p>here comes more content...</p>',
-                    '<p>',
-                        '<a id="xhrtest" ' .
-                            'class="fancybox.ajax btn-cta-xhr cta-xhr-modal" ' .
-                            'href="' . $this->url('application/default', array(
-                                'controller' => 'index',
-                                'action' => 'xhrtest'
-                            )) . '"' .
-                        '>',
-                            'AJAX/XMLHTTPRequest test',
-                        '</a>',
-                    '</p>',
-                    $someContent
-                )
-            ),
-            $body
-        ) )
-        ->setFooter( array(
-            'tagname'        => 'div',
-            'classnames'    => 'panel-footer',
-            'content'        => 'footer content...'
-        ) )
-    ;
-
-     $panel->setTagname('section');
-    echo $panel->render();
-
-?></div>
 
 <div class="clearfix well"><?php echo $oComponents->Button(); ?></div>
 
