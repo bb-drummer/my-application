@@ -2,6 +2,19 @@
 ----------------------
 
 ## [Current]
+ * fix code styles
+ * upd readme, include env example
+ * fix some styles
+ * upd scrutinizer cfg
+ * upd theme cfg
+ * upd scrutinizer cfg
+ * upd test cfg
+ * upd scrutinizer cfg
+ * upd composer cfg
+ * add dependabot cfg, upd scrutinizer cfg
+
+## [v0.0.13]
+ * upd version, changelog
  * dependabot updates, upd application assets
  * Bump lodash, gulp, gulp-prompt, gulp-scss-lint, inquirer, parker and pretty-print
  * Bump minimatch, gulp, gulp-mocha, gulp-scss-lint and mocha

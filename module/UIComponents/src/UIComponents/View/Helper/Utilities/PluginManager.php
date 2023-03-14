@@ -27,7 +27,7 @@ use UIComponents\View\Helper\AbstractPluginManager;
 class PluginManager extends AbstractPluginManager
 {
     /** @var string */
-    protected const COMPONENT_CLASS_PATH = 'UIComponents\\View\\Helper\Utilities\\';
+    protected const COMPONENT_CLASS_PATH = 'UIComponents\\View\\Helper\\Utilities\\';
 
     /**
      * Default set of helpers
