@@ -26,22 +26,25 @@ use UIComponents\View\Helper\AbstractPluginManager;
  */
 class PluginManager extends AbstractPluginManager
 {
+    /** @var string */
+    protected const COMPONENT_CLASS_PATH = 'UIComponents\\View\\Helper\\Utilities\\';
+
     /**
      * Default set of helpers
      *
      * @var array
      */
     protected $invokableClasses = [
-        'element'          => 'UIComponents\View\Helper\Utilities\Element',
+        'element'          => self::COMPONENT_CLASS_PATH . 'Element',
 
-        'config'        => 'UIComponents\View\Helper\Utilities\Config',
+        'config'        => self::COMPONENT_CLASS_PATH . 'Config',
 
-        'apptitle'      => 'UIComponents\View\Helper\Utilities\AppTitle',
-        'appfavicon'    => 'UIComponents\View\Helper\Utilities\AppFavicon',
-        'applogo'       => 'UIComponents\View\Helper\Utilities\AppLogo',
+        'apptitle'      => self::COMPONENT_CLASS_PATH . 'AppTitle',
+        'appfavicon'    => self::COMPONENT_CLASS_PATH . 'AppFavicon',
+        'applogo'       => self::COMPONENT_CLASS_PATH . 'AppLogo',
 
-    	'framework'     => 'UIComponents\View\Helper\Utilities\Framework',
-    	'template'      => 'UIComponents\View\Helper\Utilities\Framework',
+    	'framework'     => self::COMPONENT_CLASS_PATH . 'Framework',
+    	'template'      => self::COMPONENT_CLASS_PATH . 'Framework',
     ];
 
 }

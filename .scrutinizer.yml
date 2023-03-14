@@ -1,3 +1,7 @@
+before_commands:
+    - 'apt-get install git git-core'
+
+# language: php
 checks:
     php: true
     javascript: true
@@ -15,10 +19,19 @@ coding_style:
     php: {  }
 build:
     environment:
-        php: '7.1'
+        variables:
+          MYSQL_HOST: '127.0.0.1'
+          MYSQL_DATABASE: 'db_myapplication'
+          MYSQL_USER: 'root'
+          MYSQL_PASS: ''
+        php: 
+            version: '7.1'
+            pecl_extensions:
+              - xdebug
+            ini: 
+                xdebug.mode: 'coverage'
         mysql: true
         memcached: true
-        selenium: true
         timezone: 'Europe/Berlin'
         hosts:
             myapplication.test: '127.0.0.1'
@@ -29,21 +42,25 @@ build:
                 my-application:
                     web_root: 'public/'
                     host: 'myapplication.test'
+    services:
+        mariadb: 10
+
     tests:
         before:
-            - 'ifconfig'
-            - 'curl http://ipinfo.io/ip'
             - 'mysql -u root -e "CREATE DATABASE db_myapplication"'
             - 'mysql -u root db_myapplication < sql/install.sql'
             - 'mysql -u root db_myapplication < sql/demo.sql'
-            - 'cp config/autoload/database.local.dist.php config/autoload/database.local.php'
-            - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_USER_/root/g" config/autoload/database.local.php
-            - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/database.local.php
+            - 'cp config/autoload/database.local.dist.php config/autoload/local.php'
+            - sed -i "s/_MYSQL_HOST_/127.0.0.1/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_DATABASE_/db_myapplication/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_USER_/root/g" config/autoload/local.php
+            - sed -i "s/_MYSQL_PASSWORD_//" config/autoload/local.php
         override:
-            -
-                command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
-                coverage:
-                    file: 'my-application.clover'
-                    format: 'php-clover'
+            - php-scrutinizer-run
+            - './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
+            #    command: './vendor/bin/phpunit -c ./module/Application/test --coverage-clover=my-application.clover'
+            - wget https://scrutinizer-ci.com/ocular.phar
+            - php ocular.phar code-coverage:upload --format=php-clover my-application.clover
+            #    coverage:
+            #        file: 'my-application.clover'
+            #        format: 'php-clover'

@@ -7,7 +7,7 @@
     $oUser = $this->zfcUserIdentity();
 ?>
 <h4>Element</h4>
-<div class="clearfix"><?php 
+<div class="clearfix"><?php
     $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'callout well',
@@ -19,8 +19,8 @@
 <hr />
 <h4>Block</h4>
 <div class="clearfix"><?php echo ($block = $oComponents->Block()
-    ->setHeader("Here come the header...")
-    ->setFooter("Here come the footer...")
+    ->setHeader("Here comes the header...")
+    ->setFooter("Here comes the footer...")
     ->render()
 ); ?></div>
 
@@ -31,18 +31,18 @@
     $body = $oComponents()->Element(array(
             'tagname'    => 'div',
             'classnames'=> 'panel-body',
-    ))->setContent("<em>content, content, content...</em>");
+    ))->setContent("<em>content, content, content and more...</em>");
     
-    $header = $oComponents()->Element( 
+    $header = $oComponents()->Element(
         array(
             'tagname'        => 'div',
             'classnames'    => 'panel-heading',
             'content'        => array(
                 'tagname'        => 'h3',
                 'classnames'    => 'panel-title',
-                'content'        => 'my header...'
+                'content'        => 'the header...'
             )
-        ) 
+        )
     );
     $panel = $oComponents()->Panel()
         ->setHeader( $header
@@ -51,15 +51,25 @@
             array(
                 'tagname'        => 'div',
                 'classnames'    => 'panel-body',
-                'content'        => 'here comes the widget content...'
+                'content'        => 'here comes some widget content...'
             ),
             array(
                 'tagname'        => 'div',
                 'classnames'    => 'panel-body',
                 'content'        => array(
-                    '<p>here comes more content...</p>',
-                    '<p>here comes more content...</p>',
-                    '<p><a id="xhrtest" class="fancybox.ajax" href="'.$this->url('application/default', array('controller' => 'index', 'action' => 'xhrtest', )).'">AJAX/XMLHTTPRequest test</a></p>',
+                    '<p>here comes other content...</p>',
+                    '<p>here comes other content...</p>',
+                    '<p>',
+                        '<a id="xhrtest" ' .
+                            'class="btn-cta-xhr cta-xhr-modal" ' .
+                            'href="' . $this->url('application/default', array(
+                                'controller' => 'index',
+                                'action' => 'xhrtest'
+                            )) . '"' .
+                        '>',
+                            'AJAX/XMLHTTPRequest test request',
+                        '</a>',
+                    '</p>',
                     $someContent
                 )
             ),
@@ -68,7 +78,7 @@
         ->setFooter( array(
             'tagname'        => 'div',
             'classnames'    => 'panel-footer',
-            'content'        => 'footer content...'
+            'content'        => 'footer content here...'
         ) )
     ;
     

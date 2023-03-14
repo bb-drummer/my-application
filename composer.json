@@ -4,7 +4,7 @@
   "version" : "0.0.13",
   "require" : {
     "composer/installers": "~1.0",
-    "php" : "^5.5 || ^7.0",
+    "php" : "^5 || ^7 || ^8",
     "zendframework/zendframework" : ">=2.5",
     "zendframework/zendservice-recaptcha": "*",
     "phpunit/phpunit" : ">=5.1.4",
